@@ -29,5 +29,5 @@ int main()
     elapsed_time_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
     std::cout << "Time Taken To Set Dimensions :" + std::to_string(elapsed_time_ms) + " ms" << std::endl;
 
-    
+    return 0;
 }

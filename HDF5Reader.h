@@ -15,12 +15,14 @@ namespace NDAVis
         int getXdimension();
         int getYdimension();
         int getZdimension();
+        void Closefile();
         std::string fileName;
         double *data;
         hid_t file;
         hid_t dataset;
         hid_t dspace;
         int NX,NZ,NY;
+        hid_t memspace;
     };
 
 }

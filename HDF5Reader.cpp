@@ -105,4 +105,12 @@ namespace NDAVis
         return data;
     }
 
+    void HDF5Reader::Closefile()
+    {    
+    H5Dclose(dataset);
+    H5Sclose(dspace);
+    H5Sclose(memspace);
+    H5Fclose(file);
+    }
+
 }

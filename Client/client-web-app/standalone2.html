@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://unpkg.com/vtk.js"></script>
+	</head>
+	<body>
+		<div 
+		id="container"
+		style="width: 50vw; height: 50vh;"
+		></div>
+		<script type="text/javascript">
+
+      // ----------------------------------------------------------------------------
+      // Standard rendering code setup
+      // ----------------------------------------------------------------------------
+
+      const fullScreenRenderer = vtk.Source.Rendering.Misc.FullScreenRenderWindow.newInstance({
+        background: [0, 0, 0],
+      });
+      const renderer = fullScreenRenderer.getRenderer();
+      const renderWindow = fullScreenRenderer.getRenderWindow();
+
+      fullScreenRenderer.addController(controlPanel);
+
+      // ----------------------------------------------------------------------------
+      // Example code
+      // ----------------------------------------------------------------------------
+      // Server is not sending the .gz and with the compress header
+      // Need to fetch the true file name and uncompress it locally
+      // ----------------------------------------------------------------------------
+
+      const reader = vtk.Sources.IO.Core.HttpDataSetReader.newInstance({ fetchGzip: true });
+
+      const actor = vtk.Sources.Rendering.Core.Volume.newInstance();
+      const mapper = vtk.Sources.Rendering.Core.VolumeMapper.newInstance();
+      mapper.setSampleDistance(1.1);
+      actor.setMapper(mapper);
+
+      // create color and opacity transfer functions
+      const ctfun = vtk.Sources.Rendering.Core.ColorTransferFunction.newInstance();
+      ctfun.addRGBPoint(0, 85 / 255.0, 0, 0);
+      ctfun.addRGBPoint(95, 1.0, 1.0, 1.0);
+      ctfun.addRGBPoint(225, 0.66, 0.66, 0.5);
+      ctfun.addRGBPoint(255, 0.3, 1.0, 0.5);
+      const ofun = vtk.Sources.Common.DataModel.PiecewiseFunction.newInstance();
+      ofun.addPoint(0.0, 0.0);
+      ofun.addPoint(255.0, 1.0);
+      actor.getProperty().setRGBTransferFunction(0, ctfun);
+      actor.getProperty().setScalarOpacity(0, ofun);
+      actor.getProperty().setScalarOpacityUnitDistance(0, 3.0);
+      actor.getProperty().setInterpolationTypeToLinear();
+      actor.getProperty().setUseGradientOpacity(0, true);
+      actor.getProperty().setGradientOpacityMinimumValue(0, 2);
+      actor.getProperty().setGradientOpacityMinimumOpacity(0, 0.0);
+      actor.getProperty().setGradientOpacityMaximumValue(0, 20);
+      actor.getProperty().setGradientOpacityMaximumOpacity(0, 1.0);
+      actor.getProperty().setShade(true);
+      actor.getProperty().setAmbient(0.2);
+      actor.getProperty().setDiffuse(0.7);
+      actor.getProperty().setSpecular(0.3);
+      actor.getProperty().setSpecularPower(8.0);
+
+      mapper.setInputConnection(reader.getOutputPort());
+
+      reader.setUrl(`https://data.kitware.com/api/v1/file/58e665158d777f16d095fc2e/download`).then(() => {
+        reader.loadData().then(() => {
+          renderer.addVolume(actor);
+          const interactor = renderWindow.getInteractor();
+          interactor.setDesiredUpdateRate(15.0);
+          renderer.resetCamera();
+          renderer.getActiveCamera().zoom(1.5);
+          renderer.getActiveCamera().elevation(70);
+          renderWindow.render();
+        });
+      });
+
+      // TEST PARALLEL ==============
+
+      let isParallel = false;
+      const button = document.querySelector('.text');
+
+      function toggleParallel() {
+        isParallel = !isParallel;
+
+        renderer.getActiveCamera().setParallelProjection(isParallel);
+
+        button.innerText = `(${isParallel ? 'on' : 'off'})`;
+        renderWindow.render();
+      }
+
+      // -----------------------------------------------------------
+      // Make some variables global so that you can inspect and
+      // modify objects in your browser's developer console:
+      // -----------------------------------------------------------
+
+      global.source = reader;
+      global.mapper = mapper;
+      global.actor = actor;
+      global.ctfun = ctfun;
+      global.ofun = ofun;
+      global.renderer = renderer;
+      global.renderWindow = renderWindow;
+      global.toggleParallel = toggleParallel;
+
+
+		</script>
+	</body>
+</html>

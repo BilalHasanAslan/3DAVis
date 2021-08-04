@@ -23,6 +23,7 @@ set(SOURCE_FILES
     ${SOURCE_FILES}
     Maintest.cpp
     HDF5Reader.cpp
+    LogKeeper.cpp
     )
 
 

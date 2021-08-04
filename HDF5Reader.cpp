@@ -70,7 +70,7 @@ namespace NDAVis
             }
         }
         hsize_t offset[3];
-        hsize_t count[3]; 
+        hsize_t count[3];
         offset[0] = Xoffset;
         offset[1] = Yoffset;
         offset[2] = Zoffset;
@@ -106,11 +106,11 @@ namespace NDAVis
     }
 
     void HDF5Reader::Closefile()
-    {    
-    H5Dclose(dataset);
-    H5Sclose(dspace);
-    H5Sclose(memspace);
-    H5Fclose(file);
+    {
+        H5Dclose(dataset);
+        H5Sclose(dspace);
+        H5Sclose(memspace);
+        H5Fclose(file);
     }
 
 }

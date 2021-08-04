@@ -11,7 +11,7 @@ namespace NDAVis
         HDF5Reader(std::string fileName);
         bool openDataset(std::string datasetName);
         void setDimensions();
-        double* readDataset(int X,int Y,int Z,int Xoffset,int Yoffset,int Zoffset);
+        double *readDataset(int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset);
         int getXdimension();
         int getYdimension();
         int getZdimension();
@@ -21,7 +21,7 @@ namespace NDAVis
         hid_t file;
         hid_t dataset;
         hid_t dspace;
-        int NX,NZ,NY;
+        int NX, NZ, NY;
         hid_t memspace;
     };
 

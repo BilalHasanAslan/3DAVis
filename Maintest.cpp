@@ -25,7 +25,7 @@ int main()
     std::cout << "Time Taken To Set Dimensions :" + std::to_string(elapsed_time_ms) + " ms" << std::endl;
 
     t_start = std::chrono::high_resolution_clock::now();
-    reader.readDataset(100,100,100,100,100,100);
+    reader.readDataset(100, 100, 100, 100, 100, 100);
     elapsed_time_ms = std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - t_start).count();
     std::cout << "Time Taken To Set Dimensions :" + std::to_string(elapsed_time_ms) + " ms" << std::endl;
 

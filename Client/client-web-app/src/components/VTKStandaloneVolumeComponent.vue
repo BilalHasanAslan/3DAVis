@@ -134,8 +134,6 @@ export default {
           vtkGestureCameraManipulator.newInstance()
         );
 
-        
-
         // camera
         const camera = renderer.getActiveCamera();
         camera.setFocalPoint(0,0,0);
@@ -193,12 +191,14 @@ export default {
         controllerWidget.setContainer(this.controls);
         controllerWidget.setupContent(renderWindow, actor, isBackgroundDark);
 
-        controllerWidget.render();
+        // controllerWidget.render();
 
         // first render
         // renderer.resetCamera();
-        
-        renderWindow.render(); 
+        // renderWindow.render(); 
+
+        // rezise to adjust
+        genericRenderWindow.resize();
 
         this.context = {
             genericRenderWindow,

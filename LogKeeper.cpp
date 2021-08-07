@@ -20,6 +20,14 @@ namespace NDAVis
         t_start = std::chrono::high_resolution_clock::now();
     }
 
+    void LogKeeper::UpdateLog(std::string msg, bool showTime)
+    {
+
+        this->msg = msg;
+        this->showTime = showTime;
+        t_start = std::chrono::high_resolution_clock::now();
+    }
+
     void LogKeeper::endLog(bool Error)
     {
 
@@ -51,18 +59,18 @@ namespace NDAVis
         outfile.open("log.txt", std::ios::app);
         if (Error)
         {
-            outfile << "------------------------------------------------------------------";
+            outfile << "------------------------------------------------------------------\n";
             outfile << "Error Occured for " + msg;
-            outfile << "------------------------------------------------------------------";
+            outfile << "------------------------------------------------------------------\n";
         }
         else
         {
             std::time_t end_time = std::chrono::system_clock::to_time_t(t_end);
-            outfile << "------------------------------------------------------------------";
+            outfile << "------------------------------------------------------------------\n";
             outfile << std::ctime(&end_time);
             outfile << "Finished " + msg;
-            outfile << "Time Taken : " + std::to_string(elapsed_time_ms) + " ms" + " & " + std::to_string(elapsed_time_ms / 1000) + " s";
-            outfile << "------------------------------------------------------------------";
+            outfile << "\nTime Taken : " + std::to_string(elapsed_time_ms) + " ms" + " & " + std::to_string(elapsed_time_ms / 1000) + " s\n";
+            outfile << "------------------------------------------------------------------\n";
             outfile.close();
         }
     }

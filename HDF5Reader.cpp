@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <H5Cpp.h>
+#include "LogKeeper.h"
 
 namespace NDAVis
 {

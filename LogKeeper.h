@@ -7,7 +7,9 @@ namespace NDAVis
     class LogKeeper
     {
     public:
+
         LogKeeper(std::string msg, bool showTime);
+        void UpdateLog(std::string msg, bool showTime);
         void endLog(bool Error);
         void writeToLogFile();
         std::string msg;

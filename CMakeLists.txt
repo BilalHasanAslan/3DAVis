@@ -10,6 +10,15 @@ else ()
     message(FATAL_ERROR "Could not find HDF5.")
 endif ()
 
+set(VTK_DIR "~/Desktop/3Davis/VTK-master/build")
+find_package(VTK REQUIRED)
+if (VTK_FOUND)
+    include_directories(${VTK_INCLUDE_DIR})
+    set(LINK_LIBS ${LINK_LIBS} ${VTK_LIBRARIES})
+else ()
+    message(FATAL_ERROR "Could not find VTK.")
+endif ()
+
 
 
 
@@ -18,6 +27,7 @@ set(SOURCE_FILES
     Maintest.cpp
     HDF5Reader.cpp
     LogKeeper.cpp
+    VtkVisul.cpp
     )
 
 

@@ -1,8 +1,22 @@
+#ifndef VTK_VISUL_H_
+#define VTK_VISUL_H_
+
 #include <vtkDataArray.h>
 #include <vtkNew.h>
 #include <vtkNamedColors.h>
 #include <vtkRenderer.h>
 #include <vtkFloatArray.h>
+#include <vtkPiecewiseFunction.h>
+#include <vtkVolumeProperty.h>
+#include <vtkColorTransferFunction.h>
+#include <vtkSmartVolumeMapper.h>
+#include <vtkGPUVolumeRayCastMapper.h>
+#include <vtkImageData.h>
+#include <vtkDataSetAttributes.h>
+#include <vtkVolume.h>
+
+#include <vtkAutoInit.h>
+
 
 namespace NDAVis
 {
@@ -11,11 +25,19 @@ namespace NDAVis
     {
     public:
         VtkVisul();
-        void InsertArray(float* arr,int arrSize);
-        void InsertNextArray();
+        void InsertArray(float *arr, int arrSize);
+        void render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz);
         vtkNew<vtkNamedColors> colors;
         vtkNew<vtkRenderer> renderer;
         vtkNew<vtkFloatArray> vtkArr;
-
+        vtkNew<vtkPiecewiseFunction> opacityTransferFunction;
+        vtkNew<vtkColorTransferFunction> colorTransferFunction;
+        vtkNew<vtkVolumeProperty> volumeProperty;
+        //vtkNew<vtkSmartVolumeMapper> mapper;
+        vtkNew<vtkGPUVolumeRayCastMapper> mapper;
+        vtkNew<vtkImageData> imageData;
+        vtkNew<vtkVolume> volume;
     };
 }
+
+#endif //HDF5_Reader_H_

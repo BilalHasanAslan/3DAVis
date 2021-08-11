@@ -1,3 +1,6 @@
+#ifndef LOG_KEEPER_H_
+#define LOG_KEEPER_H_
+
 #include <string>
 #include <chrono>
 
@@ -19,3 +22,5 @@ namespace NDAVis
         double elapsed_time_ms;
     };
 }
+
+#endif //LOG_KEEPER_H_

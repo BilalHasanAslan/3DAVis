@@ -7,6 +7,8 @@
 #include "boost/multi_array.hpp"
 #include <cassert>
 
+//25000000
+
 namespace NDAVis
 {
     std::string fileName;
@@ -60,13 +62,13 @@ namespace NDAVis
 
     double *HDF5Reader::readDataset(int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
     {
-        double dataRead[100][100][100];
+        double dataRead[X][Y][Z];
 
-        for (int j = 0; j < 100; j++)
+        for (int j = 0; j < X; j++)
         {
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < Y; i++)
             {
-                for (int k = 0; k < 100; k++)
+                for (int k = 0; k < Z; k++)
                 {
                     dataRead[j][i][k] = 0;
                 }

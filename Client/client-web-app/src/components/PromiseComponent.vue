@@ -1,23 +1,48 @@
 <template>
-    <div v-if="loading">
-        Image
-    </div>
-    <div v-else-if="interaction">
-        Volume
+    <div>
+        <div v-if="!loading">
+            <div 
+                v-if="!interaction"
+                @mousedown="interaction=true"
+                @mouseup="setInteraction()"
+            >
+                <div>
+                    Image Component
+                </div>
+                <VTKImageComponent/>
+            </div>
+            <div 
+                v-else
+            >
+                <div>
+                    Volume Component
+                </div>
+                <VTKStandAloneVolumeComponent
+                    @interaction:change="setInteraction()"
+                />
+            </div>
+        </div>
+        
     </div>
 </template>
 <script>
 import axios from 'axios'
 
+import VTKImageComponent from './VTKImageComponent.vue';
+import VTKStandAloneVolumeComponent from './VTKStandaloneVolumeComponent.vue';
+
 export default {
     components: {
-        
+        VTKImageComponent,
+        VTKStandAloneVolumeComponent
     },
     data () {
         return {
+            stream: null,
             data: null,
-            loading: true,
-            interaction: false
+            loading: false,
+            interaction: true,
+            timeout: null,
         }
     },
     created () {
@@ -58,6 +83,59 @@ export default {
         }
         catch(error) {
             console.log(error);
+        }
+
+        //  readable stream + axios
+        // try {
+        //     // arbitrary http call - its just a big file
+        //     axios.get('https://data.kitware.com/api/v1/file/58e665158d777f16d095fc2e/download')
+        //     .then(response => response.body)
+        //     .then(body => {
+        //         const reader = body.getReader();
+
+        //         return new ReadableStream({
+        //             start(controller) {
+        //                 function push() {
+        //                     // "done" is a Boolean and value a "Uint8Array"
+        //                     reader.read().then( ({done, value}) => {
+        //                     // If there is no more data to read
+        //                     if (done) {
+        //                         console.log('done', done);
+        //                         controller.close();
+        //                         return;
+        //                     }
+        //                     // Get the data and send it to the browser via the controller
+        //                     controller.enqueue(value);
+        //                     // Check chunks by logging to the console
+        //                     console.log(done, value);
+        //                     push();
+        //                     })
+        //                 }
+
+        //                 push();
+        //             }
+        //         });
+        //     })
+        //     .then(stream => {
+        //         // Respond with our stream
+        //         return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+        //     })
+        //     .then(result => {
+        //         // Do things with result
+        //         console.log(result);
+        //     })
+        // }
+        // catch(error) {
+        //     console.log(error);
+        // }
+    },
+    methods: {
+        setInteraction() {
+            this.interaction = true
+            // clearTimeout(this.timeout)
+            // this.timeout = setTimeout(() => {
+            //     this.interaction = false
+            // }, 10000)
         }
     }
 }

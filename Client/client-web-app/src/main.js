@@ -9,6 +9,7 @@ Vue.use(BootstrapVue)
 import VueRx from 'vue-rx'
 
 Vue.use(VueRx)
+
 import App from './App.vue'
 
 Vue.config.productionTip = false

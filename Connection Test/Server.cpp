@@ -12,8 +12,9 @@ int main() {
         /* Settings */
         .compression = uWS::DEDICATED_COMPRESSOR_256KB,
         .maxPayloadLength = 256 * 1024 * 1024,
-        .open = [](auto */*ws*/) {
-            std::cout << "Connected" << std::endl;
+        .open = [](auto * ws) {
+            std::cout << "Dummy Client Connected" << std::endl;
+            std::cout << ws->getRemoteAddressAsText() << std::endl;
             /* Open event here, you may access ws->getUserData() which points to a PerSocketData struct */
         },
         .message = [](auto *ws, std::string_view message, uWS::OpCode opCode) {
@@ -32,7 +33,7 @@ int main() {
         .close = [](auto */*ws*/, int /*code*/, std::string_view /*message*/) {
             /* You may access ws->getUserData() here */
         }
-    }).listen(9000, [](auto *listen_socket) {
+    }).listen("0.0.0.0", 9000, [](auto *listen_socket) {
         if (listen_socket) {
             std::cout << "Listening on port " << 9000 << std::endl;
         }

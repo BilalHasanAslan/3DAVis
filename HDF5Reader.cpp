@@ -4,8 +4,9 @@
 #include <iostream>
 #include <H5Cpp.h>
 #include "LogKeeper.h"
-#include "boost/multi_array.hpp"
+#include <boost/multi_array.hpp>
 #include <cassert>
+#include <iterator>
 
 //25000000
 
@@ -60,20 +61,11 @@ namespace NDAVis
         return NZ;
     }
 
-    double *HDF5Reader::readDataset(int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
+    void HDF5Reader::readDataset(float *arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
     {
-        double dataRead[X][Y][Z];
 
-        for (int j = 0; j < X; j++)
-        {
-            for (int i = 0; i < Y; i++)
-            {
-                for (int k = 0; k < Z; k++)
-                {
-                    dataRead[j][i][k] = 0;
-                }
-            }
-        }
+        int c = 0;
+
         hsize_t offset[3];
         hsize_t count[3];
         offset[0] = Xoffset;
@@ -98,16 +90,7 @@ namespace NDAVis
         count_out[2] = Z;
         hid_t memspace = H5Screate_simple(3, dimsm, NULL);
         status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
-        status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dspace, H5P_DEFAULT, dataRead);
-        for (int j = 0; j < X; j++)
-        {
-            for (int i = 0; i < Y; i++)
-                printf("%f ", dataRead[j][i][0]);
-            printf("\n");
-        }
-        std::cout << "Test" << std::endl;
-        data = &dataRead[0][0][0];
-        return data;
+        status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dspace, H5P_DEFAULT, arr);
     }
 
     void HDF5Reader::Closefile()

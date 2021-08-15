@@ -15,4 +15,4 @@ int getNumberOfFiles();
 }
 
 
-#endif FILE_MANAGER_H_
+#endif //FILE_MANAGER_H_

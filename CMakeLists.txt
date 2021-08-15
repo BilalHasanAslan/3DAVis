@@ -19,7 +19,16 @@ else ()
     message(FATAL_ERROR "Could not find VTK.")
 endif ()
 
-
+FIND_PACKAGE(PkgConfig REQUIRED)
+PKG_SEARCH_MODULE(CFITSIO REQUIRED cfitsio)
+if (CFITSIO_FOUND)
+    include_directories(${CFITSIO_INCLUDE_DIRS})
+    link_directories(${CFITSIO_LIBRARY_DIRS})
+    set(LINK_LIBS ${LINK_LIBS} ${CFITSIO_LIBRARIES})
+    message(STATUS "Found CFITSIO: ${CFITSIO_LINK_LIBRARIES} Version: ${CFITSIO_VERSION}")
+else ()
+    message(FATAL_ERROR "Could not find CFITSIO.")
+endif ()
 
 set(SOURCE_FILES
     ${SOURCE_FILES}
@@ -27,6 +36,7 @@ set(SOURCE_FILES
     HDF5Reader.cpp
     LogKeeper.cpp
     VtkVisul.cpp
+    Converter.cpp
     )
 
 

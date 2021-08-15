@@ -10,11 +10,11 @@
 #include <vtkVolumeProperty.h>
 #include <vtkColorTransferFunction.h>
 #include <vtkSmartVolumeMapper.h>
-#include <vtkGPUVolumeRayCastMapper.h>
+//#include <vtkGPUVolumeRayCastMapper.h>
 #include <vtkImageData.h>
 #include <vtkDataSetAttributes.h>
 #include <vtkVolume.h>
-
+#include <vtkPiecewiseFunction.h>
 #include <vtkAutoInit.h>
 
 
@@ -30,13 +30,13 @@ namespace NDAVis
         vtkNew<vtkNamedColors> colors;
         vtkNew<vtkRenderer> renderer;
         vtkNew<vtkFloatArray> vtkArr;
-        vtkNew<vtkPiecewiseFunction> opacityTransferFunction;
         vtkNew<vtkColorTransferFunction> colorTransferFunction;
         vtkNew<vtkVolumeProperty> volumeProperty;
-        //vtkNew<vtkSmartVolumeMapper> mapper;
-        vtkNew<vtkGPUVolumeRayCastMapper> mapper;
+        vtkNew<vtkSmartVolumeMapper> mapper;
+        //vtkNew<vtkGPUVolumeRayCastMapper> mapper;
         vtkNew<vtkImageData> imageData;
         vtkNew<vtkVolume> volume;
+         vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
     };
 }
 

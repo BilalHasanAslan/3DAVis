@@ -3,14 +3,15 @@
 
 #include <string>
 
-namespace 3DAVis{
+namespace NDAVis{
 class FileManager{
 public:
-protected:
 std::string _filename;
-std::string _hdu;
+void getFileNames(char** arr);
+int getNumberOfFiles();
 
-}
+
+};
 }
 
 

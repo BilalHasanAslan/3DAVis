@@ -35,11 +35,7 @@ int main()
     float* ptr = arr;
     for (int i = 0; i < totalDim; i++)
     {
-        //if(*ptr!=0||*ptr!=-0){
-        //cout << *ptr << " ";
-        //} boost::range::fill(Arr, 5);
-        *ptr = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        //cout << *ptr << " ";
+        *ptr = static_cast <float> (rand())*10 / static_cast <float> (RAND_MAX);
         ptr++;
     }
 

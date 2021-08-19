@@ -1,14 +1,14 @@
 FILE := Server
 override CXXFLAGS += -lpthread -Wpedantic -Wall -Wextra -Wsign-conversion -Wconversion -std=c++2a -Isrc -IuSockets/src
-override LDFLAGS += uSockets/*.o -lz
+override LDFLAGS += ./third_party/uWebSockets/uSockets/*.o -lz
 
 DESTDIR ?=
 prefix ?= /usr/local
 
 .PHONY: examples
 examples:
-	$(MAKE) -C uSockets; \
-	$(CXX) -flto -O3 $(CXXFLAGS) ./Server.cpp -o Server $(LDFLAGS) ; \
+	$(MAKE) -C ./third_party/uWebSockets/uSockets; \
+	$(CXX) -flto -O3 $(CXXFLAGS) ./Server.cpp ./FileManager.cpp -o Server $(LDFLAGS) ; \
 	wait
 
 install:

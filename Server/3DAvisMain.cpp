@@ -1,4 +1,3 @@
-
 #include "LogKeeper.h"
 #include "FileManager.h"
 #include "Server.h"
@@ -10,10 +9,10 @@ using namespace NDAVis;
 
 int main()
 {
+   
+
     //FileManager
-    NDAVis::Server server;
     NDAVis::FileManager fileManager;
-    server.runServer();
     //Number Of the Files that are preprocessed
     int numberOfFiles = fileManager.getNumberOfFiles();
     //Name Of the Files that are preprocessed
@@ -32,5 +31,12 @@ int main()
     {
         std::cout << *it << std::endl;
     }
+
+    NDAVis::Server server;
+    server.runServer();
+    
+
     return 0;
+
+
 }

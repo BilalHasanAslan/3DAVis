@@ -1,5 +1,5 @@
-#ifndef SERVER_
-#define SERVER_
+#ifndef SERVER_H_
+#define SERVER_H_
 
 #include <string>
 #include <vector>
@@ -13,4 +13,4 @@ namespace NDAVis
     };
 }
 
-#endif //SERVER_
+#endif //SERVER_H_

@@ -20,7 +20,9 @@
 </template>
 
 <script>
-// import { ref, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+
+
+import { vec3, quat, mat4 } from 'gl-matrix';
 
 import '@kitware/vtk.js/Rendering/Profiles/Volume';
 
@@ -41,6 +43,8 @@ import vtkMouseCameraTrackballRotateManipulator from '@kitware/vtk.js/Interactio
 import vtkMouseCameraTrackballZoomManipulator from '@kitware/vtk.js/Interaction/Manipulators/MouseCameraTrackballZoomManipulator';
 // import vtkMouseCameraTrackballZoomToMouseManipulator from '@kitware/vtk.js/Interaction/Manipulators/MouseCameraTrackballZoomToMouseManipulator';
 import vtkGestureCameraManipulator from 'vtk.js/Sources/Interaction/Manipulators/GestureCameraManipulator';
+import vtkImageCroppingWidget from 'vtk.js/Sources/Widgets/Widgets3D/ImageCroppingWidget';
+import vtkPlane from 'vtk.js/Sources/Common/DataModel/Plane';
 
 export default {
   name: 'VTKVolumeComponent',
@@ -48,11 +52,14 @@ export default {
     return {
       container: null,
       controls: null,
+      cropState: null,
       context: null,
       source: null,
       background: [0,0,0],
-      cameraPosition: [0,0,10],
-      focalPoint: [0,0,0]
+      cameraPosition: [0,0,200],
+      level: 1,
+      focalPoint: null,
+      cameraClippingRange: null,
     }
   },
   beforeMount() {
@@ -67,7 +74,7 @@ export default {
     // generate data cube
     var VtkDataTypes = vtkDataArray.VtkDataTypes;
 
-    var width = 50, height = 50, depth = 50;
+    var width = 64, height = 64, depth = 64;
     var size = width * height * depth;
 
     var values = [];
@@ -84,9 +91,9 @@ export default {
 
     // render data
     this.source = vtkImageData.newInstance();
-    this.source.setDimensions(50, 50, 50);
-    this.source.setSpacing(2,2,2);
-    this.source.setOrigin(-50,-50,-50);
+    this.source.setDimensions(64, 64, 64);
+    this.source.setSpacing(1,1,1);
+    this.source.setOrigin(-32,-32,-32);
     this.source.getPointData().setScalars(scalars);
   },
   mounted() {
@@ -95,7 +102,7 @@ export default {
       this.container = document.querySelector('#window');
       this.controls = document.querySelector('#controls');
 
-      // WebGL/OpenGL impl
+      // WebGL/OpenGL implementation
       const genericRenderWindow = vtkGenericRenderWindow.newInstance();
       genericRenderWindow.setContainer(this.container);
       genericRenderWindow.setBackground(this.background);
@@ -104,12 +111,15 @@ export default {
       const renderWindow = genericRenderWindow.getRenderWindow();
       const renderer     = genericRenderWindow.getRenderer();
 
+      // image cropping widget
+      const widget = vtkImageCroppingWidget.newInstance();
+
       // interactor
       const interactorStyle = vtkInteractorStyleManipulator.newInstance();
       genericRenderWindow.getInteractor().setInteractorStyle(interactorStyle);
 
       //  remove default mainpulators
-      interactorStyle.removeAllMouseManipulators();
+      // interactorStyle.removeAllMouseManipulators();
 
       // mouse manipulators
       // pan
@@ -142,7 +152,7 @@ export default {
       // camera
       const camera = renderer.getActiveCamera();
       camera.setFocalPoint(0,0,0);
-      camera.setPosition(0,0,-500);
+      camera.setPosition(0,0,200);
       
       // camera.setPosition(this.cameraPosition);
       // camera.setFocalPoint(this.focalPoint);
@@ -156,6 +166,11 @@ export default {
       actor.setMapper(mapper);
       mapper.setInputData(this.source);
       mapper.setSampleDistance(2);
+
+      // update crop widget
+      widget.copyImageDataDescription(this.source);
+      this.cropState = widget.getWidgetState().getCroppingPlanes();
+
       renderer.addActor(actor);
 
       // colour transfer function
@@ -205,15 +220,17 @@ export default {
       genericRenderWindow.resize();
 
       this.context = {
-          genericRenderWindow,
-          renderWindow,
-          renderer,
-          actor,
-          mapper,
-          interactorStyle,
-          ctfun,
-          ofun
+        genericRenderWindow,
+        renderWindow,
+        renderer,
+        actor,
+        mapper,
+        interactorStyle,
+        ctfun,
+        ofun,
+        widget
       };
+
     }
   },
   beforeDestroy() {
@@ -226,6 +243,156 @@ export default {
     }
   },
   methods: {
+    getCroppingPlanes(imageData, ijkPlanes) {
+      console.log("here")
+      const rotation = quat.create();
+      mat4.getRotation(rotation, imageData.getIndexToWorld());
+
+      const rotateVec = (vec) => {
+        const out = [0, 0, 0];
+        vec3.transformQuat(out, vec, rotation);
+        return out;
+      }
+      const [iMin, iMax, jMin, jMax, kMin, kMax] = ijkPlanes;
+      const origin = imageData.indexToWorld([iMin, jMin, kMin]);
+      // opposite corner from origin
+      const corner = imageData.indexToWorld([iMax, jMax, kMax]);
+      return [
+        // X min/max
+        vtkPlane.newInstance({ normal: rotateVec([1, 0, 0]), origin }),
+        vtkPlane.newInstance({ normal: rotateVec([-1, 0, 0]), origin: corner }),
+        // Y min/max
+        vtkPlane.newInstance({ normal: rotateVec([0, 1, 0]), origin }),
+        vtkPlane.newInstance({ normal: rotateVec([0, -1, 0]), origin: corner }),
+        // X min/max
+        vtkPlane.newInstance({ normal: rotateVec([0, 0, 1]), origin }),
+        vtkPlane.newInstance({ normal: rotateVec([0, 0, -1]), origin: corner }),
+      ]
+    },
+    getCubelets() {
+      let cubes = []
+      Object.keys(this.frustum).forEach(key => {
+        if(this.frustum[key][0] > 0) // positive x
+        {
+          if(this.frustum[key][1] > 0) // positive y
+          {
+            if(this.frustum[key][2] > 0) // positive z
+            {
+              cubes.push(1) // +x +y +z
+            }
+            else // negative z
+            {
+              cubes.push(5) // +x +y +z
+            }
+          }
+          else // negative y
+          {
+            if(this.frustum[key][2] > 0) // positive z
+            {
+              cubes.push(3) // +x -y +z
+            }
+            else // negative z
+            {
+              cubes.push(7) // +x -y -z
+            }
+          }
+        }
+        else // negative x
+        {
+          if(this.frustum[key][1] > 0) // positive y
+          {
+            if(this.frustum[key][2] > 0) // positive z
+            {
+              cubes.push(2) // -x +y +z
+            }
+            else // negative z
+            {
+              cubes.push(6) // -x +y -z
+            }
+          }
+          else // negative y
+          {
+            if(this.frustum[key][2] > 0) // positive z
+            {
+              cubes.push(4) // -x -y +z
+            }
+            else // negative z
+            {
+              cubes.push(8) // -x -y -z
+            }
+          }
+        }
+      })
+      console.log(cubes)
+    },
+    getFrustum() {
+      const { genericRenderWindow } = this.context;
+      const renderer = genericRenderWindow.getRenderer();
+      const camera = renderer.getActiveCamera();
+
+      let clippingRange = camera.getClippingRange()
+      let ratio = this.$refs.vtkContainer.clientWidth / this.$refs.vtkContainer.clientHeight
+      let up = camera.getViewUp()
+
+      let hNear = 2 * Math.tan(camera.getViewAngle()/2) * clippingRange[0]
+      let wNear = hNear * ratio
+
+      let hFar = 2 * Math.tan(camera.getViewAngle()/2) * clippingRange[1]
+      let wFar = hFar * ratio
+
+      // p - position
+      let pos = camera.getPosition()
+
+      // d - direction vector - < focal point - position >
+      let focalPoint = camera.getFocalPoint()
+      let forward = [focalPoint[0]-pos[0],focalPoint[1]-pos[1],focalPoint[2]-pos[2]]
+      
+      // right - cross product (forward.normalised, up.normalised)
+      let right = this.cross(forward, up)
+      
+      // far centre
+      let fd = [forward[0]*clippingRange[1],forward[1]*clippingRange[1],forward[2]*clippingRange[1]]
+      let fc = this.add(pos,fd)
+
+      // half hFar
+      let halfH = hFar/2
+
+      // half wFar
+      let halfW = wFar/2
+
+      console.log("Frustum")
+      // far top left
+      this.frustum.ftl = this.add(fc, this.subtract([up[0]*halfH, up[1]*halfH, up[2]*halfH], [right[0]*halfW, right[1]*halfW,right[2]*halfW]))
+      // far top right
+      this.frustum.ftr = this.add(fc, this.add([up[0]*halfH, up[1]*halfH, up[2]*halfH], [right[0]*halfW, right[1]*halfW,right[2]*halfW]))
+      // far bottom left
+      this.frustum.fbl = this.subtract(fc, this.subtract([up[0]*halfH, up[1]*halfH, up[2]*halfH], [right[0]*halfW, right[1]*halfW,right[2]*halfW]))
+      // far bottom right
+      this.frustum.fbr = this.subtract(fc, this.add([up[0]*halfH, up[1]*halfH, up[2]*halfH], [right[0]*halfW, right[1]*halfW,right[2]*halfW]))
+
+      // near centre
+      let nd = [forward[0]*clippingRange[0],forward[1]*clippingRange[0],forward[2]*clippingRange[0]]
+      let nc = this.add(pos, nd)
+
+      // half hFar
+      let halfNH = hNear/2
+
+      // half wFar
+      let halfNW = wNear/2
+
+      // near top left
+      this.frustum.ntl = this.add(nc, this.subtract([up[0]*halfNH,up[1]*halfNH,up[0]*halfNH], [right[0]*halfNW,right[1]*halfNW,right[2]*halfNW]))
+      // near top right
+      this.frustum.ntr = this.add(nc, this.add([up[0]*halfNH,up[1]*halfNH,up[0]*halfNH], [right[0]*halfNW,right[1]*halfNW,right[2]*halfNW]))
+      // near bottom left
+      this.frustum.nbl = this.subtract(nc, this.subtract([up[0]*halfNH,up[1]*halfNH,up[0]*halfNH], [right[0]*halfNW,right[1]*halfNW,right[2]*halfNW]))
+      // near botton right
+      this.frustum.nbr = this.subtract(nc, this.add([up[0]*halfNH,up[1]*halfNH,up[0]*halfNH], [right[0]*halfNW,right[1]*halfNW,right[2]*halfNW]))
+
+
+      console.log(this.frustum.ftl + " " + this.frustum.ftr + " " + this.frustum.fbl + " " + this.frustum.fbr)
+      console.log(this.frustum.ntl + " " + this.frustum.ntr + " " + this.frustum.nbl + " " + this.frustum.nbr)
+    },
     userInteraction() {
       let parameters = {}
       this.$emit('interaction:change', parameters)
@@ -234,10 +401,64 @@ export default {
       const { genericRenderWindow, interactorStyle } = this.context;
       // const renderWindow = genericRenderWindow.getRenderWindow();
       const renderer = genericRenderWindow.getRenderer();
-      renderer.resetCameraClippingRange();
+      // renderer.resetCameraClippingRange();
       const camera = renderer.getActiveCamera();
-      interactorStyle.setCenterOfRotation(camera.getFocalPoint());
+      // console.log("Clipping Range")
+      // console.log(camera.getClippingRange())
+      // console.log("Position")
+      // console.log(camera.getPosition())
+      // console.log("Focal Point")
+      // console.log(camera.getFocalPoint())
+      interactorStyle.setCenterOfRotation(camera.getFocalPoint())
+      this.focalPoint = camera.getFocalPoint()
       // renderWindow.render(); 
+    },
+    normalize(arr) {
+      let x = arr[0]
+      let y = arr[1]
+      let z = arr[2]
+      let len = x * x + y * y + z * z
+      if (len > 0) {
+        len = 1 / Math.sqrt(len)
+      }
+      let out = [0,0,0]
+      out[0] = arr[0] * len
+      out[1] = arr[1] * len
+      out[2] = arr[2] * len
+      return out
+    },
+    cross(arr1, arr2) {
+      let out = [0,0,0]
+      out[0] = (arr1[1]*arr2[2]) - (arr1[2]*arr2[1])
+      out[1] = (arr1[2]*arr2[0]) - (arr1[0]*arr2[2])
+      out[2] = (arr1[0]*arr2[1]) - (arr1[1]*arr2[0])
+      return out
+    },
+    add(arr1, arr2) {
+      let out = [0,0,0]
+      out[0] = arr1[0] + arr2[0]
+      out[1] = arr1[1] + arr2[1]
+      out[2] = arr1[2] + arr2[2]
+      return out
+    },
+    subtract(arr1,arr2) {
+      let out = [0,0,0]
+      out[0] = arr1[0] - arr2[0]
+      out[1] = arr1[1] - arr2[1]
+      out[2] = arr1[2] - arr2[2]
+      return out
+    }
+  },
+  watch: {
+    cropState: function() {
+      const { mapper } = this.context
+      const planes = this.getCroppingPlanes(this.source, this.cropState.getPlanes());
+      console.log("here")
+      mapper.removeAllClippingPlanes();
+      planes.forEach((plane) => {
+        mapper.addClippingPlane(plane);
+      });
+      mapper.modified();
     }
   }
 }

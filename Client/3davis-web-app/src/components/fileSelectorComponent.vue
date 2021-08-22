@@ -16,23 +16,24 @@
             @change="fileSelected"
         >
             <option 
-                value="cube-1"
-            >cube 1</option>
-            <option 
-                value="cube-2"
-            >cube 2</option>
-            <option 
-                value="cube-3"
-            >cube 3</option>
-            <option 
-                value="cube-4"
-            >cube 4</option>
+                v-for="(file, index) in files"
+                :key="index"
+                :value="file"
+            >
+                {{ file }}
+            </option>
         </select>
     </div>
 </template>
 
 <script>
 export default {
+    props: {
+        files: {
+            type: Array,
+            default : () => []
+        }
+    },
     data() {
         return {
             selected: ''
@@ -48,7 +49,7 @@ export default {
 
 <style>
 #selector {
-    padding-left: 30px;
-    padding-bottom: 20px;
+    /* padding-left: 30px;
+    padding-bottom: 20px; */
 }
 </style>

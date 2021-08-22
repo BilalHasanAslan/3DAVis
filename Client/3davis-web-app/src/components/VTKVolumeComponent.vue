@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="controls">
-      <file-selector-component
+      <!-- <file-selector-component
         class="my-1"
-      />
+      /> -->
       <div 
         ref="vtkControlsContainer"
       />
@@ -19,7 +19,7 @@
 import { ref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 // import { ref, unref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 
-import FileSelectorComponent from './fileSelectorComponent.vue'
+// import FileSelectorComponent from './fileSelectorComponent.vue'
 
 import '@kitware/vtk.js/Rendering/Profiles/Volume';
 import '@kitware/vtk.js/Rendering/Profiles/Geometry';
@@ -45,7 +45,7 @@ import vtkImageCropFilter         from '@kitware/vtk.js/Filters/General/ImageCro
 export default {
   name: 'VTKVolumeComponent',
   components : {
-    FileSelectorComponent
+    // FileSelectorComponent
   },
   setup() {
     const vtkContainer = ref(null);
@@ -263,8 +263,9 @@ export default {
 <style scoped>
 .controls {
   position: absolute;
+  text-align: right;
   top: 25px;
-  left: 25px;
+  right: 25px;
   z-index: 1;
 }
 </style>

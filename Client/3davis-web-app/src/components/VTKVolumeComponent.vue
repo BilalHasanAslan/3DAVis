@@ -47,29 +47,67 @@ export default {
   components : {
     // FileSelectorComponent
   },
-  setup() {
+  props: {
+    sourceData: {
+      type: Array,
+      default: () => []
+    }
+  },
+  setup(_,{emit}) {
     const vtkContainer = ref(null);
     const vtkControlsContainer = ref(null);
     const context = ref(null);
-    // const coneResolution = ref(6);
-    // const representation = ref(2);
 
-    // function setConeResolution(res) {
-    //   coneResolution.value = Number(res);
+    var cropPlanes = null
+    var cropPoints = []
+    var cameraState = {}
+
+    // get crop points
+    function getCropPoints() {
+      cropPoints[0] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x1y1z1
+      cropPoints[1] = [cropPlanes[1],cropPlanes[2],cropPlanes[4]] //x2y1z1
+      cropPoints[2] = [cropPlanes[0],cropPlanes[3],cropPlanes[4]] //x1y2z1
+      cropPoints[3] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x2y2z1
+      cropPoints[4] = [cropPlanes[0],cropPlanes[2],cropPlanes[5]] //x1y1z2
+      cropPoints[5] = [cropPlanes[1],cropPlanes[2],cropPlanes[5]] //x2y1z2
+      cropPoints[6] = [cropPlanes[0],cropPlanes[3],cropPlanes[5]] //x1y2z2
+      cropPoints[7] = [cropPlanes[1],cropPlanes[3],cropPlanes[5]] //x2y2z2
+      emit("points", cropPoints)
+    }
+
+    // volume render
+    // function volumeRender() {
+    //   console.log('volume render')
     // }
 
-    // function setRepresentation(rep) {
-    //   representation.value = Number(rep);
+    // image render
+    // function imageRender() {
+    //   console.log('image render')
     // }
 
     watchEffect(() => {
     //   const res = unref(coneResolution);
     //   const rep = unref(representation);
       if (context.value) {
-        const { cropFilter, croppingWidget } = context.value;
+        const { cropFilter, croppingWidget, camera, ctfun, ofun } = context.value;
         const cropState = croppingWidget.getWidgetState().getCroppingPlanes();
+        // when cube is cropped
         cropState.onModified(() => {
           cropFilter.setCroppingPlanes(cropState.getPlanes());
+          cropPlanes = cropState.getPlanes();
+          getCropPoints()
+        });
+        // when camera changes
+        camera.onModified(() => {
+          // get camera state
+          cameraState.ctfun = ctfun
+          cameraState.ofun = ofun
+          cameraState.position = camera.getPosition()
+          cameraState.viewUp = camera.getViewUp()
+          cameraState.window_size = []
+          cameraState.window_size[0] = vtkContainer.value.clientHeight
+          cameraState.window_size[1] = vtkContainer.value.clientWidth
+          emit("camera", cameraState)
         });
         // coneSource.setResolution(res);
         // actor.getProperty().setRepresentation(rep);
@@ -82,6 +120,7 @@ export default {
 
     onMounted(() => {
       if (!context.value) {
+
         // generate data cube
         const VtkDataTypes = vtkDataArray.VtkDataTypes;
 
@@ -91,6 +130,9 @@ export default {
         for (var i = 0; i < size; i++) {
             values[i] = Math.random();
         }
+ 
+        // get data from props
+        // const values = props.sourceData
 
         var scalars = vtkDataArray.newInstance({
           values: values,
@@ -116,6 +158,9 @@ export default {
         const renderWindow = fullScreenRenderer.getRenderWindow();
         // const apiRenderWindow = fullScreenRenderer.getApiSpecificRenderWindow();
 
+        // camera
+        const camera = renderer.getActiveCamera();
+        
         const mapper = vtkVolumeMapper.newInstance();
         const actor = vtkVolumeActor.newInstance();
 
@@ -125,8 +170,11 @@ export default {
         ctfun.updateRange();
         ctfun.setNanColor(0.0, 0.0, 0.0, 0.0);
         // set colours
-        ctfun.addRGBPoint(0.0, 0.75, 0.35, 1.0);
-        ctfun.addRGBPoint(1.0, 1.0, 0.0, 1.0);
+        ctfun.addRGBPoint(0.0, 0.0, 0.0, 0.0); // black
+        ctfun.addRGBPoint(0.25, 0.2, 0.32, 0.81); // blue
+        ctfun.addRGBPoint(0.50, 1.0, 0.0, 0.0); // red
+        ctfun.addRGBPoint(0.7, 1.0, 0.72, 0.03); // yellow
+        ctfun.addRGBPoint(1.0, 1.0, 1.0, 1.0); // white
 
         // widgets
         // widget manager
@@ -230,7 +278,8 @@ export default {
           ofun,
           colourWidget,
           croppingWidget,
-          cropFilter
+          cropFilter,
+          camera
           // widgetManager
         };
       }
@@ -250,7 +299,8 @@ export default {
     return {
       vtkContainer,
       vtkControlsContainer,
-      context
+      context,
+      cropPoints
     //   setRepresentation,
     //   setConeResolution,
     //   coneResolution,

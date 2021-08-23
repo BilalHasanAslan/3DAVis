@@ -5,7 +5,7 @@
         <file-selector-component
             :files="['file1','file2','file3','file4']"
             class="m-1"
-            @option:selected="fileSelected"
+            @option:selected="optionSelected"
         />
         <div
             class="mt-5"
@@ -48,8 +48,9 @@ export default {
         }
     },
     methods: {
-        fileSelected(event) {
+        optionSelected(event) {
             // emit which file to get data from
+            this.$emit("selected", event)
         }
     }
 }

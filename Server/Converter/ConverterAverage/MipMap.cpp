@@ -34,7 +34,7 @@ namespace NDAVis
         floatType.setOrder(H5T_ORDER_LE);
 
         std::ostringstream mipMapName;
-        mipMapName << "MipMaps/DATA/DATA_XY_" << mip << "_Z" << zmip;
+        mipMapName << "MipMaps/DATA/DATA_XY_" << mip << "_Z_" << zmip;
 
         MipMapUtil tempObj;
         if (tempObj.useChunks(datasetDims))

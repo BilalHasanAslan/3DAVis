@@ -4,6 +4,8 @@
 #include <H5Cpp.h>
 #include <fitsio.h>
 #include <string>
+#include <vector>
+#include "MipMap.h"
 
 namespace NDAVis
 {
@@ -15,9 +17,25 @@ namespace NDAVis
         fitsfile *inputFilePtr;
         long dims[4];
         int N;
-        void getFitsDims(fitsfile* filePtr, int& N, long* dims);
+        void getFitsDims(fitsfile *filePtr, int &N, long *dims);
         hsize_t depth, height, width;
+        std::vector<hsize_t> standardDims;
+        std::vector<hsize_t> tileDims;
+        MipMaps mipMaps;
+        void convert();
+        void copyAndCalculate();
+        float *standardCube;
+        std::string tempOutputFileName;
+        std::string outputFileName;
+            H5::DataSet standardDataSet;
+
+        // Main HDF5 objects
+        H5::H5File outputFile;
+        H5::Group outputGroup;
+        unsigned long tileSize = 64;
+        unsigned long tileSizeZ = 1;
     };
+
 }
 
 #endif //CONVERTER_H_

@@ -19,8 +19,6 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
 
-
-
 VTK_MODULE_INIT(vtkInteractionStyle);
 VTK_MODULE_INIT(vtkRenderingFreeType);
 VTK_MODULE_INIT(vtkRenderingOpenGL2);
@@ -37,36 +35,39 @@ namespace NDAVis
     vtkNew<vtkImageData> imageData;
     vtkNew<vtkVolume> volume;
     vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
-    vtkNew<vtkPiecewiseFunction> volumeGradientOpacity;
 
     VtkVisul::VtkVisul()
     {
-        std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
-        colors->SetColor("BkgColor", bkg.data());
-        //Color Transfer
-        colorTransferFunction->AddRGBPoint(0, 1.0, 1.0, 1.0);
-        colorTransferFunction->AddRGBPoint(0.5, 0.0, 0.0, 0.0);
 
-        mapper->SetBlendModeToComposite();
-
-        volumeScalarOpacity->AddPoint(0, 0.00);
-        volumeScalarOpacity->AddPoint(0.2, 0.15);
-        volumeScalarOpacity->AddPoint(0.4, 0.30);
-        volumeScalarOpacity->AddPoint(0.8, 0.85);
-
-        volumeGradientOpacity->AddPoint(0, 0.0);
-        volumeGradientOpacity->AddPoint(90, 0.5);
-        volumeGradientOpacity->AddPoint(100, 1.0);
-
-        volumeProperty->SetColor(colorTransferFunction);
-        volumeProperty->SetScalarOpacity(volumeScalarOpacity);
-        volumeProperty->SetGradientOpacity(volumeGradientOpacity);
-
-        volumeProperty->SetInterpolationTypeToLinear();
+        /*         volumeProperty->SetInterpolationTypeToLinear();
         volumeProperty->ShadeOn();
         volumeProperty->SetAmbient(0.4);
         volumeProperty->SetDiffuse(0.6);
-        volumeProperty->SetSpecular(0.2);
+        volumeProperty->SetSpecular(0.2); */
+    }
+    void VtkVisul::setColor(int color)
+    {
+        mapper->SetBlendModeToComposite();
+        //will be updated
+        /*         std::array<unsigned char, 3> bkg{{0, 0, 0}};
+        colors->SetColor("BkgColor", bkg.data());   */
+        std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+        colors->SetColor("BkgColor", bkg.data());
+        // if (color == 1)
+        //{
+        colorTransferFunction->AddRGBPoint(0, 1.0, 1.0, 1.0);
+        colorTransferFunction->AddRGBPoint(0.25, 0.5, 0.5, 0.5);
+        colorTransferFunction->AddRGBPoint(0.5, 0.0, 0.0, 0.0);
+        colorTransferFunction->AddRGBPoint(0.75, 0.25, 0.25, 0.25);
+        colorTransferFunction->AddRGBPoint(1, 0.40, 0.40, 0.1);
+
+
+        volumeProperty->SetColor(colorTransferFunction);
+        //opacity
+        volumeScalarOpacity->AddPoint(0.0, 0.0);
+        volumeScalarOpacity->AddPoint(255.0, 1.0);
+        volumeProperty->SetScalarOpacity(volumeScalarOpacity);
+        //}
     }
 
     void VtkVisul::InsertArray(float *arr, int arrSize)
@@ -88,7 +89,6 @@ namespace NDAVis
         volume->SetMapper(mapper);
         volume->SetProperty(volumeProperty);
 
-        vtkNew<vtkRenderer> renderer;
         vtkNew<vtkRenderWindow> renWin;
         renWin->AddRenderer(renderer);
         vtkNew<vtkRenderWindowInteractor> iren;
@@ -96,20 +96,24 @@ namespace NDAVis
 
         renderer->AddViewProp(volume);
         //renderer->AddVolume(volume);
-
-        vtkCamera *camera = renderer->GetActiveCamera();
-        double *c = volume->GetCenter();
-        camera->SetViewUp(0, 0, -1);
-        camera->SetPosition(c[0], c[1] - 400, c[2]);
-        camera->SetFocalPoint(c[0], c[1], c[2]);
-        camera->Azimuth(30.0);
-        camera->Elevation(30.0);
-
+        //setCamera(1, 1, 1, 1, 1, 1);
         renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
         renWin->SetSize(1000, 500);
         renWin->SetWindowName("3davis");
         renWin->Render();
         iren->Start();
+    }
+
+    void VtkVisul::setCamera(int view1, int view2, int view3, int position1, int position2, int position3)
+    {
+        camera = renderer->GetActiveCamera();
+        /*         camera->SetViewUp(view1, view2, view3);
+        camera->SetPosition(position1, position2, position3); */
+        //camera->SetFocalPoint(c[0], c[1], c[2]);
+        double *c = volume->GetCenter();
+        camera->SetViewUp(0, 0, -1);
+        camera->SetPosition(c[0], c[1] - 400, c[2]);
+        camera->SetFocalPoint(c[0], c[1], c[2]);
     }
 
 }

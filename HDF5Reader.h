@@ -9,20 +9,24 @@ namespace NDAVis
     {
     public:
         HDF5Reader(std::string fileName);
+        HDF5Reader();
         bool openDataset(std::string datasetName);
         void setDimensions();
-        void readDataset(float*arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset);
+        void readDataset(float* arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset);
         int getXdimension();
         int getYdimension();
         int getZdimension();
+        void setStarterClientCube();
         void Closefile();
         std::string fileName;
         double *data;
-        hid_t file;
-        hid_t dataset;
-        hid_t dspace;
+        H5::H5File file;
+        H5::DataSet dataset;
+        H5::DataSpace dspace;
         int NX, NZ, NY;
         hid_t memspace;
+        int XY,Z;
+        
     };
 
 }

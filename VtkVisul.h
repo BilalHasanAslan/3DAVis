@@ -17,7 +17,6 @@
 #include <vtkPiecewiseFunction.h>
 #include <vtkAutoInit.h>
 
-
 namespace NDAVis
 {
 
@@ -27,6 +26,8 @@ namespace NDAVis
         VtkVisul();
         void InsertArray(float *arr, int arrSize);
         void render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz);
+        void setColor(int color);
+        void setCamera(int view1,int view2,int view3,int position1,int position2,int position3);
         vtkNew<vtkNamedColors> colors;
         vtkNew<vtkRenderer> renderer;
         vtkNew<vtkFloatArray> vtkArr;
@@ -36,8 +37,9 @@ namespace NDAVis
         //vtkNew<vtkGPUVolumeRayCastMapper> mapper;
         vtkNew<vtkImageData> imageData;
         vtkNew<vtkVolume> volume;
-         vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
+        vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
+        vtkCamera *camera;
     };
 }
 
-#endif //HDF5_Reader_H_
+#endif //VTK_VISUL_H_

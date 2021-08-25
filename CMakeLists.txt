@@ -37,6 +37,9 @@ set(SOURCE_FILES
     LogKeeper.cpp
     VtkVisul.cpp
     Converter.cpp
+    MipMap.cpp
+    MipMapUtil.cpp
+    HDF53DConstructor.cpp
     )
 
 

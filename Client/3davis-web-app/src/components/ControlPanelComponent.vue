@@ -3,7 +3,7 @@
         id="control-panel"
     >
         <file-selector-component
-            :files="['file1','file2','file3','file4']"
+            :files="fileList"
             class="m-1"
             @option:selected="optionSelected"
         />
@@ -42,9 +42,10 @@ export default {
     components: {
         FileSelectorComponent
     },
-    data () {
-        return{
-            files: [],
+    props: {
+        fileList: {
+            type: Array,
+            default: () => []
         }
     },
     methods: {

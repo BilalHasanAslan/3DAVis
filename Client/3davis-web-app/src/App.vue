@@ -3,6 +3,7 @@
   <!-- <HelloWorld/> -->
   <control-panel-component
     v-if="connected"
+    :fileList="files"
     @selected="fileSelected"
     @crop="cropCube"
     @back="stepBack"
@@ -34,6 +35,7 @@ export default {
   },
   data() {
     return {
+      files: null,
       connection: null,
       connected: true,
       interaction: false,
@@ -48,7 +50,7 @@ export default {
   created(){
     // connect to server
     console.log("connect to server")
-    this.connection = new WebSocket("ws://echo.websocket.org")
+    this.connection = new WebSocket("ws://192.168.101.242:9000/")
 
     // what to do with the data from the server
     this.connection.onmessage = function(event) {
@@ -77,7 +79,7 @@ export default {
           console.log("interaction countdown finished")
           console.log("loading image")
           // request image
-          this.connection.send(this.cameraState)
+          // this.connection.send(this.cameraState)
         }
       },
       immediate: true
@@ -127,28 +129,29 @@ export default {
     },
     setCameraState(event) {
       this.cameraState = event
+
     },
     // combining promises and websockets 
-    connect() {
-      return new Promise(function(resolve, reject) {
-        var server = new WebSocket('ws://echo.websocket.org')
-        server.onopen = function() {
-          resolve(server)
-        }
-        server.onerror = function(err) {
-          reject(err)
-        }
-      })
-    },
-    async promiseMethod() {
-      try{
-        // let server = await connect()
-        // use server
-      }
-      catch (error) {
-        console.log('oops ', error)
-      }
-    }
+    // connect() {
+    //   return new Promise(function(resolve, reject) {
+    //     var server = new WebSocket('ws://echo.websocket.org')
+    //     server.onopen = function() {
+    //       resolve(server)
+    //     }
+    //     server.onerror = function(err) {
+    //       reject(err)
+    //     }
+    //   })
+    // },
+    // async promiseMethod() {
+    //   try{
+    //     // let server = await connect()
+    //     // use server
+    //   }
+    //   catch (error) {
+    //     console.log('oops ', error)
+    //   }
+    // }
   }
 }
 </script>

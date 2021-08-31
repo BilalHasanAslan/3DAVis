@@ -14,6 +14,8 @@
     @points="setCropPoints"
     @camera="setCameraState"
     @mouseup="timerCountdown=5"
+    :dimensions="[64,64,64]"
+    :spacing="1"
   />
   <VTKImageComponent
     v-else
@@ -44,7 +46,9 @@ export default {
       cropPoints: null,
       previousPoints: null,
       cameraState: null,
-      timerCountdown: 5
+      timerCountdown: 5,
+      clientCubeDimensions: [],
+      serverCubeDimensions: []
     }
   },
   created(){
@@ -96,13 +100,26 @@ export default {
       console.log("crop cube")
       this.cropLevel++
 
+      let points = []
+
+      // convert points to world coordianates
+      const factorX = this.serverCubeDimensions[0] / this.clientCubeDimensions[0]
+      points[0] = this.cropPoints[0]*factorX
+      points[1] = this.cropPoints[1]*factorX
+      const factorY = this.serverCubeDimensions[1] / this.clientCubeDimensions[1]
+      points[2] = this.cropPoints[3]*factorY
+      points[3] = this.cropPoints[3]*factorY
+      const factorZ = this.serverCubeDimensions[2] / this.clientCubeDimensions[2]
+      points[4] = this.cropPoints[4]*factorZ
+      points[5] = this.cropPoints[5]*factorZ
+
       // save previous point
-      this.previousPoints = this.cropPoints
+      this.previousPoints = points
 
       // request next cube
       const request = {
-        cube: this.cropPoints,
-        level: this.cropLevel,
+        cube: points,
+        // level: this.cropLevel,
       }
 
       this.connection.send(request)
@@ -115,7 +132,7 @@ export default {
       // request cube from previous points
       const request = {
         cube: this.cropPoints,
-        level: this.cropLevel,
+        // level: this.cropLevel,
       }
 
       this.connection.send(request)
@@ -125,11 +142,10 @@ export default {
 
       // ask for initial data
 
-      this.cropLevel = 1
+      // this.cropLevel = 1
     },
     setCameraState(event) {
       this.cameraState = event
-
     },
     // combining promises and websockets 
     // connect() {

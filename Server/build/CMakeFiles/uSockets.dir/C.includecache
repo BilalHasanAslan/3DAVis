@@ -1,0 +1,176 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../third-party/uWebSockets/uSockets/src/internal/eventing/epoll_kqueue.h
+internal/loop_data.h
+../third-party/uWebSockets/uSockets/src/internal/eventing/internal/loop_data.h
+sys/epoll.h
+-
+sys/timerfd.h
+-
+sys/eventfd.h
+-
+sys/event.h
+-
+
+../third-party/uWebSockets/uSockets/src/internal/eventing/gcd.h
+internal/loop_data.h
+../third-party/uWebSockets/uSockets/src/internal/eventing/internal/loop_data.h
+dispatch/dispatch.h
+-
+
+../third-party/uWebSockets/uSockets/src/internal/eventing/libuv.h
+internal/loop_data.h
+../third-party/uWebSockets/uSockets/src/internal/eventing/internal/loop_data.h
+uv.h
+-
+
+../third-party/uWebSockets/uSockets/src/internal/internal.h
+stdalign.h
+-
+internal/networking/bsd.h
+../third-party/uWebSockets/uSockets/src/internal/internal/networking/bsd.h
+internal/eventing/epoll_kqueue.h
+../third-party/uWebSockets/uSockets/src/internal/internal/eventing/epoll_kqueue.h
+internal/eventing/libuv.h
+../third-party/uWebSockets/uSockets/src/internal/internal/eventing/libuv.h
+internal/eventing/gcd.h
+../third-party/uWebSockets/uSockets/src/internal/internal/eventing/gcd.h
+
+../third-party/uWebSockets/uSockets/src/internal/loop_data.h
+
+../third-party/uWebSockets/uSockets/src/internal/networking/bsd.h
+winsock2.h
+-
+ws2tcpip.h
+-
+sys/socket.h
+-
+
+../third-party/uWebSockets/uSockets/src/libusockets.h
+winsock2.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/bsd.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal.h
+stdio.h
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netinet/tcp.h
+-
+netdb.h
+-
+string.h
+-
+unistd.h
+-
+fcntl.h
+-
+errno.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/context.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal.h
+stdlib.h
+-
+string.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/openssl.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/internal/internal.h
+string.h
+-
+openssl/ssl.h
+-
+openssl/bio.h
+-
+openssl/err.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/internal/internal.h
+wolfssl/ssl.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/internal/internal.h
+stdlib.h
+-
+unistd.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/gcd.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/internal/internal.h
+stdlib.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libuv.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/internal/internal.h
+stdlib.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal.h
+stdalign.h
+-
+internal/networking/bsd.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal/networking/bsd.h
+internal/eventing/epoll_kqueue.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal/eventing/epoll_kqueue.h
+internal/eventing/libuv.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal/eventing/libuv.h
+internal/eventing/gcd.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal/eventing/gcd.h
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+winsock2.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/loop.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal.h
+stdlib.h
+-
+
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/socket.c
+libusockets.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+internal/internal.h
+/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/internal/internal.h
+stdlib.h
+-
+string.h
+-
+

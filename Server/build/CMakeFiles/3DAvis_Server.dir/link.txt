@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o CMakeFiles/3DAvis_Server.dir/LogKeeper.cpp.o CMakeFiles/3DAvis_Server.dir/FileManager.cpp.o CMakeFiles/3DAvis_Server.dir/Server.cpp.o  -o 3DAvis_Server  -lstdc++fs libuSockets.a -lz -lpthread 

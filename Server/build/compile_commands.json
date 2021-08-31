@@ -1,0 +1,67 @@
+[
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/c++   -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"    -std=gnu++17 -o CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/3DAvisMain.cpp\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/3DAvisMain.cpp"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/c++   -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"    -std=gnu++17 -o CMakeFiles/3DAvis_Server.dir/LogKeeper.cpp.o -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/LogKeeper.cpp\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/LogKeeper.cpp"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/c++   -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"    -std=gnu++17 -o CMakeFiles/3DAvis_Server.dir/FileManager.cpp.o -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/FileManager.cpp\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/FileManager.cpp"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/c++   -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"    -std=gnu++17 -o CMakeFiles/3DAvis_Server.dir/Server.cpp.o -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/Server.cpp\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/Server.cpp"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/openssl.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/openssl.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/openssl.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/gcd.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/gcd.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/gcd.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/libuv.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libuv.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libuv.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/bsd.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/bsd.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/bsd.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/context.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/context.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/context.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/loop.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/loop.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/loop.c"
+},
+{
+  "directory": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build",
+  "command": "/usr/bin/cc  -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/include\" -I\"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/src\"   -DLIBUS_NO_SSL   -o CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/socket.c.o   -c \"/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/socket.c\"",
+  "file": "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/socket.c"
+}
+]

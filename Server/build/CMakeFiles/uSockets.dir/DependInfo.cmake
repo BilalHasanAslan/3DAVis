@@ -1,27 +1,22 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "C"
   )
-# The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_C
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/bsd.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/bsd.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/context.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/context.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/openssl.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/openssl.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/gcd.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/gcd.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/eventing/libuv.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/libuv.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/loop.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/loop.c.o"
-  "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/third-party/uWebSockets/uSockets/src/socket.c" "/mnt/c/Users/bhavm/OneDrive/Desktop/University/Honours/3DAVis Project/Code/Server/build/CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/socket.c.o"
-  )
-set(CMAKE_C_COMPILER_ID "GNU")
 
-# The include file search paths:
-set(CMAKE_C_TARGET_INCLUDE_PATH
-  "../third-party/uWebSockets/src"
-  "../third-party/uWebSockets/uSockets/src"
-  "../third-party/include"
-  "../src"
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/bsd.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/bsd.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/bsd.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/context.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/context.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/context.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/crypto/openssl.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/openssl.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/openssl.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/crypto/wolfssl.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/epoll_kqueue.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/eventing/gcd.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/gcd.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/gcd.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/eventing/libuv.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/libuv.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/eventing/libuv.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/loop.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/loop.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/loop.c.o.d"
+  "/home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/socket.c" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/socket.c.o" "gcc" "CMakeFiles/uSockets.dir/third-party/uWebSockets/uSockets/src/socket.c.o.d"
   )
 
 # Targets to which this target links.

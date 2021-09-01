@@ -30,4 +30,4 @@ client.on('connect', function(connection) {
     sendMsg();
 });
 
-client.connect('ws://192.168.101.242:9000/');
+client.connect('ws://localhost:9000/');

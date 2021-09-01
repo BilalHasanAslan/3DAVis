@@ -4,9 +4,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
+//#include "vtkAutoInit.h"
 
 using namespace NDAVis;
 
+//VTK_MODULE_INIT(vtkRenderingVolumeOpenGL2);
 int main()
 {
    

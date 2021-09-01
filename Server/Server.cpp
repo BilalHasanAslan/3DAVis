@@ -15,7 +15,6 @@ namespace NDAVis {
             /* Settings */
             .compression = uWS::DEDICATED_COMPRESSOR_256KB,
             .maxPayloadLength = 256 * 1024 * 1024,
-            .maxBackpressure = MAX_BACKPRESSURE,
             .open = [](auto * ws) {
                 std::cout << "Dummy Client Connected" << std::endl;
                 std::cout << ws->getRemoteAddressAsText() << std::endl;

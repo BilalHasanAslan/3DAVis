@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
 set(CMAKE_LINK_DIRECTORIES_BEFORE ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/third_party/install)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/third-party/install)
 include(uWebSockets)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 FIND_PACKAGE(Threads)
@@ -30,7 +30,7 @@ else ()
     message(FATAL_ERROR "Could not find HDF5.")
 endif ()
 
-set(VTK_DIR "~/Downloads/vtk-v9.0.3/build")
+set(VTK_DIR "~/Documents/VTK/vtk-v9.0.3/build")
 find_package(VTK REQUIRED)
 if (VTK_FOUND)
     include_directories(${VTK_INCLUDE_DIR})
@@ -52,13 +52,11 @@ endif ()
 
 set(SOURCE_FILES
     ${SOURCE_FILES}
-    Maintest.cpp
     HDF5Reader.cpp
     LogKeeper.cpp
-    VtkVisul.cpp
-    HDF53DConstructor.cpp
     FileManager.cpp
     Server.cpp
+    3DAvisMain.cpp
     )
 
 

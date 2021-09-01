@@ -3,13 +3,19 @@
 
 #include <string>
 #include <vector>
+#include "App.h"
 
 namespace NDAVis
 {
     class Server
     {
     public:
+        /* ws->getUserData returns one of these */
+        struct PerSocketData {
+            /* Fill with user data */
+        };
         void runServer();
+        void onOpen(uWS::WebSocket<false, true, PerSocketData>* ws);
     };
 }
 

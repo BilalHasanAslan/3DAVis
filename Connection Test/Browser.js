@@ -1,4 +1,9 @@
 var WebSocketClient = require('websocket').client;
+const readline = require("readline");
+const rl =readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
 
 var client = new WebSocketClient();
 
@@ -12,22 +17,34 @@ client.on('connect', function(connection) {
         console.log("Connection Error: " + error.toString());
     });
     connection.on('close', function() {
-        console.log('echo-protocol Connection Closed');
+        console.log('Connection Closed');
     });
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
+            console.log("FROM SERVER: \n" + message.utf8Data);
+            //promptFile();
+            sendCamView();
         }
     });
     
-    function sendMsg() {
+    function promptFile() {
         if (connection.connected) {
-            var msg = "Test Message";
-            connection.sendUTF(msg.toString());
-            setTimeout(sendMsg, 1000);
+            rl.question("Enter File Number: ", function (answer) {
+                connection.send(answer);
+            });
+            //setTimeout(sendMsg, 1000);
         }
     }
-    sendMsg();
+
+    function sendCamView() {
+        const arr = '{"name":"John", "age":30, "cars":["Ford", "BMW", "Fiat"]}' ;
+        const myJ = JSON.stringify(arr);
+        /*for (let i = 0; i < arr.length; i++) {
+            connection.send(arr[i]);
+        }*/
+        connection.send(myJ);
+    }
+    //sendMsg();
 });
 
 client.connect('ws://192.168.101.242:9000/');

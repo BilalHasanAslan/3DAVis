@@ -6,16 +6,16 @@
 
 namespace NDAVis {
     void Server::runServer() { 
-        /* ws->getUserData returns one of these */
-        struct PerSocketData {
-            /* Fill with user data */
-        };
-
         uWS::App().ws<PerSocketData>("/*", {
             /* Settings */
             .compression = uWS::DEDICATED_COMPRESSOR_256KB,
             .maxPayloadLength = 256 * 1024 * 1024,
-            .maxBackpressure = MAX_BACKPRESSURE,
+            .idleTimeout = 16,
+            .maxBackpressure = 1 * 1024 * 1024,
+            .closeOnBackpressureLimit = false,
+            .resetIdleTimeoutOnSend = false,
+            .sendPingsAutomatically = true,
+            .upgrade =nullptr,
             .open = [](auto * ws) {
                 std::cout << "Dummy Client Connected" << std::endl;
                 std::cout << ws->getRemoteAddressAsText() << std::endl;

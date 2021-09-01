@@ -8,7 +8,7 @@ prefix ?= /usr/local
 .PHONY: examples
 examples:
 	$(MAKE) -C uSockets; \
-	$(CXX) -flto -O3 $(CXXFLAGS) ./Server.cpp -o Server $(LDFLAGS) ; \
+	$(CXX) -flto -O3 $(CXXFLAGS) ./Server.cpp ./FileManager.cpp -o Server $(LDFLAGS) ; \
 	wait
 
 install:

@@ -7,13 +7,22 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_DIRECTORIES_BEFORE ON)
 set(CMAKE_LINK_DIRECTORIES_BEFORE ON)
 
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/third_party/install)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/third-party/install)
 include(uWebSockets)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 FIND_PACKAGE(Threads)
 set(LINK_LIBS ${LINK_LIBS} stdc++fs)
 include_directories(${CMAKE_SOURCE_DIR}/third-party/include)
 install_uWebSockets()
+
+set(ZFP_DIR ${CMAKE_SOURCE_DIR}/third-party/zfp)
+find_package(ZFP REQUIRED)
+if (ZFP_FOUND)
+    include_directories(${ZFP_INCLUDE_DIR})
+    set(LINK_LIBS ${LINK_LIBS} ${ZFP_LIBRARIES})
+else ()
+    message(FATAL_ERROR "Could not find ZFP.")
+endif ()
 
 set(LINK_LIBS
         ${LINK_LIBS}

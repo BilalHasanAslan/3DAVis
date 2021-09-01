@@ -51,9 +51,17 @@ export default {
     sourceData: {
       type: Array,
       default: () => []
+    },
+    dimensions: {
+      type: Array,
+      default: () => []
+    },
+    spacing: {
+      type: Number,
+      default: 1
     }
   },
-  setup(_,{emit}) {
+  setup(props,{emit}) {
     const vtkContainer = ref(null);
     const vtkControlsContainer = ref(null);
     const context = ref(null);
@@ -64,15 +72,15 @@ export default {
 
     // get crop points
     function getCropPoints() {
-      cropPoints[0] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x1y1z1
-      cropPoints[1] = [cropPlanes[1],cropPlanes[2],cropPlanes[4]] //x2y1z1
-      cropPoints[2] = [cropPlanes[0],cropPlanes[3],cropPlanes[4]] //x1y2z1
-      cropPoints[3] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x2y2z1
-      cropPoints[4] = [cropPlanes[0],cropPlanes[2],cropPlanes[5]] //x1y1z2
-      cropPoints[5] = [cropPlanes[1],cropPlanes[2],cropPlanes[5]] //x2y1z2
-      cropPoints[6] = [cropPlanes[0],cropPlanes[3],cropPlanes[5]] //x1y2z2
-      cropPoints[7] = [cropPlanes[1],cropPlanes[3],cropPlanes[5]] //x2y2z2
-      emit("points", cropPoints)
+      // cropPoints[0] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x1y1z1
+      // cropPoints[1] = [cropPlanes[1],cropPlanes[2],cropPlanes[4]] //x2y1z1
+      // cropPoints[2] = [cropPlanes[0],cropPlanes[3],cropPlanes[4]] //x1y2z1
+      // cropPoints[3] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x2y2z1
+      // cropPoints[4] = [cropPlanes[0],cropPlanes[2],cropPlanes[5]] //x1y1z2
+      // cropPoints[5] = [cropPlanes[1],cropPlanes[2],cropPlanes[5]] //x2y1z2
+      // cropPoints[6] = [cropPlanes[0],cropPlanes[3],cropPlanes[5]] //x1y2z2
+      // cropPoints[7] = [cropPlanes[1],cropPlanes[3],cropPlanes[5]] //x2y2z2
+      emit("points", cropPlanes) // x1 x2 y1 y2 z1 z2
     }
 
     // volume render
@@ -124,7 +132,7 @@ export default {
         // generate data cube
         const VtkDataTypes = vtkDataArray.VtkDataTypes;
 
-        const size = 64 * 64 * 64;
+        const size = props.dimensions[0]*props.dimensions[1]*props.dimensions[2]
 
         const values = [];
         for (var i = 0; i < size; i++) {
@@ -143,9 +151,9 @@ export default {
 
         // render data
         const source = vtkImageData.newInstance();
-        source.setDimensions(64, 64, 64);
+        source.setDimensions(props.dimensions[0], props.dimensions[1], props.dimensions[2]);
         source.setSpacing(1,1,1);
-        source.setOrigin(-32,-32,-32);
+        source.setOrigin(-(props.dimensions[0]/2),-(props.dimensions[1]/2),-(props.dimensions[2]/2));
         source.getPointData().setScalars(scalars);
 
         const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({

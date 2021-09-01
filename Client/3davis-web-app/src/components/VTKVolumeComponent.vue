@@ -37,9 +37,9 @@ import vtkColorTransferFunction   from '@kitware/vtk.js/Rendering/Core/ColorTran
 import vtkPiecewiseFunction       from '@kitware/vtk.js/Common/DataModel/PiecewiseFunction';
 
 import vtkWidgetManager           from '@kitware/vtk.js/Widgets/Core/WidgetManager';
-import vtkPiecewiseGaussianWidget from '@kitware/vtk.js/Interaction/Widgets/PiecewiseGaussianWidget';
 import vtkImageCroppingWidget     from '@kitware/vtk.js/Widgets/Widgets3D/ImageCroppingWidget';
 import vtkImageCropFilter         from '@kitware/vtk.js/Filters/General/ImageCropFilter';
+import vtkVolumeController        from '@kitware/vtk.js/Interaction/UI/VolumeController';
 
 
 export default {
@@ -166,15 +166,8 @@ export default {
 
         // colour transfer function
         const ctfun = vtkColorTransferFunction.newInstance();
-        ctfun.setMappingRange(0,1);
-        ctfun.updateRange();
-        ctfun.setNanColor(0.0, 0.0, 0.0, 0.0);
-        // set colours
-        ctfun.addRGBPoint(0.0, 0.0, 0.0, 0.0); // black
-        ctfun.addRGBPoint(0.25, 0.2, 0.32, 0.81); // blue
-        ctfun.addRGBPoint(0.50, 1.0, 0.0, 0.0); // red
-        ctfun.addRGBPoint(0.7, 1.0, 0.72, 0.03); // yellow
-        ctfun.addRGBPoint(1.0, 1.0, 1.0, 1.0); // white
+        ctfun.addRGBPoint(200.0, 1.0, 1.0, 1.0);
+        ctfun.addRGBPoint(2000.0, 0.0, 0.0, 0.0);
 
         // widgets
         // widget manager
@@ -186,34 +179,13 @@ export default {
 
         // initial widget registration
         widgetManager.addWidget(croppingWidget);
-
-        // piecewise widget
-        const colourWidget = vtkPiecewiseGaussianWidget.newInstance({
-          numberOfBins: 256,
-          size: [400, 150],
-        });
-        colourWidget.updateStyle({
-          backgroundColor: 'rgba(255, 255, 255, 0.6)',
-          histogramColor: 'rgba(100, 100, 100, 0.5)',
-          strokeColor: 'rgb(0, 0, 0)',
-          activeColor: 'rgb(255, 255, 255)',
-          handleColor: 'rgb(50, 150, 50)',
-          buttonDisableFillColor: 'rgba(255, 255, 255, 0.5)',
-          buttonDisableStrokeColor: 'rgba(0, 0, 0, 0.5)',
-          buttonStrokeColor: 'rgba(0, 0, 0, 1)',
-          buttonFillColor: 'rgba(255, 255, 255, 1)',
-          strokeWidth: 2,
-          activeStrokeWidth: 3,
-          buttonStrokeWidth: 1.5,
-          handleWidth: 3,
-          iconSize: 20, // Can be 0 if you want to remove buttons (dblClick for (+) / rightClick for (-))
-          padding: 10,
-        });
+        // widgetManager.addWidget(controllerWidget);
 
         // peicewise function
         const ofun = vtkPiecewiseFunction.newInstance();
-        ofun.addPoint(0.0, 0.0);
-        ofun.addPoint(255.0, 1.0);
+        ofun.addPoint(200.0, 0.0);
+        ofun.addPoint(1200.0, 0.2);
+        ofun.addPoint(4000.0, 0.4);
 
         // pipeline
         // mapper.setInputData(source);
@@ -238,22 +210,6 @@ export default {
         actor.getProperty().setSpecular(0.3);
         actor.getProperty().setSpecularPower(8.0);
 
-        // widget
-        // set data, opacity, ctfun
-
-        colourWidget.setDataArray(source);
-        colourWidget.applyOpacity(ofun);
-
-        colourWidget.setColorTransferFunction(ctfun);
-
-        // widget
-        // widget.addGaussian(0.425, 0.5, 0.2, 0.3, 0.2);
-        colourWidget.addGaussian(0.75, 1, 0.3, 0, 0);
-
-        colourWidget.setContainer(vtkControlsContainer.value);
-        colourWidget.bindMouseListeners();
-        // widgetManager.addWidget(colourWidget)
-
         // update crop widget
         const cropFilter = vtkImageCropFilter.newInstance();
         cropFilter.setInputData(source);
@@ -267,6 +223,14 @@ export default {
         renderer.resetCameraClippingRange();
         renderWindow.render();
 
+        // controls widget
+        const controllerWidget = vtkVolumeController.newInstance({
+          size: [400, 150],
+          rescaleColorMap: true,
+        });
+        controllerWidget.setContainer(vtkControlsContainer.value);
+        controllerWidget.setupContent(renderWindow, actor, true);
+
         context.value = {
           fullScreenRenderer,
           renderWindow,
@@ -276,7 +240,6 @@ export default {
           mapper,
           ctfun,
           ofun,
-          colourWidget,
           croppingWidget,
           cropFilter,
           camera
@@ -315,7 +278,7 @@ export default {
   position: absolute;
   text-align: right;
   top: 25px;
-  right: 25px;
+  right: 425px;
   z-index: 1;
 }
 </style>

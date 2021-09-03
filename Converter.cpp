@@ -17,6 +17,9 @@ namespace NDAVis
         depth = N >= 3 ? dims[2] : 1;
         height = dims[1];
         width = dims[0];
+        std::cout<<depth<< std::endl;
+        std::cout<<height<< std::endl;
+        std::cout<<width<< std::endl;
         standardDims = {depth,height,width};
         tileDims = {tileSizeZ, tileSize, tileSize};
         //mipmaps
@@ -29,9 +32,7 @@ namespace NDAVis
     void Converter::openFitsFile(fitsfile **filePtrPtr, std::string inputFileName)
     {
         int status(0);
-
         fits_open_file(filePtrPtr, inputFileName.c_str(), READONLY, &status);
-
         if (status != 0)
         {
             throw "Could not open FITS file";
@@ -85,10 +86,7 @@ namespace NDAVis
         H5::FloatType floatType(H5::PredType::NATIVE_FLOAT);
         floatType.setOrder(H5T_ORDER_LE);
         MipMapUtil tempObj;
-        //tempObj.createHdf5Dataset(standardDataSet, outputGroup, "DATA", floatType, standardDims, chunkDims);
         mipMaps.createDatasets(outputGroup);
-
-
         copyAndCalculate();
         rename(tempOutputFileName.c_str(), outputFileName.c_str());
     }
@@ -101,6 +99,7 @@ namespace NDAVis
 
         MipMapUtil tempObj;
         tempObj.readFitsData(inputFilePtr, 0, 1, cubeSize, standardCube);
+        #pragma omp parallel for
         for (hsize_t z = 0; z < depth; z++)
         {
             for (hsize_t y = 0; y < height; y++)

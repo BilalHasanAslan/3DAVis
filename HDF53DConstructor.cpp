@@ -35,14 +35,6 @@ namespace NDAVis
         clientOffsetNX = 0;
         clientOffsetNY = 0;
         clientOffsetNZ = 0;
-
-        /*          for (int i = 0; i < totalDim; i++)
-        {
-            if(clientArr[i]!=0){
-                std::cout << clientArr[i] << std::endl;}
-        }   */
-
-        //std::thread t3(renderServer);
     }
 
     void HDF53DConstructor::renderServer(int cameraView1, int cameraView2, int cameraView3, int cameraPos1, int cameraPos2, int cameraPos3, int color)
@@ -80,20 +72,18 @@ namespace NDAVis
             temp = readerClient.XY;
         }
         readerServer.XY = readerClient.XY / temp;
-        std::cout << readerServer.XY << std::endl;
+
         if (tempZ > readerClient.Z)
         {
             tempZ = readerClient.Z;
         }
         readerServer.Z = readerClient.Z / tempZ;
-        std::cout << readerServer.Z << std::endl;
 
         std::ostringstream name;
         name << "0/MipMaps/DATA/DATA_XY_" << readerServer.XY << "_Z_" << readerServer.Z;
 
         readerServer.openDataset(name.str());
         readerServer.setDimensions();
-        //tested
 
         int totalDim = readerClient.getXdimension() * readerClient.getYdimension() * readerClient.getZdimension() * dimFactor * dimFactor * dimFactor;
 
@@ -103,34 +93,50 @@ namespace NDAVis
         int yOffset = (readerServer.getYdimension() - readerClient.getYdimension() * dimFactor) / 2;
         int zOffset = (readerServer.getZdimension() - readerClient.getZdimension() * dimFactor) / 2;
 
-        readerServer.readDataset(serverArr, readerClient.getXdimension() * dimFactor, readerClient.getYdimension() * dimFactor, readerClient.getZdimension() * dimFactor, xOffset, yOffset, zOffset);
-        std::cout << "1" << std::endl;
+        /*         for(int i=0;i<totalDim;i++){
+            if(serverArr[i]>0){
+                std::cout << serverArr[i] << std::endl;
+            }
+        } */
+        int renderDimX = readerClient.getXdimension() * dimFactor;
+        int renderDimY = readerClient.getYdimension() * dimFactor;
+        int renderDimZ = readerClient.getZdimension() * dimFactor;
 
-        /*          float *serverArrr = new float[totalDim];
+        if (xOffset + renderDimX > readerServer.NX)
+        {
+            xOffset = 0;
+            renderDimX = readerServer.NX;
+        }
+        if (yOffset + renderDimY > readerServer.NY)
+        {
+            yOffset = 0;
+            renderDimY = readerServer.NY;
+        }
+        if (zOffset + renderDimZ > readerServer.NZ)
+        {
+            zOffset = 0;
+            renderDimZ = readerServer.NZ;
+        }
+
+
+
+        readerServer.readDataset(serverArr, renderDimX ,renderDimY , renderDimZ, xOffset, yOffset, zOffset);
+
+        /* 
+        float *serverArrr = new float[totalDim];
         float *ptr = serverArrr;
         for (int i = 0; i < totalDim; i++)
         {
             *ptr = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
             ptr++;
-        }  */
+        }   */
 
-        for (int i = 0; i < totalDim; i++)
-        {
-            if (serverArr[i] != 0 && serverArr[i] != -0&& serverArr[i] != NAN)
-            {
-                std::cout << serverArr[i] <<"aWE"<< std::endl;
-            }
-        }
-
-        VtkVisul visul = VtkVisul();
+        //visul.VtkVisul();
         visul.setColor(color);
         visul.InsertArray(serverArr, totalDim);
 
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
-        std::cout << readerClient.getXdimension() * dimFactor << std::endl;
-        std::cout << readerClient.getYdimension() * dimFactor << std::endl;
-        std::cout << readerClient.getZdimension() * dimFactor << std::endl;
-        visul.render(readerClient.getXdimension() * dimFactor, readerClient.getYdimension() * dimFactor, readerClient.getZdimension() * dimFactor, 2, 2, 2, 0, 0, 0);
+        visul.render(renderDimX, renderDimY, renderDimZ , 2, 2, 2, 0, 0, 0);
     }
 
     void HDF53DConstructor::setColor(int color)
@@ -178,7 +184,7 @@ namespace NDAVis
     {
         readyClientCube = false;
         readyImage = false;
-        int idx = x1y1z1;
+        /*int idx = x1y1z1;
         int tempZ = idx / (readerClient.getXdimension() * readerClient.getYdimension());
         idx -= (tempZ * readerClient.getXdimension() * readerClient.getYdimension());
         int tempY = idx / readerClient.getXdimension();
@@ -225,7 +231,12 @@ namespace NDAVis
 
         clientNX = tempXCorner* factorX;
         clientNY = tempYCorner* factorY;
-        clientNZ = tempZCorner* factorZ;
+        clientNZ = tempZCorner* factorZ;*/
+    }
+
+    float *HDF53DConstructor::getClientCube()
+    {
+        return clientArr;
     }
 
 }

@@ -10,7 +10,8 @@ namespace NDAVis
     class Compression
     {
     public:
-        int compress(const float* srcArray, std::vector<char>& compression_buffer, size_t& compressed_size, int nx, int ny, int nz, int precision);
+        std::string to_base64 (char const* buf, unsigned int bufLen); 
+        int compress(const float* srcArray, std::vector<char>& compression_buffer, size_t& compressed_size, int width, int height, int depth, int precision);
     };
 }
 

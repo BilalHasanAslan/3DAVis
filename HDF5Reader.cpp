@@ -8,8 +8,6 @@
 #include <cassert>
 #include <iterator>
 
-//25000000
-
 namespace NDAVis
 {
     HDF5Reader::HDF5Reader()
@@ -107,46 +105,25 @@ namespace NDAVis
     void HDF5Reader::readDataset(float *arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
     {
 
+        std::cout << Z << std::endl;
+        std::cout << Y << std::endl;
+        std::cout << X << std::endl;
+
+        std::cout << Zoffset << std::endl;
+        std::cout << Yoffset << std::endl;
+        std::cout << Xoffset << std::endl;
+
         hsize_t offset[3];
         hsize_t count[3];
-        offset[0] = Xoffset;
+        offset[0] = Zoffset;
         offset[1] = Yoffset;
-        offset[2] = Zoffset;
+        offset[2] = Xoffset;
         count[0] = Z;
         count[1] = Y;
         count[2] = X;
-        std::cout << "2" << std::endl;
-
-/*      typedef boost::multi_array<float, 3> array_type;
-        typedef array_type::index index;
-        array_type arr1(boost::extents[Z][Y][X]); */
-
-        //float arr1[Z][Y][X];
-        //float arr1[10][10][10];
-        std::cout << "2" << std::endl;
-        //memspace = H5Screate_simple(3, count, NULL);
-        //auto status = H5Sselect_hyperslab(dspace, H5S_SELECT_SET, offset, NULL, count, NULL);
-        //auto status = H5Dread(dataset, H5T_NATIVE_INT, memspace, dspace, H5P_DEFAULT, arr);
-        dataset.read(arr, H5::PredType::NATIVE_FLOAT, dspace, dspace);
-        std::cout << "2" << std::endl;
-
-
-/*         for (int j = 0; j < Z; j++)
-        {
-            for (int i = 0; i < Y; i++)
-            {
-                for (int f = 0; f < X; f++)
-                {
-                    arr[j + Z * (i + Y * f)] = arr1[j][i][f];  
-                        if (arr1[j][i][f] != 0)
-                    {
-                        std::cout << arr1[j][i][f] << std::endl;
-                    } 
-                }
-            }
-        } */
-
-        //H5Sclose(memspace);
+        memspace = H5Screate_simple(3, count, NULL);
+        H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset, NULL, count, NULL);
+        dataset.read(arr, H5::PredType::NATIVE_FLOAT, memspace, dspace);
     }
 
     void HDF5Reader::Closefile()
@@ -155,6 +132,10 @@ namespace NDAVis
         dspace.close();
         H5Sclose(memspace);
         H5Fclose(file.getId());
+    }
+
+    void HDF5Reader::readTileDataset(float* arr,int tileNum){
+
     }
 
 }

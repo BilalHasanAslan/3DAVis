@@ -7,6 +7,8 @@
 #include <cmath>
 #include "MipMapUtil.h"
 #include <iostream>
+#include <string>
+
 namespace NDAVis
 {
     // A single mipmap
@@ -32,7 +34,7 @@ namespace NDAVis
         hsize_t depth;
         hsize_t stokes;
 
-        double *vals;
+        float *vals;
         int *count;
 
         void accumulate(float val, hsize_t x, hsize_t y, hsize_t z)
@@ -54,26 +56,25 @@ namespace NDAVis
         }
 
         void calculate()
-        {   
-            double max = 0;
-            double min = 100;
+        {
+/*             float max = 0;
+            float min = 100;  */
             for (hsize_t mipIndex = 0; mipIndex < bufferSize; mipIndex++)
             {
                 if (count[mipIndex])
                 {
                     vals[mipIndex] /= count[mipIndex];
-                    max = std::max(max,vals[mipIndex]);
-                    min = std::min(min,vals[mipIndex]);
+
+/*                     max = std::max(max,vals[mipIndex]);
+                    min = std::min(min,vals[mipIndex]); */
                 }
                 else
                 {
                     vals[mipIndex] = NAN;
                 }
             }
-            std::cout << max <<"aWE"<< std::endl;
-            std::cout << min <<"aWE"<< std::endl;
-
-
+            /*std::cout << max <<"aWE"<< std::endl;
+            std::cout << min <<"aWE"<< std::endl; */
         }
         void write(hsize_t channelOffset);
         void createBuffers(std::vector<hsize_t> &bufferDims);
@@ -107,6 +108,8 @@ namespace NDAVis
 
         void createBuffers(const std::vector<hsize_t> &standardBufferDims);
         void resetBuffers();
+        int mipmapXYsize = 64;
+        int mipmapZsize = 64;
     };
 }
 

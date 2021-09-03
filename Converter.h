@@ -33,7 +33,7 @@ namespace NDAVis
         H5::H5File outputFile;
         H5::Group outputGroup;
         unsigned long tileSize = 64;
-        unsigned long tileSizeZ = 1;
+        unsigned long tileSizeZ = 64;
     };
 
 }

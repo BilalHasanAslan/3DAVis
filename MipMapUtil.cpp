@@ -36,7 +36,7 @@ namespace NDAVis
             }
         }
 
-        return false;
+        return true;
     }
 
     void MipMapUtil::createHdf5Dataset(H5::DataSet &dataset, H5::Group group, std::string path, H5::DataType dataType, std::vector<hsize_t> dims, const std::vector<hsize_t> &chunkDims)

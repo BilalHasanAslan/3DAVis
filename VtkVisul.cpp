@@ -38,36 +38,33 @@ namespace NDAVis
 
     VtkVisul::VtkVisul()
     {
-
-        /*         volumeProperty->SetInterpolationTypeToLinear();
-        volumeProperty->ShadeOn();
-        volumeProperty->SetAmbient(0.4);
-        volumeProperty->SetDiffuse(0.6);
-        volumeProperty->SetSpecular(0.2); */
     }
+
     void VtkVisul::setColor(int color)
     {
         mapper->SetBlendModeToComposite();
         //will be updated
-        /*         std::array<unsigned char, 3> bkg{{0, 0, 0}};
+        /*std::array<unsigned char, 3> bkg{{0, 0, 0}};
         colors->SetColor("BkgColor", bkg.data());   */
         std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
         colors->SetColor("BkgColor", bkg.data());
-        // if (color == 1)
-        //{
-        colorTransferFunction->AddRGBPoint(0, 1.0, 1.0, 1.0);
-        colorTransferFunction->AddRGBPoint(0.25, 0.5, 0.5, 0.5);
-        colorTransferFunction->AddRGBPoint(0.5, 0.0, 0.0, 0.0);
-        colorTransferFunction->AddRGBPoint(0.75, 0.25, 0.25, 0.25);
-        colorTransferFunction->AddRGBPoint(1, 0.40, 0.40, 0.1);
-
+        if (color == 1)
+        {
+        colorTransferFunction->AddRGBPoint(0, 0, 0, 0);
+        colorTransferFunction->AddRGBPoint(0.01, 0.5, 0.5, 0.5);
+        colorTransferFunction->AddRGBPoint(0.05, 0.6, 0.6, 0.6);
+        colorTransferFunction->AddRGBPoint(0.015, 0.25, 0.25, 0.25);
+        colorTransferFunction->AddRGBPoint(0.02, 0.40, 0.40, 0.1);
+        colorTransferFunction->AddRGBPoint(1, 0.70, 0.70, 0.70);
 
         volumeProperty->SetColor(colorTransferFunction);
         //opacity
-        volumeScalarOpacity->AddPoint(0.0, 0.0);
-        volumeScalarOpacity->AddPoint(255.0, 1.0);
+        volumeScalarOpacity->AddPoint(0.0, 0.0001);
+        volumeScalarOpacity->AddPoint(0.00001, 0.1);
+        volumeScalarOpacity->AddPoint(1.0, 1.0);
+        
         volumeProperty->SetScalarOpacity(volumeScalarOpacity);
-        //}
+        }
     }
 
     void VtkVisul::InsertArray(float *arr, int arrSize)
@@ -78,7 +75,7 @@ namespace NDAVis
     }
 
     void VtkVisul::render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz)
-    {
+    {   
         imageData->NewInstance();
         imageData->SetDimensions(x, y, z);
         imageData->SetSpacing(spacingx, spacingy, spacingz);

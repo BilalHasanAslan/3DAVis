@@ -22,7 +22,7 @@ namespace NDAVis
         void setCameraView(int view1, int view2, int view3, int position1, int position2, int position3);
         bool isClientCubeReady();
         bool isImageReady();
-        void getClientCube();
+        float* getClientCube();
         void getImage();
         HDF5Reader readerClient, readerServer;
         std::string fileName;

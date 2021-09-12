@@ -17,14 +17,14 @@
             >
                 Crop
             </button>
-            <br/>
+            <!-- <br/>
             <button 
                 type="button" 
                 class="btn btn-light m-1"
                 @click="$emit('back')"
             >
                 Step back
-            </button>
+            </button> -->
             <br/>
             <button 
                 type="button" 

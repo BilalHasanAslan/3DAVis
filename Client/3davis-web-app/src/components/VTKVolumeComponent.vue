@@ -41,6 +41,7 @@ import vtkImageCroppingWidget     from '@kitware/vtk.js/Widgets/Widgets3D/ImageC
 import vtkImageCropFilter         from '@kitware/vtk.js/Filters/General/ImageCropFilter';
 import vtkVolumeController        from '@kitware/vtk.js/Interaction/UI/VolumeController';
 
+import vtkColorMaps               from '@kitware/vtk.js/Rendering/Core/ColorTransferFunction/ColorMaps';
 
 export default {
   name: 'VTKVolumeComponent',
@@ -72,32 +73,20 @@ export default {
 
     // get crop points
     function getCropPoints() {
-      // cropPoints[0] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x1y1z1
-      // cropPoints[1] = [cropPlanes[1],cropPlanes[2],cropPlanes[4]] //x2y1z1
-      // cropPoints[2] = [cropPlanes[0],cropPlanes[3],cropPlanes[4]] //x1y2z1
-      // cropPoints[3] = [cropPlanes[0],cropPlanes[2],cropPlanes[4]] //x2y2z1
-      // cropPoints[4] = [cropPlanes[0],cropPlanes[2],cropPlanes[5]] //x1y1z2
-      // cropPoints[5] = [cropPlanes[1],cropPlanes[2],cropPlanes[5]] //x2y1z2
-      // cropPoints[6] = [cropPlanes[0],cropPlanes[3],cropPlanes[5]] //x1y2z2
-      // cropPoints[7] = [cropPlanes[1],cropPlanes[3],cropPlanes[5]] //x2y2z2
       emit("points", cropPlanes) // x1 x2 y1 y2 z1 z2
     }
 
-    // volume render
-    // function volumeRender() {
-    //   console.log('volume render')
-    // }
-
-    // image render
-    // function imageRender() {
-    //   console.log('image render')
-    // }
-
     watchEffect(() => {
-    //   const res = unref(coneResolution);
-    //   const rep = unref(representation);
       if (context.value) {
-        const { cropFilter, croppingWidget, camera, ctfun, ofun } = context.value;
+
+        const { cropFilter, croppingWidget, camera, ctfun, ofun, actor, renderWindow} = context.value;
+
+        // reactive source data
+        if(props.sourceData) {
+          // rerender with new source data
+          renderWindow.render();
+        }
+        
         const cropState = croppingWidget.getWidgetState().getCroppingPlanes();
         // when cube is cropped
         cropState.onModified(() => {
@@ -108,8 +97,8 @@ export default {
         // when camera changes
         camera.onModified(() => {
           // get camera state
-          cameraState.ctfun = ctfun
-          cameraState.ofun = ofun
+          // cameraState.ctfun = ctfun
+          // cameraState.ofun = ofun
           cameraState.position = camera.getPosition()
           cameraState.viewUp = camera.getViewUp()
           cameraState.window_size = []
@@ -117,8 +106,46 @@ export default {
           cameraState.window_size[1] = vtkContainer.value.clientWidth
           emit("camera", cameraState)
         });
-        // coneSource.setResolution(res);
-        // actor.getProperty().setRepresentation(rep);
+        // when ct function changes
+        ctfun.onModified(() => {
+          let ctObject = {}
+          // console.log(actor.getProperty().getRGBTransferFunction(0).getSize());
+          // get range of data
+          // const range = actor.getProperty().getScalarOpacity(0).getRange())
+          // get colour map
+          // ctObject.spacing = Number(vtkControlsContainer.value.querySelector('.js-spacing').value);
+          const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
+          ctObject.nodes = []
+          for (let i = 0; i < nodes.length; i++) {
+            ctObject.nodes[i] = [nodes[i].x, nodes[i].y]
+          }
+          var colourMap = vtkColorMaps.getPresetByName(
+            vtkControlsContainer.value.querySelector('.js-color-preset').value
+          );
+          ctObject.colourMap = colourMap.RGBPoints
+          emit("ctfun", ctObject)
+        })
+
+        ofun.onModified(() => {
+          let ctObject = {}
+          // get peicewise function
+          // console.log(actor.getProperty().getGrayTransferFunction());
+          // console.log(actor.getProperty().getInterpolationTypeAsString());
+          // get nodes of ofun
+          // ctObject.spacing = Number(vtkControlsContainer.value.querySelector('.js-spacing').value);
+          const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
+          ctObject.nodes = []
+          for (let i = 0; i < nodes.length; i++) {
+            ctObject.nodes[i] = [nodes[i].x, nodes[i].y]
+          }
+          // const edge = Number(vtkControlsContainer.value.querySelector('.js-edge').value);
+          var colourMap = vtkColorMaps.getPresetByName(
+            vtkControlsContainer.value.querySelector('.js-color-preset').value
+          );
+          ctObject.colourMap = colourMap.RGBPoints
+          emit("ctfun", ctObject)
+        })
+        
       }
     });
 
@@ -131,16 +158,10 @@ export default {
 
         // generate data cube
         const VtkDataTypes = vtkDataArray.VtkDataTypes;
-
-        const size = props.dimensions[0]*props.dimensions[1]*props.dimensions[2]
-
-        const values = [];
-        for (var i = 0; i < size; i++) {
-            values[i] = Math.random();
-        }
  
         // get data from props
-        // const values = props.sourceData
+        console.log(props.sourceData)
+        const values = props.sourceData
 
         var scalars = vtkDataArray.newInstance({
           values: values,
@@ -191,9 +212,6 @@ export default {
 
         // peicewise function
         const ofun = vtkPiecewiseFunction.newInstance();
-        ofun.addPoint(200.0, 0.0);
-        ofun.addPoint(1200.0, 0.2);
-        ofun.addPoint(4000.0, 0.4);
 
         // pipeline
         // mapper.setInputData(source);
@@ -203,7 +221,7 @@ export default {
 
         // volume properties
         actor.getProperty().setRGBTransferFunction(0, ctfun);
-        // actor.getProperty().setScalarOpacity(0, ofun);
+        actor.getProperty().setScalarOpacity(0, ofun);
         actor.getProperty().setScalarOpacityUnitDistance(0, 4.5);
         actor.getProperty().setScalarOpacityUnitDistance(0, 4.5);
         actor.getProperty().setInterpolationTypeToFastLinear();
@@ -251,8 +269,28 @@ export default {
           croppingWidget,
           cropFilter,
           camera
-          // widgetManager
         };
+
+        // emit intial camera state
+        cameraState.position = camera.getPosition()
+        cameraState.viewUp = camera.getViewUp()
+        cameraState.window_size = []
+        cameraState.window_size[0] = vtkContainer.value.clientHeight
+        cameraState.window_size[1] = vtkContainer.value.clientWidth
+        emit("camera", cameraState)
+
+        // emit initial colour transfer function
+        let ctObject = {}
+        const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
+        ctObject.nodes = []
+        for (let i = 0; i < nodes.length; i++) {
+          ctObject.nodes[i] = [nodes[i].x, nodes[i].y]
+        }
+        var colourMap = vtkColorMaps.getPresetByName(
+          vtkControlsContainer.value.querySelector('.js-color-preset').value
+        );
+        ctObject.colourMap = colourMap.RGBPoints
+        emit("ctfun", ctObject)
       }
     });
 
@@ -272,10 +310,6 @@ export default {
       vtkControlsContainer,
       context,
       cropPoints
-    //   setRepresentation,
-    //   setConeResolution,
-    //   coneResolution,
-    //   representation,
     };
   }
 }

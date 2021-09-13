@@ -21,14 +21,15 @@ namespace NDAVis
     }
 
     bool HDF5Reader::openDataset(std::string datasetName)
-    {
+    {   
         dataset = file.openDataSet(datasetName.c_str());
         dspace = dataset.getSpace();
+        filespace = H5Dget_space(dataset.getId());
         return true;
     }
 
     void HDF5Reader::setStarterClientCube()
-    {
+    {   
         bool tempFound = false;
         std::string groupName = "0/MipMaps/DATA";
         H5::Group group = file.openGroup(groupName);
@@ -49,7 +50,7 @@ namespace NDAVis
                 tempFound = true;
             }
         }
-        std::cout << XY << std::endl;
+
         //To find smallest Z dimension
         tempFound = false;
         while (!tempFound)
@@ -66,24 +67,17 @@ namespace NDAVis
                 tempFound = true;
             }
         }
-        std::cout << Z << std::endl;
         std::ostringstream name;
         name << "0/MipMaps/DATA/DATA_XY_" << XY << "_Z_" << Z;
-        std::cout << name.str() << std::endl;
         openDataset(name.str());
         setDimensions();
     }
 
     void HDF5Reader::setDimensions()
     {
-        std::cout << "Size of Dimensions" << std::endl;
+
         hsize_t dims[3];
         dspace.getSimpleExtentDims(dims, NULL);
-        for (int j = 0; j < 3; j++)
-        {
-            std::cout << std::to_string(dims[j]) << std::endl;
-        }
-
         NZ = dims[0];
         NY = dims[1];
         NX = dims[2];
@@ -104,15 +98,6 @@ namespace NDAVis
 
     void HDF5Reader::readDataset(float *arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
     {
-
-        std::cout << Z << std::endl;
-        std::cout << Y << std::endl;
-        std::cout << X << std::endl;
-
-        std::cout << Zoffset << std::endl;
-        std::cout << Yoffset << std::endl;
-        std::cout << Xoffset << std::endl;
-
         hsize_t offset[3];
         hsize_t count[3];
         offset[0] = Zoffset;
@@ -134,8 +119,20 @@ namespace NDAVis
         H5Fclose(file.getId());
     }
 
-    void HDF5Reader::readTileDataset(float* arr,int tileNum){
+    void HDF5Reader::readTileDataset(float *arr, int tileNum, int TileNX, int TileNY, int TileNZ, int Xoffset, int Yoffset, int Zoffset)
+    {
+        hsize_t offset[3];
+        hsize_t count[3];
+        offset[0] = Zoffset;
+        offset[1] = Yoffset;
+        offset[2] = Xoffset;
+        count[0] = TileNZ;
+        count[1] = TileNY;
+        count[2] = TileNX;
 
+        memspace = H5Screate_simple(3, count, NULL);
+        H5Sselect_hyperslab(filespace, H5S_SELECT_SET, offset, NULL, count, NULL);
+        dataset.read(arr, H5::PredType::NATIVE_FLOAT, memspace, filespace);
     }
 
 }

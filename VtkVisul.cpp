@@ -14,10 +14,13 @@
 #include <vtkAutoInit.h>
 #include <vtkPiecewiseFunction.h>
 #include <vtkCamera.h>
-
 #include <vtkRenderWindow.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkRenderer.h>
+#include "LogKeeper.h"
+#include <vtkJPEGWriter.h>
+#include <vtkWindowToImageFilter.h>
+#include <vtkUnsignedCharArray.h>
 
 VTK_MODULE_INIT(vtkInteractionStyle);
 VTK_MODULE_INIT(vtkRenderingFreeType);
@@ -40,7 +43,7 @@ namespace NDAVis
     {
     }
 
-    void VtkVisul::setColor(int color)
+    void VtkVisul::setColor(float *color, int colorSize, float *opacity, int opacitySize)
     {
         mapper->SetBlendModeToComposite();
         //will be updated
@@ -48,23 +51,35 @@ namespace NDAVis
         colors->SetColor("BkgColor", bkg.data());   */
         std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
         colors->SetColor("BkgColor", bkg.data());
-        if (color == 1)
-        {
-        colorTransferFunction->AddRGBPoint(0, 0, 0, 0);
+
+        /*         colorTransferFunction->AddRGBPoint(0, 0, 0, 0);
         colorTransferFunction->AddRGBPoint(0.01, 0.5, 0.5, 0.5);
         colorTransferFunction->AddRGBPoint(0.05, 0.6, 0.6, 0.6);
         colorTransferFunction->AddRGBPoint(0.015, 0.25, 0.25, 0.25);
         colorTransferFunction->AddRGBPoint(0.02, 0.40, 0.40, 0.1);
-        colorTransferFunction->AddRGBPoint(1, 0.70, 0.70, 0.70);
+        colorTransferFunction->AddRGBPoint(1, 0.70, 0.70, 0.70); */
+
+        int max = 1;
+        int min = 0;
+        int range = max - min;
+        for (int i = 0; i < colorSize; i + 4)
+        {
+            colorTransferFunction->AddRGBPoint(min + (range * color[i]), color[i + 1], color[i + 2], color[i + 3]);
+        }
 
         volumeProperty->SetColor(colorTransferFunction);
         //opacity
-        volumeScalarOpacity->AddPoint(0.0, 0.0001);
-        volumeScalarOpacity->AddPoint(0.00001, 0.1);
-        volumeScalarOpacity->AddPoint(1.0, 1.0);
-        
-        volumeProperty->SetScalarOpacity(volumeScalarOpacity);
+
+        for (int i = 0; i < opacitySize; i++)
+        {
+            volumeScalarOpacity->AddPoint(opacity[i], opacity[i]);
         }
+
+        /*         volumeScalarOpacity->AddPoint(0.0, 0.0001);
+        volumeScalarOpacity->AddPoint(0.000000000000000001, 0.1);
+        volumeScalarOpacity->AddPoint(1.0, 1.0); */
+
+        volumeProperty->SetScalarOpacity(volumeScalarOpacity);
     }
 
     void VtkVisul::InsertArray(float *arr, int arrSize)
@@ -75,42 +90,66 @@ namespace NDAVis
     }
 
     void VtkVisul::render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz)
-    {   
+    {
         imageData->NewInstance();
         imageData->SetDimensions(x, y, z);
         imageData->SetSpacing(spacingx, spacingy, spacingz);
         imageData->SetOrigin(originx, originy, originz);
         imageData->GetPointData()->SetScalars(vtkArr);
         mapper->SetInputData(imageData);
-
         volume->SetMapper(mapper);
         volume->SetProperty(volumeProperty);
-
-        vtkNew<vtkRenderWindow> renWin;
-        renWin->AddRenderer(renderer);
-        vtkNew<vtkRenderWindowInteractor> iren;
-        iren->SetRenderWindow(renWin);
-
         renderer->AddViewProp(volume);
-        //renderer->AddVolume(volume);
-        //setCamera(1, 1, 1, 1, 1, 1);
         renderer->SetBackground(colors->GetColor3d("BkgColor").GetData());
-        renWin->SetSize(1000, 500);
-        renWin->SetWindowName("3davis");
-        renWin->Render();
-        iren->Start();
+
     }
 
     void VtkVisul::setCamera(int view1, int view2, int view3, int position1, int position2, int position3)
     {
         camera = renderer->GetActiveCamera();
-        /*         camera->SetViewUp(view1, view2, view3);
+        /*camera->SetViewUp(view1, view2, view3);
         camera->SetPosition(position1, position2, position3); */
         //camera->SetFocalPoint(c[0], c[1], c[2]);
         double *c = volume->GetCenter();
         camera->SetViewUp(0, 0, -1);
         camera->SetPosition(c[0], c[1] - 400, c[2]);
         camera->SetFocalPoint(c[0], c[1], c[2]);
+    }
+
+    void VtkVisul::getImage()
+    {
+        
+        vtkNew<vtkRenderWindow> renWin;
+        renWin->AddRenderer(renderer);
+        /*         vtkNew<vtkRenderWindowInteractor> iren;
+        iren->SetRenderWindow(renWin); */
+        renWin->SetSize(1080, 720);
+        vtkNew<vtkWindowToImageFilter> window_to_image_filter;
+        window_to_image_filter->SetInput(renWin);
+        window_to_image_filter->SetScale(1);
+        window_to_image_filter->SetInputBufferTypeToRGB();
+        window_to_image_filter->ReadFrontBufferOff();
+        window_to_image_filter->Update();
+        writer->SetWriteToMemory(true);
+        writer->SetInputConnection(window_to_image_filter->GetOutputPort());
+
+        double *range = new double[2];
+        vtkUnsignedCharArray *temparr;
+        temparr = writer->GetResult();
+        temparr->GetRange(range);
+        int size = (range[0] * range[1] * range[2]);
+        imageArr = new int[size];
+        //imageArr = temparr->GetData();
+
+        for (int i = 0; i < (range[0] * range[1] * range[2]); i++)
+        {
+            imageArr[i] = temparr->GetValue(i);
+        }
+
+
+        /*         renWin->SetWindowName("3davis");
+        renWin->Render();
+        iren->Start();  */
     }
 
 }

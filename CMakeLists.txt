@@ -47,7 +47,8 @@ set(SOURCE_FILES
     Converter.cpp
     MipMap.cpp
     MipMapUtil.cpp
-    HDF53DConstructor.cpp
+    Controller.cpp
+    Tile.cpp
     )
 
 

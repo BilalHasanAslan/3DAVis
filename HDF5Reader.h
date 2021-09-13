@@ -26,8 +26,8 @@ namespace NDAVis
         int NX, NZ, NY;
         hid_t memspace;
         int XY,Z;
-        void readTileDataset(float* arr,int tileNum);
-        
+        void readTileDataset(float* arr,int tileNum,int TileNX,int TileNY,int TileNZ,int Xoffset,int Yoffset,int Zoffset);
+        hid_t filespace;
     };
 
 }

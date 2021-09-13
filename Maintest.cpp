@@ -7,7 +7,7 @@
 #include "vtkAutoInit.h"
 #include <iterator>
 #include "Converter.h"
-#include "HDF53DConstructor.h"
+#include "Controller.h"
 #include <H5Cpp.h>
 
 using namespace NDAVis;
@@ -49,7 +49,7 @@ int main()
     visul.render(reader.getXdimension(), reader.getYdimension(), reader.getZdimension(), 2, 2, 2, 50, 50, 50);
     log.endLog(false);  */
 
-/*     std::string inputFileName;
+/*  std::string inputFileName;
     std::string outputFileName;
     std::cout<<"Input FITS File name"<< std::endl;
     std::cin>>inputFileName;
@@ -57,11 +57,12 @@ int main()
     std::cin>>outputFileName;
     NDAVis::Converter converter = NDAVis::Converter(inputFileName, outputFileName);
     converter.convert();  */
- 
-    NDAVis::HDF53DConstructor constructor = HDF53DConstructor();
-    constructor.setFile("lesgo2.hdf5");
-    constructor.renderServer(0, 0, 0, 0, 0, 0, 1);
-    //constructor.setNewCordinates(5*7*5,1,1,1,1,1,1,1); 
+    float color[] ={1,2,3};
+    float opacity[] ={1,2};
+    NDAVis::Controller contollerObj = Controller();
+    contollerObj.setFile("lesgo2.hdf5");
+    contollerObj.startServerRender(0, 0, 0, 0, 0, 0, color,3,opacity,2);
+    //contollerObj.setNewCordinates(5*7*5,1,1,1,1,1,1,1); 
 
 /*     int totalDim = 640*640*640;
     float *arr = new float[640*640*640];

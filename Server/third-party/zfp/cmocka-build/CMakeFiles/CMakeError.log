@@ -1,0 +1,19 @@
+Determining if the include file io.h exists failed with the following output:
+Change Dir: /mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_dcf7e/fast && make[3]: Entering directory '/mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp'
+/usr/bin/make -f CMakeFiles/cmTC_dcf7e.dir/build.make CMakeFiles/cmTC_dcf7e.dir/build
+make[4]: Entering directory '/mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_dcf7e.dir/CheckIncludeFile.c.o
+/usr/bin/cc   -std=gnu99 -pedantic -pedantic-errors -Wall -Wextra -Wshadow -Wmissing-prototypes -Wdeclaration-after-statement -Wunused -Wfloat-equal -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -Wundef -fPIC -fstack-protector -D_GNU_SOURCE -D_LARGEFILE64_SOURCE    -o CMakeFiles/cmTC_dcf7e.dir/CheckIncludeFile.c.o   -c /mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+/mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c:1:10: fatal error: io.h: No such file or directory
+    1 | #include <io.h>
+      |          ^~~~~~
+compilation terminated.
+make[4]: *** [CMakeFiles/cmTC_dcf7e.dir/build.make:66: CMakeFiles/cmTC_dcf7e.dir/CheckIncludeFile.c.o] Error 1
+make[4]: Leaving directory '/mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp'
+make[3]: *** [Makefile:121: cmTC_dcf7e/fast] Error 2
+make[3]: Leaving directory '/mnt/c/Users/bhavm/Downloads/zfp/build/cmocka-build/CMakeFiles/CMakeTmp'
+
+
+

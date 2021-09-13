@@ -41,45 +41,30 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
 }
 
 void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, std::string_view message, uWS::OpCode opCode) {
-
     std::string msg {message};
     msg.erase(std::remove(msg.begin(), msg.end(), '\\'), msg.end());
     msg = msg.substr(1, (msg.length()-2));
     json j = json::parse(msg);
-    //std::cout << msg << std::endl;
-    //std::cout << v["camera_pos"][0] <<std::endl;
 
+    switch (j["type"])
+    {
+    case "file":
+        /* code */
+        break;
+    case "volume":
+        /* code */
+        break;
+    case "image":
+        /* code */
+        break;
+    default:
+        std::cout << "JSON message received of invalid format" << std::endl;
+        break;
+    }
 }
 
 int main()
 {
-    
-    /*
-    float* arr = new float[64*64*64];
-    float* ptr = arr;
-    for (int i = 0; i < 262144; i++)
-    {
-        *ptr = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        ptr++;
-    }
-
-    std::vector<char> compressed_data;
-    size_t compressed_size = 0;
-
-    auto status = compression.compress(arr, compressed_data, compressed_size, 64, 64, 64, 12);
-    compressed_data.resize(compressed_size);
-    std::string s = compression.to_base64(reinterpret_cast<char*>(compressed_data.data()), compressed_size);
-    */
-
-    //std::cout << s;
-
-    //int status = compression.compress(arr,64,64,64,12);
-    //std::cout << status;
-    /*for (int i=0;i<10;i++) {
-        std::cout << arr[i] <<std::endl;
-    }*/
-    
-
     uWS::App().ws<NDAVis::Server::PerSocketData>("/*", (uWS::App::WebSocketBehavior<NDAVis::Server::PerSocketData>){
             /* Settings */
             .compression = uWS::DEDICATED_COMPRESSOR_256KB,

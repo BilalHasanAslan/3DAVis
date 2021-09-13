@@ -1,0 +1,24 @@
+The target system is: Emscripten - 1 - x86
+The host system is: Linux - 4.4.0-19041-Microsoft - x86_64
+Performing C SOURCE FILE Test HAVE_MATH succeeded with the following output:
+Change Dir: /mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2977b/fast && /usr/bin/make -f CMakeFiles/cmTC_2977b.dir/build.make CMakeFiles/cmTC_2977b.dir/build
+make[1]: Entering directory '/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2977b.dir/src.c.o
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/emsdk/upstream/emscripten/emcc   -s WASM=1 -DHAVE_MATH   -o CMakeFiles/cmTC_2977b.dir/src.c.o   -c /mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/CMakeTmp/src.c
+shared:INFO: (Emscripten: Running sanity checks)
+emcc: warning: linker setting ignored during compilation: 'WASM' [-Wunused-command-line-argument]
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/CMakeTmp/src.c:2:21: warning: ignoring return value of function declared with const attribute [-Wunused-value]
+float f; int main(){sqrt(f);return 0;}
+                    ^~~~ ~
+1 warning generated.
+Linking C executable cmTC_2977b.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2977b.dir/link.txt --verbose=1
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/emsdk/upstream/emscripten/emcc -s WASM=1 -DHAVE_MATH    @CMakeFiles/cmTC_2977b.dir/objects1.rsp  -o cmTC_2977b.js 
+make[1]: Leaving directory '/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+#include<math.h>
+float f; int main(){sqrt(f);return 0;}

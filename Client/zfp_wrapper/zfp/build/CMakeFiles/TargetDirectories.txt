@@ -1,0 +1,13 @@
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/install/strip.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/install/local.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/install.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/list_install_components.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/install/strip.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/install/local.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/install.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/list_install_components.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/edit_cache.dir
+/mnt/c/Users/bhavm/OneDrive/Desktop/3DAVis/Client/3davis-web-app/zfp_wrapper/zfp/build/src/CMakeFiles/zfp.dir

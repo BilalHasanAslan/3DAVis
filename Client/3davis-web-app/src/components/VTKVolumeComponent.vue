@@ -60,6 +60,10 @@ export default {
     spacing: {
       type: Number,
       default: 1
+    },
+    resetPlanes: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props,{emit}) {
@@ -94,6 +98,14 @@ export default {
           cropPlanes = cropState.getPlanes();
           getCropPoints()
         });
+
+        // reset cropping planes
+        if(props.resetPlanes)
+        {
+          console.log("Reset cropping planes")
+          cropFilter.setCroppingPlanes(props.dimensions);
+        }
+
         // when camera changes
         camera.onModified(() => {
           // get camera state
@@ -160,7 +172,7 @@ export default {
         const VtkDataTypes = vtkDataArray.VtkDataTypes;
  
         // get data from props
-        console.log(props.sourceData)
+        // console.log(props.sourceData)
         const values = props.sourceData
 
         var scalars = vtkDataArray.newInstance({

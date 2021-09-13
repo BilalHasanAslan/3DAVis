@@ -9,23 +9,21 @@
       @selected="fileSelected"
       @crop="cropCube"
       @reset="resetCube"
-      
+      @high-res="getImage"
     />
     <ImageComponent
-      v-if="!interaction && !loadingImage"
-      @mousedown="interaction=true"
+      v-if="!loadingImage"
+      @mouseup="loadingImage=true"
     />
     <VTKVolumeComponent
-      v-else-if="interaction && !loadingVolume"
+      v-if="!loadingVolume"
       @points="setCropPoints"
       @camera="setCameraState"
-      @mousedown="interactionStart"
-      @mouseup="interactionEnd"
-      @mouseleave="interactionEnd"
       @ctfun="setColourFunction"
       :sourceData="source"
-      :dimensions="[64,64,64]"
+      :dimensions="clientCubeDimensions"
       :spacing="1"
+      :resetPlanes="reset"
     />
   </div>
 </template>
@@ -49,8 +47,6 @@ export default {
       source: [],
       connection: null,
       connected: true,
-      interaction: false,
-      hold: false,
       loadingImage: true,
       loadingVolume: true,
       xyLevel: 0,
@@ -58,6 +54,7 @@ export default {
       cropPoints: [0, 1100, 0, 750, 0, 265],
       tiles: [], // keeps track which tiles it needs
       tileBuffer:[], // holds data tiles
+      reset: false,
       cameraState: {
         "position": [-0.5,-0.5,210],
         "viewUp": [0,1,0],
@@ -1185,12 +1182,18 @@ export default {
         // add to tile buffer
 
         if(this.tileBuffer.length === this.tiles.length)
+        {
           this.source = this.constructCube()
+          this.loadingVolume = false
+          this.reset = true
+        }
+          
       }
       else if(event.type == "image")
       {
         console.log(event.type)
         // set image component
+        this.loadingImage = false
       }
       else if(event.type == "files")
       {
@@ -1202,103 +1205,34 @@ export default {
       console.log(event)
       console.log("successfully connected to server")
       // send initial camera values
-
     }
   },
-  watch: {
-    // timerCountdown: {
-    //   handler(value) {
-    //     if(this.timer)
-    //     {
-    //       clearTimeout(this.timer)
-    //     }
-    //     if(this.timerCountdown>0)
-    //     {
-    //       this.interaction = true
-    //       this.timerCountdown = value
-    //       this.timer = setTimeout(() => {
-    //         console.log(this.timerCountdown)
-    //         this.timerCountdown--
-    //       }, 1000)
-    //     }
-    //     else // sends request when timer runs out
-    //     {
-    //       this.interaction = false
-    //       console.log("interaction countdown finished")
-    //       // console.log("loading image")
-    //       // request image
-    //       // this.connection.send(this.cameraState)
-    //     }
-    //   },
-    //   immediate: true
-    // }
-    // hold: {
-    //   handler() {
-    //     console.log(this.hold)
-    //     if(this.hold) // mouse hold
-    //     {
-    //       this.interaction = true
-    //     }
-    //     else // mouse up
-    //     {
-    //       //start timer
-    //       if(this.timer)
-    //       {
-    //         clearTimeout(this.timer)
-    //       }
-    //       if(this.timerCountdown>0)
-    //       {
-    //         this.interaction = true
-    //         this.timerCountdown = 5
-    //         this.timer = setTimeout(() => {
-    //           console.log(this.timerCountdown)
-    //           this.timerCountdown--
-    //         }, 1000)
-    //       }
-    //       else // sends request when timer runs out
-    //       {
-    //         this.interaction = false
-    //         console.log("interaction countdown finished")
-    //         // console.log("loading image")
-    //         // request image
-    //         // this.connection.send(this.cameraState)
-    //       }
-    //     }
-    //   }
-    // }
-  },
+  // watch: {
+  //   timerCountdown: {
+  //     handler() {
+  //       if(this.timer)
+  //       {
+  //         clearTimeout(this.timer)
+  //       }
+  //       if(this.timerCountdown>0)
+  //       {
+  //         this.timer = setTimeout(() => {
+  //           console.log(this.timerCountdown)
+  //           this.timerCountdown--
+  //         }, 1000)
+  //       }
+  //       else // sends request when timer runs out
+  //       {
+  //         console.log("interaction countdown finished")
+  //         // console.log("loading image")
+  //         // request image
+  //         // this.connection.send(this.cameraState)
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
   methods: {
-    interactionStart() {
-      this.interaction = true
-      if(this.timer)
-      {
-        clearTimeout(this.timer)
-      }
-    },
-    interactionEnd() {
-    //start timer
-      if(this.timer)
-      {
-        clearTimeout(this.timer)
-      }
-      if(this.timerCountdown>0)
-      {
-        this.interaction = true
-        this.timerCountdown = 5
-        this.timer = setTimeout(() => {
-          console.log(this.timerCountdown)
-          this.timerCountdown--
-        }, 1000)
-      }
-      else // sends request when timer runs out
-      {
-        this.interaction = false
-        console.log("interaction countdown finished")
-        // console.log("loading image")
-        // request image
-        // this.connection.send(this.cameraState)
-      }
-    },
     fileSelected(event) {
       
       // for testing purposes
@@ -1316,12 +1250,15 @@ export default {
     },
     setCropPoints(event) {
       this.cropPoints = event
+      this.loadingImage = true
     },
     cropCube() {
       console.log("crop cube")
 
       // this.xyLevel = 0
       // this.zLevel = 0
+
+      console.log(this.cropPoints)
 
       let points = []
       let singleX,singleY,singleZ
@@ -1350,6 +1287,8 @@ export default {
         singleY = this.serverCubeDimensions[1] / Math.pow(2, this.xyLevel)
       }
       while(rangeX<singleX && rangeY<singleY)
+
+      
       this.xyLevel--
       singleX = this.serverCubeDimensions[0] / Math.pow(2, this.xyLevel)
       singleY = this.serverCubeDimensions[1] / Math.pow(2, this.xyLevel)
@@ -1362,6 +1301,7 @@ export default {
         singleZ = this.serverCubeDimensions[2] / Math.pow(2, this.zLevel)
       }
       while(rangeZ<singleZ)
+
       this.zLevel--
       singleZ = this.serverCubeDimensions[2] / Math.pow(2, this.zLevel)
       
@@ -1419,7 +1359,7 @@ export default {
       const request = {
         cropPoints: points,
         mipmap: mipmap, 
-        tiles: this.tiles.splice(0,4)
+        tiles: this.tiles
       }
 
       this.connection.send(request)
@@ -1461,6 +1401,12 @@ export default {
       // console.log(event)
       // update colour transfer function to the server
       this.cameraState.ctfun = event
+      // this.loadingImage=true
+    },
+    getImage() {
+      // request image
+      console.log("request image")
+      this.connection.send(this.cameraState)
     },
     constructCube() {
       const cubes = []
@@ -1510,7 +1456,22 @@ export default {
       {
         return this.tileBuffer[0]
       }
-    }
+    },
+    // interactionStart() {
+    //   if(this.timer)
+    //   {
+    //     clearTimeout(this.timer)
+    //   }
+    // },
+    // interactionEnd() {
+    //   //start timer
+    //   if(this.timer)
+    //   {
+    //     clearTimeout(this.timer)
+    //   }
+    //   this.timerCountdown = 5
+    //   console.log("no interaction")
+    // }
     // combining promises and websockets 
     // connect() {
     //   return new Promise(function(resolve, reject) {

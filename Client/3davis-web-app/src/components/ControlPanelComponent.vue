@@ -34,6 +34,17 @@
                 Reset
             </button>
         </div>
+        <div
+            class="mt-5"
+        >
+            <button 
+                type="button" 
+                class="btn btn-light m-1"
+                @click="$emit('high-res')"
+            >
+                High Resolution Image
+            </button>
+        </div>
     </div>
 </template>
 <script>

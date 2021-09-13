@@ -35,10 +35,6 @@ namespace NDAVis
                 return false;
             }
         }
-        if (dims[0] < tileSize)
-        {
-            return false;
-        }
 
         return true;
     }
@@ -89,5 +85,7 @@ namespace NDAVis
             throw "Could not read image data";
         }
     }
+
+
 
 }

@@ -16,6 +16,8 @@
 #include <vtkVolume.h>
 #include <vtkPiecewiseFunction.h>
 #include <vtkAutoInit.h>
+#include <vtkJPEGWriter.h>
+
 
 namespace NDAVis
 {
@@ -26,8 +28,10 @@ namespace NDAVis
         VtkVisul();
         void InsertArray(float *arr, int arrSize);
         void render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz);
-        void setColor(int color);
+        void setColor(float *color, int colorSize,float* opacity,int opacitySize);
         void setCamera(int view1,int view2,int view3,int position1,int position2,int position3);
+        void getImage();
+        vtkNew<vtkJPEGWriter> writer;
         vtkNew<vtkNamedColors> colors;
         vtkNew<vtkRenderer> renderer;
         vtkNew<vtkFloatArray> vtkArr;
@@ -39,6 +43,7 @@ namespace NDAVis
         vtkNew<vtkVolume> volume;
         vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
         vtkCamera *camera;
+        int* imageArr;
     };
 }
 

@@ -12,8 +12,6 @@ namespace NDAVis
     class Converter
     {
     public:
-        unsigned long tileSize = 64;
-        unsigned long tileSizeZ = 64;
         Converter(std::string inputFileName, std::string outputFileName);
         void openFitsFile(fitsfile **filePtrPtr, std::string inputFileName);
         fitsfile *inputFilePtr;
@@ -34,6 +32,8 @@ namespace NDAVis
         // Main HDF5 objects
         H5::H5File outputFile;
         H5::Group outputGroup;
+        unsigned long tileSize = 64;
+        unsigned long tileSizeZ = 64;
     };
 
 }

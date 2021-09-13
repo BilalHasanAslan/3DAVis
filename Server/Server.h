@@ -14,8 +14,6 @@ namespace NDAVis
         struct PerSocketData {
             /* Fill with user data */
         };
-        void runServer();
-        void onOpen(uWS::WebSocket<false, true, PerSocketData>* ws);
     };
 }
 

@@ -28,51 +28,19 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
     auto socketData = ws->getUserData();
     if (!socketData) {std::cout << "Does not exist" <<std::endl; }
 
-    int numberOfFiles = fileManager.getNumberOfFiles();
     std::vector<std::string> fileNames;
     fileManager.getFileNames(&fileNames);
 
     json j;
-    j["numberOfFiles"] = numberOfFiles;
+    j["numberOfFiles"] = fileManager.getNumberOfFiles();
     j["files"] = {};
     for (auto it = fileNames.begin(); it != fileNames.end(); it++) {
         j["files"].push_back(trim(*it));
     }
-    ws->send(j.dump(), uWS::OpCode::TEXT, true);
-    /*json j =
-    {
-        {"pi", 3.141},
-        {"happy", true},
-        {"name", "Niels"},
-        {"nothing", nullptr},
-        {
-            "answer", {
-                {"everything", 42}
-            }
-        },
-        {"list", {1, 0, 2}},
-        {
-            "object", {
-                {"currency", "USD"},
-                {"value", 42.99}
-            }
-        }
-    };
-
-    std::cout << j["list"][1] << std::endl;*/
-
-
-    
+    ws->send(j.dump(), uWS::OpCode::TEXT, true);    
 }
 
 void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, std::string_view message, uWS::OpCode opCode) {
-    /*int fileChoice;
-    auto res = std::from_chars(message.data(), message.data() + message.size(), fileChoice);
-    if (fileChoice <= fileManager.getNumberOfFiles()) {
-        //choose from file
-        std::cout << "File selected for Rendering: "<< fileChoice <<std::endl;
-    }*/
-    //auto res = std::from_chars(message.data(), message.data() + message.size(), fileChoice);
 
     std::string msg {message};
     msg.erase(std::remove(msg.begin(), msg.end(), '\\'), msg.end());
@@ -86,6 +54,7 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
 int main()
 {
     
+    /*
     float* arr = new float[64*64*64];
     float* ptr = arr;
     for (int i = 0; i < 262144; i++)
@@ -100,6 +69,8 @@ int main()
     auto status = compression.compress(arr, compressed_data, compressed_size, 64, 64, 64, 12);
     compressed_data.resize(compressed_size);
     std::string s = compression.to_base64(reinterpret_cast<char*>(compressed_data.data()), compressed_size);
+    */
+
     //std::cout << s;
 
     //int status = compression.compress(arr,64,64,64,12);

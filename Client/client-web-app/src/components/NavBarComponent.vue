@@ -1,0 +1,12 @@
+<template>
+  <b-navbar 
+    type="light" 
+    variant="faded"
+  >
+    <b-navbar-brand 
+      href="#"
+    >
+      3DAVis
+    </b-navbar-brand>
+  </b-navbar>
+</template>

@@ -1,4 +1,3 @@
-#include "LogKeeper.h"
 #include "FileManager.h"
 #include "Server.h"
 #include "Compression.h"
@@ -81,16 +80,6 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
     json j = json::parse(msg);
     //std::cout << msg << std::endl;
     //std::cout << v["camera_pos"][0] <<std::endl;
-
-    switch (expression)
-    {
-    case /* constant-expression */:
-        /* code */
-        break;
-    
-    default:
-        break;
-    }
 
 }
 

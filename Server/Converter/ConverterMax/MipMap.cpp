@@ -48,7 +48,9 @@ namespace NDAVis
     }
 
     void MipMap::write(hsize_t channelOffset)
+
     {
+              
 
         int N = datasetDims.size();
         std::vector<hsize_t> count = {depth, height, width};
@@ -59,6 +61,7 @@ namespace NDAVis
         {
             fileSpace.selectHyperslab(H5S_SELECT_SET, count.data(), start.data());
         }
+
         dataset.write(vals, H5::PredType::NATIVE_FLOAT, memSpace, fileSpace);
     }
 
@@ -66,9 +69,8 @@ namespace NDAVis
     {
         bufferSize = std::accumulate(begin(bufferDims), end(bufferDims), (hsize_t)1, std::multiplies<hsize_t>());
 
-        vals = new double[bufferSize];
+        vals = new float[bufferSize];
         count = new int[bufferSize];
-
         resetBuffers();
 
         this->bufferDims = bufferDims;
@@ -82,7 +84,7 @@ namespace NDAVis
 
     void MipMap::resetBuffers()
     {
-        memset(vals, 0, sizeof(double) * bufferSize);
+        memset(vals, 0, sizeof(float) * bufferSize);
         memset(count, 0, sizeof(int) * bufferSize);
     }
 
@@ -94,14 +96,14 @@ namespace NDAVis
         int mip = 1;
         MipMapUtil tempObj;
         // We keep going until we have a mipmap which fits entirely within the minimum size
-        while (dims[2] > 64 || dims[1] > 64)
+        while (dims[2] > (mipmapXYsize) || dims[1] > (mipmapXYsize))
         {
             int zmip = 1;
 
             std::vector<hsize_t> tempDims = {dims[0], dims[1], dims[2]};
             tempDims = tempObj.mipDims(tempDims, 1, 1);
             mipMaps.push_back(MipMap(tempDims, mip, zmip));
-            while (tempDims[0] > 64)
+            while (tempDims[0] > (mipmapZsize))
             {
                 tempDims = tempObj.mipDims(tempDims, 1, 2);
                 zmip *= 2;

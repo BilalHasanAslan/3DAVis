@@ -1245,7 +1245,8 @@ export default {
         type: 'file',
         file: event
       }
-      this.connection.send(request)
+      const myJSON =  JSON.stringify(request)
+      this.connection.send(myJSON)
       console.log("Requested file: " + event)
     },
     setCropPoints(event) {

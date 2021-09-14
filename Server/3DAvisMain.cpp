@@ -40,32 +40,28 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
     j["numberOfFiles"] = fileManager.getNumberOfFiles();
     j["files"] = {};
     for (auto it = fileNames.begin(); it != fileNames.end(); it++) {
-        j["files"].push_back(trim(*it));
+        j["files"].push_back((*it));
     }
     ws->send(j.dump(), uWS::OpCode::TEXT, true);    
 }
 
 void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, std::string_view message, uWS::OpCode opCode) {
-    std::string msg {message};
-    msg.erase(std::remove(msg.begin(), msg.end(), '\\'), msg.end());
-    msg = msg.substr(1, (msg.length()-2));
-    json j = json::parse(msg);
-/* 
-    switch (j["type"])
-    {
-    case "file":
-        
-        break;
-    case "volume":
-        
-        break;
-    case "image":
-        
-        break;
-    default:
+    json j = json::parse(message);
+    std::string jType = j["type"].dump();
+    jType =jType.substr(1, (jType.length()-2));
+    if (jType == "file") {
+        /* code after client selects file */
+    }
+    else if (jType == "volume") {
+        /* code for cubes needed for interaction process */
+    }
+    else if (jType == "image") {
+        /* code for image needed at camera position same way as client */
+    }
+    else {
         std::cout << "JSON message received of invalid format" << std::endl;
-        break;
-    }  */
+    }
+     
 }
 
 /* VTK_MODULE_INIT(vtkInteractionStyle);

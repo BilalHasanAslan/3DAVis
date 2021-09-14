@@ -15,7 +15,7 @@ set(LINK_LIBS ${LINK_LIBS} stdc++fs)
 include_directories(${CMAKE_SOURCE_DIR}/third-party/include)
 install_uWebSockets()
 
-set(ZFP_DIR ${CMAKE_SOURCE_DIR}/third-party/zfp)
+set(ZFP_DIR ${CMAKE_SOURCE_DIR}/third-party/zfp/build)
 find_package(ZFP REQUIRED)
 if (ZFP_FOUND)
     include_directories(${ZFP_INCLUDE_DIR})

@@ -1,3 +1,5 @@
+#include "VtkVisul.h"
+#include "vtkAutoInit.h"
 #include "FileManager.h"
 #include "Server.h"
 #include "Compression.h"
@@ -9,6 +11,9 @@
 #include <typeinfo>
 #include <cmath>
 #include <algorithm>
+#include <vtkRayCastImageDisplayHelper.h>
+
+
 
 using json = nlohmann::json;
 using namespace NDAVis;
@@ -51,6 +56,10 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
 
 }
 
+/* VTK_MODULE_INIT(vtkInteractionStyle);
+VTK_MODULE_INIT(vtkRenderingFreeType);
+VTK_MODULE_INIT(vtkRenderingOpenGL2);  */
+VTK_MODULE_INIT(vtkRenderingVolumeOpenGL2);
 int main()
 {
     

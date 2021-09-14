@@ -1171,7 +1171,7 @@ export default {
 
     // connect to server
     console.log("connect to server")
-    this.connection = new WebSocket("ws://192.168.101.242:9000/")
+    this.connection = new WebSocket("ws://localhost:9000/")
     // get server to send files when it connects to the client
 
     // what to do with the data from the server

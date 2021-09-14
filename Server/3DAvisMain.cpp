@@ -50,22 +50,22 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
     msg.erase(std::remove(msg.begin(), msg.end(), '\\'), msg.end());
     msg = msg.substr(1, (msg.length()-2));
     json j = json::parse(msg);
-
+/* 
     switch (j["type"])
     {
     case "file":
-        /* code */
+        
         break;
     case "volume":
-        /* code */
+        
         break;
     case "image":
-        /* code */
+        
         break;
     default:
         std::cout << "JSON message received of invalid format" << std::endl;
         break;
-    }
+    }  */
 }
 
 /* VTK_MODULE_INIT(vtkInteractionStyle);

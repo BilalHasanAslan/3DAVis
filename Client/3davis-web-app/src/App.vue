@@ -1383,8 +1383,8 @@ export default {
         tiles: null
       }
 
-      const myJSON = JSON.stringify(request)
-      this.connection.send(myJSON)
+      const messageJSON = JSON.stringify(request)
+      this.connection.send(messageJSON)
     },
     resetCube() {
       console.log("reset cube")
@@ -1401,8 +1401,8 @@ export default {
         tiles: [1]
       }
 
-      const myJSON = JSON.stringify(request)
-      this.connection.send(myJSON)
+      const messageJSON = JSON.stringify(request)
+      this.connection.send(messageJSON)
     },
     setCameraState(event) {
       this.cameraState = event
@@ -1416,7 +1416,8 @@ export default {
     getImage() {
       // request image
       console.log("request image")
-      this.connection.send(this.cameraState)
+      const messageJSON = JSON.stringify(this.cameraState)
+      this.connection.send(messageJSON)
     },
     constructCube() {
       const cubes = []

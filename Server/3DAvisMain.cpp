@@ -38,6 +38,7 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
 
     json j;
     j["numberOfFiles"] = fileManager.getNumberOfFiles();
+    j["type"] = "file";
     j["files"] = {};
     for (auto it = fileNames.begin(); it != fileNames.end(); it++) {
         j["files"].push_back((*it));

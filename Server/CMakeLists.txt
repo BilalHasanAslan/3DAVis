@@ -39,7 +39,7 @@ else ()
     message(FATAL_ERROR "Could not find HDF5.")
 endif ()
 
-set(VTK_DIR "~/Downloads/vtk-v9.0.3/build")
+set(VTK_DIR "~/Documents/VTK/vtk-v9.0.3/build")
 find_package(VTK REQUIRED)
 if (VTK_FOUND)
     include_directories(${VTK_INCLUDE_DIR})

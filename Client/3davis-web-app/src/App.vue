@@ -1363,7 +1363,8 @@ export default {
         tiles: this.tiles
       }
 
-      this.connection.send(request)
+      const myJSON = JSON.stringify(request)
+      this.connection.send(myJSON)
     },
     stepBack() {
       console.log("step back")
@@ -1377,7 +1378,8 @@ export default {
         tiles: null
       }
 
-      this.connection.send(request)
+      const myJSON = JSON.stringify(request)
+      this.connection.send(myJSON)
     },
     resetCube() {
       console.log("reset cube")
@@ -1393,7 +1395,9 @@ export default {
         mipmap: mipmap, 
         tiles: [1]
       }
-      this.connection.send(request)
+
+      const myJSON = JSON.stringify(request)
+      this.connection.send(myJSON)
     },
     setCameraState(event) {
       this.cameraState = event

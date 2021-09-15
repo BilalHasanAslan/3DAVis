@@ -47,6 +47,7 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
 
 void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, std::string_view message, uWS::OpCode opCode) {
     json j = json::parse(message);
+    std::cout << message << std::endl;
     std::string jType = j["type"].dump();
     jType =jType.substr(1, (jType.length()-2));
     if (jType == "file") {

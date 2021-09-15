@@ -1,4 +1,0 @@
-/home/michaela/Desktop/3DAVis/Server/build/CMakeFiles/rebuild_cache.dir
-/home/michaela/Desktop/3DAVis/Server/build/CMakeFiles/uSockets.dir
-/home/michaela/Desktop/3DAVis/Server/build/CMakeFiles/edit_cache.dir
-/home/michaela/Desktop/3DAVis/Server/build/CMakeFiles/3DAvis_Server.dir

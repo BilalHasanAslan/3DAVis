@@ -3,6 +3,7 @@
 #include "FileManager.h"
 #include "Server.h"
 #include "Compression.h"
+#include "Controller.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -53,6 +54,14 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
     jType =jType.substr(1, (jType.length()-2));
     if (jType == "file") {
         /* code after client selects file */
+        float colour[] = {1, 2, 3};
+        float opacity[] = {1, 2};
+        std::string fileName = j["file"].dump();
+        fileName = fileName.substr(1, (fileName.length()-4));
+        NDAVis::Controller controller = Controller();
+        controller.setFile(fileName);
+        controller.startServerRender(0, 0, 0, 0, 0, 0, colour, 3, opacity, 2);
+        
     }
     else if (jType == "volume") {
         /* code for cubes needed for interaction process */

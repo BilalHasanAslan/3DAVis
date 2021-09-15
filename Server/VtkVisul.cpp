@@ -147,12 +147,11 @@ namespace NDAVis
         writer->Write(); 
         vtkUnsignedCharArray *temparr;
         temparr = writer->GetResult();
-        int size = temparr->GetNumberOfTuples();
-        imageArr = new int[size];
-        for (int i = 0; i < size; i++)
+        imageArrSize = temparr->GetNumberOfTuples();
+        imageArr = new int[imageArrSize];
+        for (int i = 0; i < imageArrSize; i++)
         {
             imageArr[i] = temparr->GetValue(i);
-
         }
 
 

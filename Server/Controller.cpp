@@ -177,7 +177,7 @@ namespace NDAVis
         visul.InsertArray(serverArr, totalDim);
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
         visul.render(renderDimX, renderDimY, renderDimZ, 2, 2, 2, 0, 0, 0);
-        visul.getImage();
+        //visul.getImage();
         
         log.endLog(false);
     }
@@ -396,6 +396,10 @@ namespace NDAVis
 
         clientTiles.readTiles(tileNum, c, readerClient, xChunks, yChunks, zChunks);
         log.endLog(false);
+    }
+
+    void Controller::getImage(){
+        visul.getImage();
     }
 
 }

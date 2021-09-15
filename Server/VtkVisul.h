@@ -44,6 +44,7 @@ namespace NDAVis
         vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
         vtkCamera *camera;
         int* imageArr;
+        int imageArrSize;
     };
 }
 

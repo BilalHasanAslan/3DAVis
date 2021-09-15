@@ -38,33 +38,30 @@ void onConnect (uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws) 
 
     json j;
     j["numberOfFiles"] = fileManager.getNumberOfFiles();
+    j["type"] = "file";
     j["files"] = {};
     for (auto it = fileNames.begin(); it != fileNames.end(); it++) {
-        j["files"].push_back(trim(*it));
+        j["files"].push_back((*it));
     }
     ws->send(j.dump(), uWS::OpCode::TEXT, true);    
 }
 
 void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, std::string_view message, uWS::OpCode opCode) {
-    std::string msg {message};
-    msg.erase(std::remove(msg.begin(), msg.end(), '\\'), msg.end());
-    msg = msg.substr(1, (msg.length()-2));
-    json j = json::parse(msg);
+    json j = json::parse(message);
+    std::string jType = j["type"].dump();
+    jType = jType.substr(1,(jType.length()-2));
 
-    switch (j["type"])
-    {
-    case "file":
-        /* code */
-        break;
-    case "volume":
-        /* code */
-        break;
-    case "image":
-        /* code */
-        break;
-    default:
+    if(jType == "file") {
+
+    }
+    else if(jType == "volume") {
+
+    }
+    else if(jType == "image") {
+
+    }
+    else {
         std::cout << "JSON message received of invalid format" << std::endl;
-        break;
     }
 }
 

@@ -5,6 +5,7 @@
     <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
     <!-- <HelloWorld/> -->
     <control-panel-component
+      v-if="!loadingFile"
       :fileList="files"
       @selected="fileSelected"
       @crop="cropCube"
@@ -43,12 +44,13 @@ export default {
   },
   data() {
     return {
-      files: ["file1","file2"],
+      files: null,
       source: [],
       connection: null,
       connected: true,
       loadingImage: true,
       loadingVolume: true,
+      loadingFile: true,
       xyLevel: 0,
       zLevel: 0,
       cropPoints: [0, 1100, 0, 750, 0, 265],
@@ -1170,15 +1172,23 @@ export default {
     this.tileBuffer[0] = values
 
     // connect to server
-    console.log("connect to server")
     this.connection = new WebSocket("ws://localhost:9000/")
-    // get server to send files when it connects to the client
 
-    // what to do with the data from the server
-    this.connection.onmessage = async function(event) {
-      if(event.type == "volume") // receive data tile
+    this.connection.onopen = function(event) {
+      console.log(event)
+      console.log("successfully connected to server")
+      // send initial camera values
+    }
+  },
+  mounted() {
+    this.connection.onmessage = async event => {
+
+      const messageData = JSON.parse(event.data)
+      console.log(messageData.type)
+
+      if(messageData.type == "volume") // receive data tile
       {
-        console.log(event.type)
+        console.log(messageData)
         // add to tile buffer
 
         if(this.tileBuffer.length === this.tiles.length)
@@ -1189,22 +1199,17 @@ export default {
         }
           
       }
-      else if(event.type == "image")
+      else if(messageData.type == "image")
       {
-        console.log(event.type)
         // set image component
         this.loadingImage = false
       }
-      else if(event.type == "files")
+      else if(messageData.type == "file")
       {
-        console.log(event.type)
+        console.log(messageData.files)
+        this.files = messageData.files
+        this.loadingFile = false
       }
-    }
-
-    this.connection.onopen = function(event) {
-      console.log(event)
-      console.log("successfully connected to server")
-      // send initial camera values
     }
   },
   // watch: {
@@ -1245,7 +1250,8 @@ export default {
         type: 'file',
         file: event
       }
-      this.connection.send(request)
+      const messageJSON = JSON.stringify(request)
+      this.connection.send(messageJSON)
       console.log("Requested file: " + event)
     },
     setCropPoints(event) {

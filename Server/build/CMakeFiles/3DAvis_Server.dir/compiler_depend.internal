@@ -4,8 +4,23 @@
 CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /home/michaela/Desktop/3DAVis/Server/3DAvisMain.cpp
  /usr/include/stdc-predef.h
- /home/michaela/Desktop/3DAVis/Server/FileManager.h
- /usr/include/c++/9/string
+ /home/michaela/Desktop/3DAVis/Server/VtkVisul.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkDataArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkAbstractArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Core/vtkCommonCoreModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkObject.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkObjectBase.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkIndent.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSystemIncludes.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkWin32Header.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkABI.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Core/vtkConfigure.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Core/vtkVersionMacros.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkIOStream.h
+ /usr/include/c++/9/fstream
+ /usr/include/c++/9/istream
+ /usr/include/c++/9/ios
+ /usr/include/c++/9/iosfwd
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h
  /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h
  /usr/include/features.h
@@ -18,24 +33,6 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/c++/9/pstl/pstl_config.h
  /usr/include/c++/9/bits/stringfwd.h
  /usr/include/c++/9/bits/memoryfwd.h
- /usr/include/c++/9/bits/char_traits.h
- /usr/include/c++/9/bits/stl_algobase.h
- /usr/include/c++/9/bits/functexcept.h
- /usr/include/c++/9/bits/exception_defines.h
- /usr/include/c++/9/bits/cpp_type_traits.h
- /usr/include/c++/9/ext/type_traits.h
- /usr/include/c++/9/ext/numeric_traits.h
- /usr/include/c++/9/bits/stl_pair.h
- /usr/include/c++/9/bits/move.h
- /usr/include/c++/9/bits/concept_check.h
- /usr/include/c++/9/type_traits
- /usr/include/c++/9/bits/stl_iterator_base_types.h
- /usr/include/c++/9/bits/stl_iterator_base_funcs.h
- /usr/include/c++/9/debug/assertions.h
- /usr/include/c++/9/bits/stl_iterator.h
- /usr/include/c++/9/bits/ptr_traits.h
- /usr/include/c++/9/debug/debug.h
- /usr/include/c++/9/bits/predefined_ops.h
  /usr/include/c++/9/bits/postypes.h
  /usr/include/c++/9/cwchar
  /usr/include/wchar.h
@@ -52,6 +49,32 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/x86_64-linux-gnu/bits/types/FILE.h
  /usr/include/x86_64-linux-gnu/bits/types/locale_t.h
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h
+ /usr/include/c++/9/exception
+ /usr/include/c++/9/bits/exception.h
+ /usr/include/c++/9/bits/exception_ptr.h
+ /usr/include/c++/9/bits/exception_defines.h
+ /usr/include/c++/9/bits/cxxabi_init_exception.h
+ /usr/include/c++/9/typeinfo
+ /usr/include/c++/9/bits/hash_bytes.h
+ /usr/include/c++/9/new
+ /usr/include/c++/9/bits/nested_exception.h
+ /usr/include/c++/9/bits/move.h
+ /usr/include/c++/9/bits/concept_check.h
+ /usr/include/c++/9/type_traits
+ /usr/include/c++/9/bits/char_traits.h
+ /usr/include/c++/9/bits/stl_algobase.h
+ /usr/include/c++/9/bits/functexcept.h
+ /usr/include/c++/9/bits/cpp_type_traits.h
+ /usr/include/c++/9/ext/type_traits.h
+ /usr/include/c++/9/ext/numeric_traits.h
+ /usr/include/c++/9/bits/stl_pair.h
+ /usr/include/c++/9/bits/stl_iterator_base_types.h
+ /usr/include/c++/9/bits/stl_iterator_base_funcs.h
+ /usr/include/c++/9/debug/assertions.h
+ /usr/include/c++/9/bits/stl_iterator.h
+ /usr/include/c++/9/bits/ptr_traits.h
+ /usr/include/c++/9/debug/debug.h
+ /usr/include/c++/9/bits/predefined_ops.h
  /usr/include/c++/9/cstdint
  /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h
  /usr/include/stdint.h
@@ -61,34 +84,16 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/x86_64-linux-gnu/bits/time64.h
  /usr/include/x86_64-linux-gnu/bits/stdint-intn.h
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h
- /usr/include/c++/9/bits/allocator.h
- /usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h
- /usr/include/c++/9/ext/new_allocator.h
- /usr/include/c++/9/new
- /usr/include/c++/9/exception
- /usr/include/c++/9/bits/exception.h
- /usr/include/c++/9/bits/exception_ptr.h
- /usr/include/c++/9/bits/cxxabi_init_exception.h
- /usr/include/c++/9/typeinfo
- /usr/include/c++/9/bits/hash_bytes.h
- /usr/include/c++/9/bits/nested_exception.h
  /usr/include/c++/9/bits/localefwd.h
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++locale.h
  /usr/include/c++/9/clocale
  /usr/include/locale.h
  /usr/include/x86_64-linux-gnu/bits/locale.h
- /usr/include/c++/9/iosfwd
  /usr/include/c++/9/cctype
  /usr/include/ctype.h
  /usr/include/x86_64-linux-gnu/bits/endian.h
  /usr/include/x86_64-linux-gnu/bits/endianness.h
- /usr/include/c++/9/bits/ostream_insert.h
- /usr/include/c++/9/bits/cxxabi_forced.h
- /usr/include/c++/9/bits/stl_function.h
- /usr/include/c++/9/backward/binders.h
- /usr/include/c++/9/bits/range_access.h
- /usr/include/c++/9/initializer_list
- /usr/include/c++/9/bits/basic_string.h
+ /usr/include/c++/9/bits/ios_base.h
  /usr/include/c++/9/ext/atomicity.h
  /usr/include/x86_64-linux-gnu/c++/9/bits/gthr.h
  /usr/include/x86_64-linux-gnu/c++/9/bits/gthr-default.h
@@ -115,6 +120,18 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h
  /usr/include/x86_64-linux-gnu/bits/setjmp.h
  /usr/include/x86_64-linux-gnu/c++/9/bits/atomic_word.h
+ /usr/include/c++/9/bits/locale_classes.h
+ /usr/include/c++/9/string
+ /usr/include/c++/9/bits/allocator.h
+ /usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h
+ /usr/include/c++/9/ext/new_allocator.h
+ /usr/include/c++/9/bits/ostream_insert.h
+ /usr/include/c++/9/bits/cxxabi_forced.h
+ /usr/include/c++/9/bits/stl_function.h
+ /usr/include/c++/9/backward/binders.h
+ /usr/include/c++/9/bits/range_access.h
+ /usr/include/c++/9/initializer_list
+ /usr/include/c++/9/bits/basic_string.h
  /usr/include/c++/9/ext/alloc_traits.h
  /usr/include/c++/9/bits/alloc_traits.h
  /usr/include/c++/9/string_view
@@ -154,95 +171,10 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/asm-generic/errno-base.h
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h
  /usr/include/c++/9/bits/basic_string.tcc
- /usr/include/c++/9/vector
- /usr/include/c++/9/bits/stl_construct.h
- /usr/include/c++/9/bits/stl_uninitialized.h
- /usr/include/c++/9/utility
- /usr/include/c++/9/bits/stl_relops.h
- /usr/include/c++/9/bits/stl_vector.h
- /usr/include/c++/9/bits/stl_bvector.h
- /usr/include/c++/9/bits/vector.tcc
- /home/michaela/Desktop/3DAVis/Server/Server.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/App.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpContext.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/Loop.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/LoopData.h
- /usr/include/c++/9/thread
- /usr/include/c++/9/chrono
- /usr/include/c++/9/ratio
- /usr/include/c++/9/ctime
- /usr/include/c++/9/bits/parse_numbers.h
- /usr/include/c++/9/memory
- /usr/include/c++/9/bits/stl_tempbuf.h
- /usr/include/c++/9/bits/stl_raw_storage_iter.h
- /usr/include/c++/9/ext/concurrence.h
- /usr/include/c++/9/bits/uses_allocator.h
- /usr/include/c++/9/bits/unique_ptr.h
- /usr/include/c++/9/tuple
- /usr/include/c++/9/array
- /usr/include/c++/9/stdexcept
- /usr/include/c++/9/bits/invoke.h
- /usr/include/c++/9/bits/shared_ptr.h
- /usr/include/c++/9/bits/shared_ptr_base.h
- /usr/include/c++/9/bits/allocated_ptr.h
- /usr/include/c++/9/bits/refwrap.h
- /usr/include/c++/9/ext/aligned_buffer.h
- /usr/include/c++/9/bits/shared_ptr_atomic.h
- /usr/include/c++/9/bits/atomic_base.h
- /usr/include/c++/9/bits/atomic_lockfree_defines.h
- /usr/include/c++/9/backward/auto_ptr.h
- /usr/include/c++/9/pstl/glue_memory_defs.h
- /usr/include/c++/9/pstl/execution_defs.h
- /usr/include/c++/9/functional
- /usr/include/c++/9/bits/std_function.h
- /usr/include/c++/9/unordered_map
- /usr/include/c++/9/bits/hashtable.h
- /usr/include/c++/9/bits/hashtable_policy.h
- /usr/include/c++/9/bits/node_handle.h
- /usr/include/c++/9/optional
- /usr/include/c++/9/bits/enable_special_members.h
- /usr/include/c++/9/bits/unordered_map.h
- /usr/include/c++/9/bits/erase_if.h
- /usr/include/c++/9/bits/stl_algo.h
- /usr/include/c++/9/bits/algorithmfwd.h
- /usr/include/c++/9/bits/stl_heap.h
- /usr/include/c++/9/bits/uniform_int_dist.h
- /usr/include/c++/9/mutex
+ /usr/include/c++/9/bits/locale_classes.tcc
  /usr/include/c++/9/system_error
  /usr/include/x86_64-linux-gnu/c++/9/bits/error_constants.h
- /usr/include/c++/9/bits/std_mutex.h
- /usr/include/c++/9/bits/unique_lock.h
- /usr/include/c++/9/map
- /usr/include/c++/9/bits/stl_tree.h
- /usr/include/c++/9/bits/stl_map.h
- /usr/include/c++/9/bits/stl_multimap.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/PerMessageDeflate.h
- /home/michaela/Documents/VTK/vtk-v9.0.3/ThirdParty/zlib/vtkzlib/zlib.h
- /home/michaela/Documents/VTK/vtk-v9.0.3/build/ThirdParty/zlib/vtkzlib/zconf.h
- /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h
- /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h
- /usr/include/limits.h
- /usr/include/x86_64-linux-gnu/bits/posix1_lim.h
- /usr/include/x86_64-linux-gnu/bits/local_lim.h
- /usr/include/linux/limits.h
- /usr/include/x86_64-linux-gnu/bits/posix2_lim.h
- /usr/include/x86_64-linux-gnu/bits/xopen_lim.h
- /usr/include/x86_64-linux-gnu/bits/uio_lim.h
- /usr/include/unistd.h
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h
- /usr/include/x86_64-linux-gnu/bits/environments.h
- /usr/include/x86_64-linux-gnu/bits/confname.h
- /usr/include/x86_64-linux-gnu/bits/getopt_posix.h
- /usr/include/x86_64-linux-gnu/bits/getopt_core.h
- /usr/include/x86_64-linux-gnu/bits/unistd_ext.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/MoveOnlyFunction.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/libusockets.h
- /usr/include/c++/9/iostream
- /usr/include/c++/9/ostream
- /usr/include/c++/9/ios
- /usr/include/c++/9/bits/ios_base.h
- /usr/include/c++/9/bits/locale_classes.h
- /usr/include/c++/9/bits/locale_classes.tcc
+ /usr/include/c++/9/stdexcept
  /usr/include/c++/9/streambuf
  /usr/include/c++/9/bits/streambuf.tcc
  /usr/include/c++/9/bits/basic_ios.h
@@ -255,59 +187,52 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/x86_64-linux-gnu/c++/9/bits/ctype_inline.h
  /usr/include/c++/9/bits/locale_facets.tcc
  /usr/include/c++/9/bits/basic_ios.tcc
+ /usr/include/c++/9/ostream
  /usr/include/c++/9/bits/ostream.tcc
- /usr/include/c++/9/istream
  /usr/include/c++/9/bits/istream.tcc
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpContextData.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpRouter.h
- /usr/include/c++/9/cstring
+ /usr/include/c++/9/bits/codecvt.h
+ /usr/include/x86_64-linux-gnu/c++/9/bits/basic_file.h
+ /usr/include/x86_64-linux-gnu/c++/9/bits/c++io.h
+ /usr/include/c++/9/bits/fstream.tcc
+ /usr/include/c++/9/iomanip
+ /usr/include/c++/9/locale
+ /usr/include/c++/9/bits/locale_facets_nonio.h
+ /usr/include/c++/9/ctime
+ /usr/include/x86_64-linux-gnu/c++/9/bits/time_members.h
+ /usr/include/x86_64-linux-gnu/c++/9/bits/messages_members.h
+ /usr/include/libintl.h
+ /usr/include/c++/9/bits/locale_facets_nonio.tcc
+ /usr/include/c++/9/bits/locale_conv.h
+ /usr/include/c++/9/bits/unique_ptr.h
+ /usr/include/c++/9/utility
+ /usr/include/c++/9/bits/stl_relops.h
+ /usr/include/c++/9/tuple
+ /usr/include/c++/9/array
+ /usr/include/c++/9/bits/uses_allocator.h
+ /usr/include/c++/9/bits/invoke.h
+ /usr/include/c++/9/bits/quoted_string.h
+ /usr/include/c++/9/sstream
+ /usr/include/c++/9/bits/sstream.tcc
+ /usr/include/c++/9/iostream
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkType.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtk_kwiml.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtkkwiml/abi.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtkkwiml/include/kwiml/abi.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtkkwiml/int.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtkkwiml/include/kwiml/int.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Utilities/KWIML/vtkkwiml/include/kwiml/abi.h
+ /usr/include/inttypes.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkWrappingHints.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkOStreamWrapper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkOStrStreamWrapper.h
+ /usr/include/c++/9/stdlib.h
  /usr/include/string.h
  /usr/include/strings.h
- /usr/include/c++/9/algorithm
- /usr/include/c++/9/pstl/glue_algorithm_defs.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpResponseData.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpParser.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/BloomFilter.h
- /usr/include/c++/9/bitset
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/ProxyParser.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/QueryParser.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/AsyncSocketData.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/AsyncSocket.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketData.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketProtocol.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/TopicTree.h
- /usr/include/c++/9/set
- /usr/include/c++/9/bits/stl_set.h
- /usr/include/c++/9/bits/stl_multiset.h
- /usr/include/c++/9/list
- /usr/include/c++/9/bits/stl_list.h
- /usr/include/c++/9/bits/list.tcc
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpResponse.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/Utilities.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketExtensions.h
- /usr/include/c++/9/climits
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketHandshake.h
- /usr/include/c++/9/cstddef
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocket.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketContextData.h
- /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketContext.h
- /home/michaela/Desktop/3DAVis/Server/Compression.h
- /usr/include/c++/9/charconv
- /usr/include/nlohmann/json.hpp
- /usr/include/c++/9/cassert
- /usr/include/assert.h
- /usr/include/c++/9/ciso646
- /usr/include/c++/9/iterator
- /usr/include/c++/9/bits/stream_iterator.h
- /usr/include/c++/9/numeric
- /usr/include/c++/9/bits/stl_numeric.h
- /usr/include/c++/9/pstl/glue_numeric_defs.h
- /usr/include/nlohmann/adl_serializer.hpp
- /usr/include/nlohmann/detail/conversions/from_json.hpp
- /usr/include/c++/9/forward_list
- /usr/include/c++/9/bits/forward_list.h
- /usr/include/c++/9/bits/forward_list.tcc
- /usr/include/c++/9/valarray
+ /usr/include/c++/9/atomic
+ /usr/include/c++/9/bits/atomic_base.h
+ /usr/include/c++/9/bits/atomic_lockfree_defines.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSetGet.h
+ /usr/include/c++/9/math.h
  /usr/include/c++/9/cmath
  /usr/include/math.h
  /usr/include/x86_64-linux-gnu/bits/math-vector.h
@@ -332,6 +257,210 @@ CMakeFiles/3DAvis_Server.dir/3DAvisMain.cpp.o
  /usr/include/c++/9/tr1/poly_hermite.tcc
  /usr/include/c++/9/tr1/poly_laguerre.tcc
  /usr/include/c++/9/tr1/riemann_zeta.tcc
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkTimeStamp.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkWeakPointerBase.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkVariant.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkStdString.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkUnicodeString.h
+ /usr/include/c++/9/vector
+ /usr/include/c++/9/bits/stl_construct.h
+ /usr/include/c++/9/bits/stl_uninitialized.h
+ /usr/include/c++/9/bits/stl_vector.h
+ /usr/include/c++/9/bits/stl_bvector.h
+ /usr/include/c++/9/bits/vector.tcc
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkVariantInlineOperators.h
+ /usr/include/c++/9/climits
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/limits.h
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/syslimits.h
+ /usr/include/limits.h
+ /usr/include/x86_64-linux-gnu/bits/posix1_lim.h
+ /usr/include/x86_64-linux-gnu/bits/local_lim.h
+ /usr/include/linux/limits.h
+ /usr/include/x86_64-linux-gnu/bits/posix2_lim.h
+ /usr/include/x86_64-linux-gnu/bits/xopen_lim.h
+ /usr/include/x86_64-linux-gnu/bits/uio_lim.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Core/vtkVTK_USE_SCALED_SOA_ARRAYS.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkNew.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkMeta.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Color/vtkNamedColors.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkColor.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkObject.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Math/vtkTuple.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkIOStream.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSystemIncludes.h
+ /usr/include/c++/9/cassert
+ /usr/include/assert.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Color/vtkCommonColorModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkStdString.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkStringArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkRenderer.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Rendering/Core/vtkRenderingCoreModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Filters/Core/vtkFiltersCoreModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkViewport.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkActorCollection.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkActor.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkProp3D.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkProp.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkPropCollection.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkCollection.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkVolumeCollection.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkVolume.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkFloatArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkAOSDataArrayTemplate.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkBuffer.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkObjectFactory.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkDebugLeaksManager.h
+ /usr/include/c++/9/algorithm
+ /usr/include/c++/9/bits/stl_algo.h
+ /usr/include/c++/9/bits/algorithmfwd.h
+ /usr/include/c++/9/bits/stl_heap.h
+ /usr/include/c++/9/bits/stl_tempbuf.h
+ /usr/include/c++/9/bits/uniform_int_dist.h
+ /usr/include/c++/9/pstl/glue_algorithm_defs.h
+ /usr/include/c++/9/functional
+ /usr/include/c++/9/bits/refwrap.h
+ /usr/include/c++/9/bits/std_function.h
+ /usr/include/c++/9/unordered_map
+ /usr/include/c++/9/ext/aligned_buffer.h
+ /usr/include/c++/9/bits/hashtable.h
+ /usr/include/c++/9/bits/hashtable_policy.h
+ /usr/include/c++/9/bits/node_handle.h
+ /usr/include/c++/9/optional
+ /usr/include/c++/9/bits/enable_special_members.h
+ /usr/include/c++/9/bits/unordered_map.h
+ /usr/include/c++/9/bits/erase_if.h
+ /usr/include/c++/9/pstl/execution_defs.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkGenericDataArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkDataArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkGenericDataArrayLookupHelper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkIdList.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSmartPointer.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSmartPointerBase.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkNew.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkTypeTraits.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkGenericDataArray.txx
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkMath.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/Core/vtkMathConfigure.h
+ /usr/lib/gcc/x86_64-linux-gnu/9/include/float.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkVariantCast.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkPiecewiseFunction.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/DataModel/vtkCommonDataModelModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkDataObject.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkVolumeProperty.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkImplicitFunction.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkSmartPointer.h
+ /usr/include/c++/9/set
+ /usr/include/c++/9/bits/stl_tree.h
+ /usr/include/c++/9/bits/stl_set.h
+ /usr/include/c++/9/bits/stl_multiset.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkColorTransferFunction.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkScalarsToColors.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/VolumeOpenGL2/vtkSmartVolumeMapper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Imaging/Core/vtkImageReslice.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Imaging/Core/vtkImagingCoreModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/ExecutionModel/vtkThreadedImageAlgorithm.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Common/ExecutionModel/vtkCommonExecutionModelModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/ExecutionModel/vtkImageAlgorithm.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/ExecutionModel/vtkAlgorithm.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Rendering/VolumeOpenGL2/vtkRenderingVolumeOpenGL2Module.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Rendering/OpenGL2/vtkRenderingOpenGL2Module.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Rendering/UI/vtkRenderingUIModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/Rendering/Volume/vtkRenderingVolumeModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Volume/vtkVolumeMapper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkAbstractVolumeMapper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkAbstractMapper3D.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkAbstractMapper.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/ExecutionModel/vtkAlgorithm.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkImageData.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkDataSet.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkStructuredData.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkDataSetAttributes.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkDataSetAttributesFieldList.h
+ /usr/include/c++/9/memory
+ /usr/include/c++/9/bits/stl_raw_storage_iter.h
+ /usr/include/c++/9/ext/concurrence.h
+ /usr/include/c++/9/bits/shared_ptr.h
+ /usr/include/c++/9/bits/shared_ptr_base.h
+ /usr/include/c++/9/bits/allocated_ptr.h
+ /usr/include/c++/9/bits/shared_ptr_atomic.h
+ /usr/include/c++/9/backward/auto_ptr.h
+ /usr/include/c++/9/pstl/glue_memory_defs.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/DataModel/vtkFieldData.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkAbstractArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkVolume.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkAutoInit.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/IO/Image/vtkJPEGWriter.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/IO/Image/vtkIOImageModule.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/IO/Image/vtkImageWriter.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Common/ExecutionModel/vtkImageAlgorithm.h
+ /home/michaela/Desktop/3DAVis/Server/FileManager.h
+ /home/michaela/Desktop/3DAVis/Server/Server.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/App.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpContext.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/Loop.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/LoopData.h
+ /usr/include/c++/9/thread
+ /usr/include/c++/9/chrono
+ /usr/include/c++/9/ratio
+ /usr/include/c++/9/bits/parse_numbers.h
+ /usr/include/c++/9/mutex
+ /usr/include/c++/9/bits/std_mutex.h
+ /usr/include/c++/9/bits/unique_lock.h
+ /usr/include/c++/9/map
+ /usr/include/c++/9/bits/stl_map.h
+ /usr/include/c++/9/bits/stl_multimap.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/PerMessageDeflate.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/ThirdParty/zlib/vtkzlib/zlib.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/build/ThirdParty/zlib/vtkzlib/zconf.h
+ /usr/include/unistd.h
+ /usr/include/x86_64-linux-gnu/bits/posix_opt.h
+ /usr/include/x86_64-linux-gnu/bits/environments.h
+ /usr/include/x86_64-linux-gnu/bits/confname.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_posix.h
+ /usr/include/x86_64-linux-gnu/bits/getopt_core.h
+ /usr/include/x86_64-linux-gnu/bits/unistd_ext.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/MoveOnlyFunction.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/uSockets/src/libusockets.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpContextData.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpRouter.h
+ /usr/include/c++/9/cstring
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpResponseData.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpParser.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/BloomFilter.h
+ /usr/include/c++/9/bitset
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/ProxyParser.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/QueryParser.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/AsyncSocketData.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/AsyncSocket.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketData.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketProtocol.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/TopicTree.h
+ /usr/include/c++/9/list
+ /usr/include/c++/9/bits/stl_list.h
+ /usr/include/c++/9/bits/list.tcc
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/HttpResponse.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/Utilities.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketExtensions.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketHandshake.h
+ /usr/include/c++/9/cstddef
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocket.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketContextData.h
+ /home/michaela/Desktop/3DAVis/Server/third-party/uWebSockets/src/WebSocketContext.h
+ /home/michaela/Desktop/3DAVis/Server/Compression.h
+ /usr/include/c++/9/charconv
+ /usr/include/nlohmann/json.hpp
+ /usr/include/c++/9/ciso646
+ /usr/include/c++/9/iterator
+ /usr/include/c++/9/bits/stream_iterator.h
+ /usr/include/c++/9/numeric
+ /usr/include/c++/9/bits/stl_numeric.h
+ /usr/include/c++/9/pstl/glue_numeric_defs.h
+ /usr/include/nlohmann/adl_serializer.hpp
+ /usr/include/nlohmann/detail/conversions/from_json.hpp
+ /usr/include/c++/9/forward_list
+ /usr/include/c++/9/bits/forward_list.h
+ /usr/include/c++/9/bits/forward_list.tcc
+ /usr/include/c++/9/valarray
  /usr/include/c++/9/bits/valarray_array.h
  /usr/include/c++/9/bits/valarray_array.tcc
  /usr/include/c++/9/bits/valarray_before.h
@@ -2896,4 +3025,5 @@ CMakeFiles/3DAvis_Server.dir/VtkVisul.cpp.o
  /usr/include/c++/9/bits/parse_numbers.h
  /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Core/vtkWindowToImageFilter.h
  /home/michaela/Documents/VTK/vtk-v9.0.3/Common/Core/vtkUnsignedCharArray.h
+ /home/michaela/Documents/VTK/vtk-v9.0.3/Rendering/Volume/vtkRayCastImageDisplayHelper.h
 

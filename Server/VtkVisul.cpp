@@ -47,6 +47,7 @@ namespace NDAVis
 
     void VtkVisul::setColor(float *color, int colorSize, float *opacity, int opacitySize)
     {
+
         mapper->SetBlendModeToComposite();
         //will be updated
         /*std::array<unsigned char, 3> bkg{{0, 0, 0}};
@@ -64,9 +65,10 @@ namespace NDAVis
         int max = 1;
         int min = 0;
         int range = max - min;
-        for (int i = 0; i < colorSize; i + 4)
+        for (int i = 0; i < colorSize; i += 4)
         {
             colorTransferFunction->AddRGBPoint(min + (range * color[i]), color[i + 1], color[i + 2], color[i + 3]);
+            
         }
 
         volumeProperty->SetColor(colorTransferFunction);
@@ -82,6 +84,7 @@ namespace NDAVis
         volumeScalarOpacity->AddPoint(1.0, 1.0); */
 
         volumeProperty->SetScalarOpacity(volumeScalarOpacity);
+
     }
 
     void VtkVisul::InsertArray(float *arr, int arrSize)
@@ -119,39 +122,40 @@ namespace NDAVis
     }
 
     void VtkVisul::getImage()
-    {
+    {   
         
+
         vtkNew<vtkRenderWindow> renWin;
         renWin->AddRenderer(renderer);
-        /*         vtkNew<vtkRenderWindowInteractor> iren;
-        iren->SetRenderWindow(renWin); */
+        renWin->OffScreenRenderingOn();
         renWin->SetSize(1080, 720);
+        //vtkNew<vtkRenderWindowInteractor> iren;
+        //iren->SetRenderWindow(renWin);
+        //renWin->SetWindowName("3davis");
+        renWin->Render();
+        //iren->Start();
+        
+
         vtkNew<vtkWindowToImageFilter> window_to_image_filter;
         window_to_image_filter->SetInput(renWin);
         window_to_image_filter->SetScale(1);
         window_to_image_filter->SetInputBufferTypeToRGB();
-        window_to_image_filter->ReadFrontBufferOff();
+        //window_to_image_filter->ReadFrontBufferOff();
         window_to_image_filter->Update();
-        writer->SetWriteToMemory(true);
+        writer->SetWriteToMemory(1);
         writer->SetInputConnection(window_to_image_filter->GetOutputPort());
-
-        double *range = new double[2];
+        writer->Write(); 
         vtkUnsignedCharArray *temparr;
         temparr = writer->GetResult();
-        temparr->GetRange(range);
-        int size = (range[0] * range[1] * range[2]);
+        int size = temparr->GetNumberOfTuples();
         imageArr = new int[size];
-        //imageArr = temparr->GetData();
-
-        for (int i = 0; i < (range[0] * range[1] * range[2]); i++)
+        for (int i = 0; i < size; i++)
         {
             imageArr[i] = temparr->GetValue(i);
+
         }
 
 
-        /*         renWin->SetWindowName("3davis");
-        renWin->Render();
-        iren->Start();  */
     }
 
 }

@@ -169,6 +169,7 @@ namespace NDAVis
                 }
             }
         }
+
         serverTiles = Tiles();
         serverTiles.readTiles(tileNum, c, readerServer, xChunks, yChunks, zChunks);
         serverTiles.combineArray(serverArr, renderDimX, renderDimY, renderDimZ, xOffset, yOffset, zOffset);
@@ -176,6 +177,8 @@ namespace NDAVis
         visul.InsertArray(serverArr, totalDim);
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
         visul.render(renderDimX, renderDimY, renderDimZ, 2, 2, 2, 0, 0, 0);
+        visul.getImage();
+        
         log.endLog(false);
     }
 

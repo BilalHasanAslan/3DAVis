@@ -3,6 +3,7 @@
         id="control-panel"
     >
         <file-selector-component
+            v-if="!selected"
             :files="fileList"
             class="m-1"
             @option:selected="optionSelected"
@@ -59,10 +60,16 @@ export default {
             default: () => []
         }
     },
+    data() {
+        return {
+            selected: false
+        }
+    },
     methods: {
         optionSelected(event) {
             // emit which file to get data from
             this.$emit("selected", event)
+            this.selected = true
         }
     }
 }

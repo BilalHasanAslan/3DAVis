@@ -1188,6 +1188,23 @@ export default {
 
       if(messageData.type == "volume") // receive data tile
       {
+        /* Base64 String to float Array convertor -- TO TEST*/ 
+        var blob = window.atob(messageData.render_data),
+            fLen = blob.length/Float32Array.BYTES_PER_ELEMENT,
+            dView = new DataView( new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT) ),
+            fAry = new Float32Array(fLen),
+            p = 0;
+
+        for (var j=0; j < fLen; j++) {
+          p = j * 4;
+          dView.setUint8(0, blob.charCodeAt(p));
+          dView.setUint8(1, blob.charCodeAt(p+1));
+          dView.setUint8(2, blob.charCodeAt(p+2));
+          dView.setUint8(3, blob.charCodeAt(p+3));
+          fAry[j] = dView.getFloat32(0,true);
+        }
+        console.log(fAry);
+
         console.log(messageData)
         // add to tile buffer
 

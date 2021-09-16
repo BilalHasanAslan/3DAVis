@@ -59,7 +59,7 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
         float opacity[] = {1, 2};      //Test Mode
         std::string fileName = j["file"].dump();
         fileName = fileName.substr(1, (fileName.length()-2));
-        /*
+        
         controller.setFile(fileName);
         controller.startServerRender(0, 0, 0, 0, 0, 0, colour, 4, opacity, 2);
 
@@ -84,7 +84,7 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
             vol["render_data"] = base64String;
             ws->send(vol.dump(), uWS::OpCode::TEXT, false);
         }
-        */
+        
         
     }
     else if (jType == "volume") {

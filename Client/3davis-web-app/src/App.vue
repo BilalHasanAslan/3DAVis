@@ -1177,7 +1177,12 @@ export default {
     this.connection.onopen = function(event) {
       console.log(event)
       console.log("successfully connected to server")
+
       // send initial camera values
+      console.log("request image")
+      this.cameraState.type = "image"
+      const messageJSON = JSON.stringify(this.cameraState)
+      this.connection.send(messageJSON)
     }
   },
   mounted() {
@@ -1199,6 +1204,10 @@ export default {
         }
           
       }
+      else if(messageData.type == "BigD")
+      {
+        this.serverCubeDimensions = messageData.dimensions
+      }
       else if(messageData.type == "image")
       {
         // set image component
@@ -1206,6 +1215,7 @@ export default {
       }
       else if(messageData.type == "file")
       {
+        // file data
         console.log(messageData.files)
         this.files = messageData.files
         this.loadingFile = false
@@ -1363,6 +1373,7 @@ export default {
 
       // request next set of tiles
       const request = {
+        type: "volume",
         cropPoints: points,
         mipmap: mipmap, 
         tiles: this.tiles
@@ -1416,6 +1427,7 @@ export default {
     getImage() {
       // request image
       console.log("request image")
+      this.cameraState.type = "image"
       const messageJSON = JSON.stringify(this.cameraState)
       this.connection.send(messageJSON)
     },

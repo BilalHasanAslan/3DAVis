@@ -1194,20 +1194,8 @@ export default {
 
       if(messageData.type == "volume") // receive data tile
       {
-        /* Base64 String to Uint8Array convertor -- TO TEST*/
-        var binary_string = window.atob(messageData.render_data);
-        var len = binary_string.length;
-        var bytes = new Uint8Array(len);
-        for (var i = 0;i < len; i++) {
-          bytes[i] = binary_string.charCodeAt(i);
-        }
-        
-        var F32Arr = zfp.zfpDecompressUint8WASM(bytes.buffer, bytes.length, messageData.dimensions[0], messageData.dimensions[1], messageData.dimensions[2], 12);
-
-
-        console.log(messageData)
+        console.log(this.decompressData(messageData.render_data))
         // add to tile buffer
-
         if(this.tileBuffer.length === this.tiles.length)
         {
           this.source = this.constructCube()
@@ -1260,6 +1248,17 @@ export default {
   //   }
   // },
   methods: {
+    decompressData(data) {
+      /* Base64 String to Uint8Array convertor -- TO TEST*/
+        var binary_string = window.atob(data);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0;i < len; i++) {
+          bytes[i] = binary_string.charCodeAt(i);
+        }
+        
+        return zfp.zfpDecompressUint8WASM(bytes.buffer, bytes.length, data.dimensions[0], data.dimensions[1], data.dimensions[2], 12);
+    },
     fileSelected(event) {
       
       // for testing purposes

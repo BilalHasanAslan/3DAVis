@@ -33,6 +33,7 @@
 import ControlPanelComponent from './components/ControlPanelComponent.vue'
 import VTKVolumeComponent from './components/VTKVolumeComponent.vue'
 import ImageComponent from './components/ImageComponent.vue'
+import * as zfp from 'zfp_wrapper'
 
 export default {
   name: 'App',
@@ -1193,22 +1194,16 @@ export default {
 
       if(messageData.type == "volume") // receive data tile
       {
-        /* Base64 String to float Array convertor -- TO TEST*/ 
-        var blob = window.atob(messageData.render_data),
-            fLen = blob.length/Float32Array.BYTES_PER_ELEMENT,
-            dView = new DataView( new ArrayBuffer(Float32Array.BYTES_PER_ELEMENT) ),
-            fAry = new Float32Array(fLen),
-            p = 0;
-
-        for (var j=0; j < fLen; j++) {
-          p = j * 4;
-          dView.setUint8(0, blob.charCodeAt(p));
-          dView.setUint8(1, blob.charCodeAt(p+1));
-          dView.setUint8(2, blob.charCodeAt(p+2));
-          dView.setUint8(3, blob.charCodeAt(p+3));
-          fAry[j] = dView.getFloat32(0,true);
+        /* Base64 String to Uint8Array convertor -- TO TEST*/
+        var binary_string = window.atob(messageData.render_data);
+        var len = binary_string.length;
+        var bytes = new Uint8Array(len);
+        for (var i = 0;i < len; i++) {
+          bytes[i] = binary_string.charCodeAt(i);
         }
-        console.log(fAry);
+        
+        var F32Arr = zfp.zfpDecompressUint8WASM(bytes.buffer, bytes.length, messageData.dimensions[0], messageData.dimensions[1], messageData.dimensions[2], 12);
+
 
         console.log(messageData)
         // add to tile buffer

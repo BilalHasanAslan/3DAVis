@@ -55,20 +55,21 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
     jType =jType.substr(1, (jType.length()-2));
     if (jType == "file") {
         /* code after client selects file */
-        float colour[] = {1, 2, 3,4};
-        float opacity[] = {1, 2};
+        float colour[] = {1, 2, 3, 4}; //Test Mode
+        float opacity[] = {1, 2};      //Test Mode
         std::string fileName = j["file"].dump();
         fileName = fileName.substr(1, (fileName.length()-2));
+        /*
         controller.setFile(fileName);
         controller.startServerRender(0, 0, 0, 0, 0, 0, colour, 4, opacity, 2);
 
-        /* send Big File Dimension to client after file selection */
+        // send Big File Dimension to client after file selection 
         json BigF;
         BigF["type"] = "BigD";
         BigF["dimensions"] = {controller.bigNX, controller.bigNY, controller.bigNZ};
         ws->send(BigF.dump(), uWS::OpCode::TEXT, true);
 
-        /* Send tiles to client */
+        // Send tiles to client 
         for (auto &tile : controller.clientTiles.allTiles){
             std::vector<char> compressed_data;
             size_t compressed_size = 0;
@@ -83,12 +84,12 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
             vol["render_data"] = base64String;
             ws->send(vol.dump(), uWS::OpCode::TEXT, false);
         }
-
+        */
         
     }
     else if (jType == "volume") {
         /* code for cubes needed for interaction process */
-        //controller.setNewCordinates(x1y1z1,x2y1z1,x1y2z1,x2y2z1,x1y1z2,x2y1z2,x1y2z2,x2y2z2);
+        controller.setNewCordinates(j["cropPoints"][0], j["cropPoints"][1], j["cropPoints"][2], j["cropPoints"][3], j["cropPoints"][4], j["cropPoints"][5], j["cropPoints"][6],j["cropPoints"][7]);
 
         //
     }
@@ -145,6 +146,4 @@ int main()
     
 
     return 0;
-
-
 }

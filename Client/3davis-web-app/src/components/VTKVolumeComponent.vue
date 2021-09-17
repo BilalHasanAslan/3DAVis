@@ -129,8 +129,8 @@ export default {
           const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
           ctObject.nodes = []
           for (let i = 0; i < nodes.length; i++) {
-            ctObject.nodes.append(nodes[i].x)
-            ctObject.nodes.append(nodes[i].y)
+            ctObject.nodes.push(nodes[i].x)
+            ctObject.nodes.push(nodes[i].y)
           }
           var colourMap = vtkColorMaps.getPresetByName(
             vtkControlsContainer.value.querySelector('.js-color-preset').value
@@ -149,8 +149,8 @@ export default {
           const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
           ctObject.nodes = []
           for (let i = 0; i < nodes.length; i++) {
-            ctObject.nodes.append(nodes[i].x)
-            ctObject.nodes.append(nodes[i].y)
+            ctObject.nodes.push(nodes[i].x)
+            ctObject.nodes.push(nodes[i].y)
           }
           
           // const edge = Number(vtkControlsContainer.value.querySelector('.js-edge').value);
@@ -299,15 +299,15 @@ export default {
         const nodes = actor.getProperty().getScalarOpacity(0).get().nodes
         ctObject.nodes = []
         for (let i = 0; i < nodes.length; i++) {
-          ctfun.addRGBPoint(200.0, 1.0, 1.0, 1.0);
-          ctfun.addRGBPoint(2000.0, 0.0, 0.0, 0.0);
+          ctObject.nodes.push(nodes[i].x)
+          ctObject.nodes.push(nodes[i].y)
         }
         var colourMap = vtkColorMaps.getPresetByName(
           vtkControlsContainer.value.querySelector('.js-color-preset').value
         );
         ctObject.colourMap = colourMap.RGBPoints
         emit("ctfun", ctObject)
-        console.log(ctfun)
+        console.log(ctObject)
       }
     });
 

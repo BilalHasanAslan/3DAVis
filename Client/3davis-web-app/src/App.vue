@@ -1194,7 +1194,9 @@ export default {
 
       if(messageData.type == "volume") // receive data tile
       {
-        console.log(this.decompressData(messageData.render_data))
+        console.log("here")
+        const dataVar = this.decompressData(messageData.render_data)
+        console.log(dataVar)
         // add to tile buffer
         if(this.tileBuffer.length === this.tiles.length)
         {

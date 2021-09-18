@@ -64,10 +64,10 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
         controller.startServerRender(0, 0, 0, 0, 0, 0, colour, 4, opacity, 2);
 
         // send Big File Dimension to client after file selection 
-        json BigF;
-        BigF["type"] = "BigD";
-        BigF["dimensions"] = {controller.bigNX, controller.bigNY, controller.bigNZ};
-        ws->send(BigF.dump(), uWS::OpCode::TEXT, true);
+        json BigFileD;
+        BigFileD["type"] = "BigD";
+        BigFileD["dimensions"] = {controller.bigNX, controller.bigNY, controller.bigNZ};
+        ws->send(BigFileD.dump(), uWS::OpCode::TEXT, true);
 
         // Send tiles to client 
         for (auto &tile : controller.clientTiles.allTiles){
@@ -83,30 +83,54 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData>* ws, s
             vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};
             vol["render_data"] = base64String;
             ws->send(vol.dump(), uWS::OpCode::TEXT, false);
-        }
-        
-        
+        }    
     }
+
     else if (jType == "volume") {
         /* code for cubes needed for interaction process */
+        //int* tiles = j["tiles"];
         controller.setNewCordinates(j["cropPoints"][0], j["cropPoints"][1], j["cropPoints"][2], j["cropPoints"][3], j["cropPoints"][4], j["cropPoints"][5], j["cropPoints"][6],j["cropPoints"][7]);
+        controller.clientRequestCube(j["tiles"], j["tiles"].size(), 1, 1);  //to change -- talk to micheala
+        
+        for (auto &tile : controller.clientTiles.allTiles){
+            for (int i = 0; i < j["tiles"].size(); i++){
+                if (tile.ID == j["tiles"][i]) {
+                    std::vector<char> compressed_data;
+                    size_t compressed_size = 0;
+                    auto status = compression.compress(tile.cubeArr, compressed_data, compressed_size, tile.NX, tile.NY, tile.NZ, 12);
+                    compressed_data.resize(compressed_size);
+                    std::string base64String = compression.to_base64(reinterpret_cast<char*>(compressed_data.data()), compressed_size);
 
-        //
+                    json vol;
+                    vol["type"] = "volume";
+                    vol["id"] = tile.ID;
+                    vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};
+                    vol["render_data"] = base64String;
+                    ws->send(vol.dump(), uWS::OpCode::TEXT, false);
+                }
+            }
+        }
     }
+
     else if (jType == "image") {
         /* code for image needed at camera position same way as client */
         //getcamera
         //getcolor
-        //controller.setColor(color,colorSize,opacity,opacitySize);
-        //controller.setCameraView(view1,view2,view3,position1,position2,position3);
+        //float* colour = j["colourMap"];
+        //float* opacity = j["nodes"];
+        controller.setColor(j["colourMap"], j["colourMap"].size(), j["opacity"], j["opacity"].size());
+        controller.setCameraView(j["camera_view_up"][0], j["camera_view_up"][1], j["camera_view_up"][2], j["camera_pos"][0], j["camera_pos"][1], j["camera_pos"][2]); 
 
         //to get image
-        //controller.getImage()
+        controller.getImage();
+        json im;
+        im["type"] = "image";
+        im["image_data"] = controller.visul.imageArr;
+        ws->send(im.dump(), uWS::OpCode::TEXT, true);
         //controller.visul.imageArr this is int array contains jpeg
         //controller.visul.imageArrSize size of array if needed
-
-
     }
+
     else {
         std::cout << "JSON message received of invalid format" << std::endl;
     }

@@ -74,9 +74,9 @@ namespace NDAVis
         volumeProperty->SetColor(colorTransferFunction);
         //opacity
 
-        for (int i = 0; i < opacitySize; i++)
+        for (int i = 0; i < opacitySize; i+=2)
         {
-            volumeScalarOpacity->AddPoint(opacity[i], opacity[i]);
+            volumeScalarOpacity->AddPoint(opacity[i], opacity[i+1]);
         }
 
         /*         volumeScalarOpacity->AddPoint(0.0, 0.0001);

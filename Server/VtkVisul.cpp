@@ -74,9 +74,9 @@ namespace NDAVis
         volumeProperty->SetColor(colorTransferFunction);
         //opacity
 
-        for (int i = 0; i < opacitySize; i++)
+        for (int i = 0; i < opacitySize; i+=2)
         {
-            volumeScalarOpacity->AddPoint(opacity[i], opacity[i]);
+            volumeScalarOpacity->AddPoint(opacity[i], opacity[i+1]);
         }
 
         /*         volumeScalarOpacity->AddPoint(0.0, 0.0001);
@@ -144,17 +144,19 @@ namespace NDAVis
         window_to_image_filter->Update();
         writer->SetWriteToMemory(1);
         writer->SetInputConnection(window_to_image_filter->GetOutputPort());
-        writer->Write(); 
-        vtkUnsignedCharArray *temparr;
-        temparr = writer->GetResult();
-        imageArrSize = temparr->GetNumberOfTuples();
+        writer->Write();
+        vtkWriterArray = writer->GetResult();
+
+
+/*         imageArrSize = vtkWriterArray->GetNumberOfTuples();
         imageArr = new int[imageArrSize];
         for (int i = 0; i < imageArrSize; i++)
         {
-            imageArr[i] = temparr->GetValue(i);
-        }
+            imageArr[i] = vtkWriterArray->GetValue(i);
+        } */
 
 
     }
+
 
 }

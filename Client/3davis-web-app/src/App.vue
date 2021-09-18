@@ -55,7 +55,7 @@ export default {
       xyLevel: 0,
       zLevel: 0,
       cropPoints: [0, 1100, 0, 750, 0, 265],
-      tiles: [], // keeps track which tiles it needs
+      tiles: [1], // keeps track which tiles it needs
       tileBuffer:[], // holds data tiles
       reset: false,
       cameraState: {

@@ -871,14 +871,22 @@ export default {
 
       console.log(this.tiles.splice(0,4))
 
+      
+
       // request next set of tiles
       const request = {
         type: "volume",
         cropPoints: points,
         XY: Math.pow(2, this.xyLevel),
         Z: Math.pow(2, this.zLevel),
-        tiles: this.tiles
+        tiles: []
       }
+
+      for (let i = 0; i < this.tiles.length; i++) {
+        request.tiles.push(this.tiles[i])
+      }
+
+      console.log(request)
 
       const myJSON = JSON.stringify(request)
       this.connection.send(myJSON)

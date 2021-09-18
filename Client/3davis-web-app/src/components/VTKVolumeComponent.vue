@@ -111,8 +111,8 @@ export default {
           // get camera state
           // cameraState.ctfun = ctfun
           // cameraState.ofun = ofun
-          cameraState.position = camera.getPosition()
-          cameraState.viewUp = camera.getViewUp()
+          cameraState.camera_pos = camera.getPosition()
+          cameraState.camera_view_up = camera.getViewUp()
           cameraState.window_size = []
           cameraState.window_size[0] = vtkContainer.value.clientHeight
           cameraState.window_size[1] = vtkContainer.value.clientWidth

@@ -59,8 +59,8 @@ export default {
       tileBuffer:[], // holds data tiles
       reset: false,
       cameraState: {
-        "position": [-0.5,-0.5,210],
-        "viewUp": [0,1,0],
+        "camera_pos": [-0.5,-0.5,210],
+        "camera_view_up": [0,1,0],
         "ctfun": {
           "nodes": [
             0.000003005679445777787,

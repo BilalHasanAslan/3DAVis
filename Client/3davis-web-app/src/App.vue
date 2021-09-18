@@ -869,9 +869,7 @@ export default {
       // remove duplicates
       this.tiles = this.tiles.filter((value, index) => this.tiles.indexOf(value) === index)
 
-      console.log(this.tiles.splice(0,4))
-
-      
+      this.tiles = this.tiles.splice(0,4)
 
       // request next set of tiles
       const request = {
@@ -881,7 +879,7 @@ export default {
         Z: Math.pow(2, this.zLevel),
         tiles: []
       }
-
+  
       for (let i = 0; i < this.tiles.length; i++) {
         request.tiles.push(this.tiles[i])
       }

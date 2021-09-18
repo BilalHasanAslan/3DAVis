@@ -144,17 +144,19 @@ namespace NDAVis
         window_to_image_filter->Update();
         writer->SetWriteToMemory(1);
         writer->SetInputConnection(window_to_image_filter->GetOutputPort());
-        writer->Write(); 
-        vtkUnsignedCharArray *temparr;
-        temparr = writer->GetResult();
-        imageArrSize = temparr->GetNumberOfTuples();
+        writer->Write();
+        vtkWriterArray = writer->GetResult();
+
+
+/*         imageArrSize = vtkWriterArray->GetNumberOfTuples();
         imageArr = new int[imageArrSize];
         for (int i = 0; i < imageArrSize; i++)
         {
-            imageArr[i] = temparr->GetValue(i);
-        }
+            imageArr[i] = vtkWriterArray->GetValue(i);
+        } */
 
 
     }
+
 
 }

@@ -29,6 +29,10 @@ namespace NDAVis
 
         readerClient.setStarterClientCube();
         int totalDim = readerClient.getXdimension() * readerClient.getYdimension() * readerClient.getZdimension();
+
+        smallXYFile = readerClient.XY;
+        smallZFile = readerClient.Z;
+
         clientNX = readerClient.getXdimension();
         clientNY = readerClient.getYdimension();
         clientNZ = readerClient.getZdimension();
@@ -93,6 +97,8 @@ namespace NDAVis
             tempZ = readerClient.Z;
         }
         readerServer.Z = readerClient.Z / tempZ;
+
+
 
         std::ostringstream name;
         name << "0/MipMaps/DATA/DATA_XY_" << readerServer.XY << "_Z_" << readerServer.Z;

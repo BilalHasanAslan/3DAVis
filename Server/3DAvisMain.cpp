@@ -74,6 +74,8 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
         json BigFileD;
         BigFileD["type"] = "BigD";
         BigFileD["dimensions"] = {controller.bigNX, controller.bigNY, controller.bigNZ};
+        BigFileD["smallXYFile"] = controller.smallXYFile;
+        BigFileD["smallZFile"] = controller.smallZFile;
         ws->send(BigFileD.dump(), uWS::OpCode::TEXT, true);
 
         // Send tiles to client

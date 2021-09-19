@@ -37,6 +37,7 @@ namespace NDAVis
         float *serverArr;
         int clientNX, clientNY, clientNZ, serverOffsetNX, serverOffsetNY, serverOffsetNZ, bigNX, bigNY, bigNZ;
         void clientRequestCube(int *cubes, int cubesSize, int XY,int Z);
+        int smallXYFile, smallZFile;
     };
 
 }

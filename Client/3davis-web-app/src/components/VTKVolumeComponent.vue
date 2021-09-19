@@ -77,7 +77,16 @@ export default {
 
     // get crop points
     function getCropPoints() {
-      emit("points", cropPlanes) // x1 x2 y1 y2 z1 z2
+      var cubePoints = []
+      cubePoints.push(cropPlanes[0], cropPlanes[2], cropPlanes[4])
+      cubePoints.push(cropPlanes[0], cropPlanes[2], cropPlanes[5])
+      cubePoints.push(cropPlanes[0], cropPlanes[3], cropPlanes[4])
+      cubePoints.push(cropPlanes[0], cropPlanes[3], cropPlanes[5])
+      cubePoints.push(cropPlanes[1], cropPlanes[2], cropPlanes[4])
+      cubePoints.push(cropPlanes[1], cropPlanes[2], cropPlanes[5])
+      cubePoints.push(cropPlanes[1], cropPlanes[3], cropPlanes[4])
+      cubePoints.push(cropPlanes[1], cropPlanes[3], cropPlanes[5])
+      emit("points", cubePoints) // x1 x2 y1 y2 z1 z2
     }
 
     watchEffect(() => {

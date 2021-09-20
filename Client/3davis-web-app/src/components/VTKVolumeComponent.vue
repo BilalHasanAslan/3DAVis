@@ -78,14 +78,14 @@ export default {
     // get crop points
     function getCropPoints() {
       var cubePoints = []
-      cubePoints.push(cropPlanes[0], cropPlanes[2], cropPlanes[4])
-      cubePoints.push(cropPlanes[0], cropPlanes[2], cropPlanes[5])
-      cubePoints.push(cropPlanes[0], cropPlanes[3], cropPlanes[4])
-      cubePoints.push(cropPlanes[0], cropPlanes[3], cropPlanes[5])
-      cubePoints.push(cropPlanes[1], cropPlanes[2], cropPlanes[4])
-      cubePoints.push(cropPlanes[1], cropPlanes[2], cropPlanes[5])
-      cubePoints.push(cropPlanes[1], cropPlanes[3], cropPlanes[4])
-      cubePoints.push(cropPlanes[1], cropPlanes[3], cropPlanes[5])
+      cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[4]])
+      cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[5]])
+      cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[4]])
+      cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[5]])
+      cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[4]])
+      cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[5]])
+      cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[4]])
+      cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[5]])
       emit("points", cubePoints) // x1 x2 y1 y2 z1 z2
     }
 
@@ -109,9 +109,10 @@ export default {
         });
 
         // reset cropping planes
-        if(props.resetPlanes)
+        if(props.resetPlanes == true)
         {
           console.log("Reset cropping planes")
+          console.log(props.resetPlanes)
           cropFilter.setCroppingPlanes(props.dimensions);
         }
 
@@ -268,6 +269,8 @@ export default {
         croppingWidget.copyImageDataDescription(source);
         croppingWidget.setHandleVisibility(false);
 
+        cropPlanes = croppingWidget.getWidgetState().getCroppingPlanes();
+
         renderer.addVolume(actor);
         renderer.resetCamera();
         renderer.resetCameraClippingRange();
@@ -347,6 +350,6 @@ export default {
   text-align: right;
   top: 25px;
   right: 425px;
-  z-index: 1;
+  z-index: 2;
 }
 </style>

@@ -79,6 +79,6 @@ export default {
         position: absolute;
         top: 25px;
         left: 25px;
-        z-index: 1;
+        z-index: 2;
     }
 </style>

@@ -55,7 +55,7 @@ export default {
       default: () => []
     }
   },
-  setup() {
+  setup(props) {
     const vtkContainer = ref(null);
     const vtkControlsContainer = ref(null);
     const context = ref(null);
@@ -90,15 +90,8 @@ export default {
         // generate data cube
         const VtkDataTypes = vtkDataArray.VtkDataTypes;
 
-        const size = 64 * 64 // 2D image
-
-        const values = [];
-        for (var i = 0; i < size; i++) {
-            values[i] = Math.random();
-        }
-
         // get data from props
-        // const values = props.sourceData
+        const values = props.sourceData
 
         var scalars = vtkDataArray.newInstance({
           values: values,
@@ -109,9 +102,9 @@ export default {
 
         // render data
         const source = vtkImageData.newInstance();
-        source.setDimensions(64, 64, 64);
-        source.setSpacing(1,1,1);
-        source.setOrigin(-32,-32,-32);
+        source.setDimensions(1920, 1080, 0);
+        // source.setSpacing(1,1,1);
+        // source.setOrigin(-32,-32,-32);
         source.getPointData().setScalars(scalars);
 
         const fullScreenRenderer = vtkFullScreenRenderWindow.newInstance({

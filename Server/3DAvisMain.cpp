@@ -88,6 +88,11 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
             std::string base64String = compression.to_base64(reinterpret_cast<char *>(compressed_data.data()), compressed_size);
 
             json vol;
+            vol["floatArr"] = {};
+            for (int i = 0; i < (tile.NX*tile.NY*tile.NZ); i++) {
+                vol["floatArr"].push_back(tile.cubeArr[i]);
+            }
+
             vol["type"] = "volume";
             vol["id"] = tile.ID;
             vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};
@@ -124,6 +129,12 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
                     std::string base64String = compression.to_base64(reinterpret_cast<char *>(compressed_data.data()), compressed_size);
 
                     json vol;
+
+                    vol["floatArr"] = {};
+                    for (int i = 0; i < (tile.NX*tile.NY*tile.NZ); i++) {
+                        vol["floatArr"].push_back(tile.cubeArr[i]);
+                    }
+
                     vol["type"] = "volume";
                     vol["id"] = tile.ID;
                     vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};

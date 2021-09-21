@@ -1,15 +1,19 @@
 <template>
     <div
-        class="w-100"
+        id="imageContainer"
+        class="w-100 mx-auto d-block"
     >
+        
     </div>
 </template>
 <script>
+import {onMounted} from 'vue';
+
 export default {
     props: {
-        image: {
+        sourceData: {
             type: String,
-            default: "space.jpeg"
+            default: ""
         }
     },
     data () {
@@ -17,17 +21,24 @@ export default {
             
         }
     },
-    setup() {
-        
+    setup(props) {
+    
+        onMounted(() => {
+            var image = new Image()
+            image.src = "data:image/jpeg;base64,"+props.sourceData
+            document.getElementById('imageContainer').appendChild(image)
+            document.getElementsByTagName("IMG")[0].classList.add("img-fluid")
+            document.getElementsByTagName("IMG")[0].classList.add("h-100")
+            document.getElementsByTagName("IMG")[0].classList.add("w-100")
+            document.getElementsByTagName("IMG")[0].classList.add("mx-auto")
+            document.getElementsByTagName("IMG")[0].classList.add("overflow-hidden")
+        })
     },
 }
 </script>
 <style scoped>
-div {
-    background-image: url('../assets/images/high-res.jpeg');
+#imageContainer {
     height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    overflow: auto;
 }
 </style>

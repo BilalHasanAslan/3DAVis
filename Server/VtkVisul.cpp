@@ -52,7 +52,7 @@ namespace NDAVis
         //will be updated
         /*std::array<unsigned char, 3> bkg{{0, 0, 0}};
         colors->SetColor("BkgColor", bkg.data());   */
-        std::array<unsigned char, 4> bkg{{51, 77, 102, 255}};
+        std::array<unsigned char, 4> bkg{{0, 0, 0, 255}};
         colors->SetColor("BkgColor", bkg.data());
 
         /*         colorTransferFunction->AddRGBPoint(0, 0, 0, 0);

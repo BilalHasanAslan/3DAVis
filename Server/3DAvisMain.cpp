@@ -4,6 +4,7 @@
 #include "Server.h"
 #include "Compression.h"
 #include "Controller.h"
+#include "base64.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -174,11 +175,15 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
 
         vtkUnsignedCharArray* vtkWriterArrayTemp = controller.visul.vtkWriterArray;
         int imageArrSize = vtkWriterArrayTemp->GetNumberOfTuples();
-        im["image_data"] = {};
+        std::vector <char> data;
         for (int i = 0; i < imageArrSize; i++)
         {
-            im["ïmage_data"][i] = vtkWriterArrayTemp->GetValue(i);
+            data.push_back(vtkWriterArrayTemp->GetValue(i));
         }
+        // std::string to_send = compression.to_base64(data.data(), imageArrSize);
+        auto base64_jpeg = reinterpret_cast<const unsigned char*>(data.data());
+        std::string to_send = base64_encode(base64_jpeg, data.size());
+        im["image_data"] = to_send;
         ws->send(im.dump(), uWS::OpCode::TEXT, true);
         //controller.visul.imageArr this is int array contains jpeg
         //controller.visul.imageArrSize size of array if needed

@@ -15,6 +15,7 @@
     <ImageComponent
       v-if="!loadingImage"
       @mouseup="loadingImage=true"
+      :sourceData="imageSource"
     />
     <VTKVolumeComponent
       v-else-if="!loadingVolume"
@@ -99,9 +100,144 @@ export default {
     this.connection.onopen = function(event) {
       console.log(event)
       console.log("successfully connected to server")
+    }
 
-      // send initial camera values
-      console.log("request image")
+    this.connection.onmessage = async event => {
+
+      const messageData = JSON.parse(event.data)
+      console.log(messageData.type)
+
+      if(messageData.type == "volume") // receive data tile
+      {
+        // const dataVar = this.decompressData(messageData.render_data)
+        
+        console.log(messageData)
+        // add to tile buffer
+        this.tileBuffer.push(messageData.floatArr)
+        this.tileDimensions.push([messageData.dimensions[0],messageData.dimensions[1],messageData.dimensions[2]])
+        this.tileChunkDimensions.push(messageData.chunk_dimension)
+
+        // combine client cube dimensions
+        if(this.tileBuffer.length == 1)
+        {
+          this.clientCubeDimensions = messageData.dimensions
+        }
+        else {
+          this.clientCubeDimensions[0] = this.clientCubeDimensions[0] +  messageData.dimensions[0]
+        }
+
+        if(this.tileBuffer.length === this.tiles.length)
+        {
+          console.log("reconstruct data")
+          this.source = this.constructCube()
+          // this.source = this.tileBuffer[0]
+          this.loadingVolume = false
+          // this.reset = true
+        }
+          
+      }
+      else if(messageData.type == "BigD")
+      {
+        console.log(messageData)
+        this.serverCubeDimensions = messageData.dimensions
+        this.cropDimensions = messageData.dimensions
+
+        this.cropPoints[0] = [0,0,0]
+        this.cropPoints[1] = [0,0,this.serverCubeDimensions[2]]
+        this.cropPoints[2] = [0,this.serverCubeDimensions[1],0]
+        this.cropPoints[3] = [0,this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
+        this.cropPoints[4] = [this.serverCubeDimensions[0],0,0]
+        this.cropPoints[5] = [this.serverCubeDimensions[0],0,this.serverCubeDimensions[2]]
+        this.cropPoints[6] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],0]
+        this.cropPoints[7] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
+      
+        this.xyMax = messageData.smallXYFile
+        this.zMax = messageData.smallZFile
+        this.xyLevel = messageData.smallXYFile
+        this.zLevel = messageData.smallZFile
+
+        // get lowest level of server cube
+        // var lowestX = this.getLowestLevel(this.serverCubeDimensions[0], 0)
+        // var lowestY = this.getLowestLevel(this.serverCubeDimensions[1], 1)
+
+        // if(lowestX<lowestY)
+        //   this.xyLevel = Math.pow(2,lowestX)
+        // else
+        //   this.xyLevel = Math.pow(2,lowestY)
+
+        // this.zLevel = Math.pow(2,this.getLowestLevel(this.serverCubeDimensions[2], 2))
+      }
+      else if(messageData.type == "image")
+      {
+        // set image component
+        console.log(messageData)
+        this.imageSource = messageData.image_data
+        
+        this.loadingImage = false
+      }
+      else if(messageData.type == "file")
+      {
+        // file data
+        console.log(messageData.files)
+        this.files = messageData.files
+        this.loadingFile = false
+      }
+    }
+  },
+  // watch: {
+  //   timerCountdown: {
+  //     handler() {
+  //       if(this.timer)
+  //       {
+  //         clearTimeout(this.timer)
+  //       }
+  //       if(this.timerCountdown>0)
+  //       {
+  //         this.timer = setTimeout(() => {
+  //           console.log(this.timerCountdown)
+  //           this.timerCountdown--
+  //         }, 1000)
+  //       }
+  //       else // sends request when timer runs out
+  //       {
+  //         console.log("interaction countdown finished")
+  //         // console.log("loading image")
+  //         // request image
+  //         // this.connection.send(this.cameraState)
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
+  methods: {
+    // decompressData(data) {
+    //   /* Base64 String to Uint8Array convertor -- TO TEST*/
+    //     var binary_string = window.atob(data);
+    //     var len = binary_string.length;
+    //     var bytes = new Uint8Array(len);
+    //     for (var i = 0;i < len; i++) {
+    //       bytes[i] = binary_string.charCodeAt(i);
+    //     }
+    //     return this.zfpInstance.zfpDecompressUint8WASM(bytes.buffer, bytes.length, data.dimensions[0], data.dimensions[1], data.dimensions[2], 12);
+    // },
+    fileSelected(event) {
+      
+      // for testing purposes
+      // this.loadingImage = false
+      // this.loadingVolume = false
+      // this.source = this.constructCube()
+      
+      // request initial data
+      const request = {
+        type: 'file',
+        file: event
+      }
+      let messageJSON = JSON.stringify(request)
+      this.connection.send(messageJSON)
+      console.log("Requested file: " + event)
+
+      // request initial image
+      console.log("Request image")
       this.cameraState = {
           "type": "image",
           "camera_pos": [-0.5,-0.5,210],
@@ -689,142 +825,9 @@ export default {
             ]
           }
       }
-      
-      const messageJSON = JSON.stringify(this.cameraState)
+      // console.log(this.cameraState)
+      messageJSON = JSON.stringify(this.cameraState)
       this.connection.send(messageJSON)
-    }
-
-    this.connection.onmessage = async event => {
-
-      const messageData = JSON.parse(event.data)
-      console.log(messageData.type)
-
-      if(messageData.type == "volume") // receive data tile
-      {
-        // const dataVar = this.decompressData(messageData.render_data)
-        
-        console.log(messageData)
-        // add to tile buffer
-        this.tileBuffer.push(messageData.floatArr)
-        console.log(this.tileBuffer)
-        this.tileDimensions.push(messageData.dimensions)
-        this.tileChunkDimensions.push(messageData.chunk_dimension)
-
-        // combine client cube dimensions
-        if(this.tileBuffer.length == 1)
-        {
-          this.clientCubeDimensions = messageData.dimensions
-        }
-        else {
-          this.clientCubeDimensions[0] = this.clientCubeDimensions[0] +  messageData.dimensions[0]
-        }
-
-        if(this.tileBuffer.length === this.tiles.length)
-        {
-          console.log("reconstruct data")
-          this.source = this.constructCube()
-          // this.source = this.tileBuffer[0]
-          this.loadingVolume = false
-          // this.reset = true
-        }
-          
-      }
-      else if(messageData.type == "BigD")
-      {
-        console.log(messageData)
-        this.serverCubeDimensions = messageData.dimensions
-        this.cropDimensions = messageData.dimensions
-
-        this.cropPoints[0] = [0,0,0]
-        this.cropPoints[1] = [0,0,this.serverCubeDimensions[2]]
-        this.cropPoints[2] = [0,this.serverCubeDimensions[1],0]
-        this.cropPoints[3] = [0,this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
-        this.cropPoints[4] = [this.serverCubeDimensions[0],0,0]
-        this.cropPoints[5] = [this.serverCubeDimensions[0],0,this.serverCubeDimensions[2]]
-        this.cropPoints[6] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],0]
-        this.cropPoints[7] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
-      
-        this.xyMax = messageData.smallXYFile
-        this.zMax = messageData.smallZFile
-        this.xyLevel = messageData.smallXYFile
-        this.zLevel = messageData.smallZFile
-
-        // get lowest level of server cube
-        // var lowestX = this.getLowestLevel(this.serverCubeDimensions[0], 0)
-        // var lowestY = this.getLowestLevel(this.serverCubeDimensions[1], 1)
-
-        // if(lowestX<lowestY)
-        //   this.xyLevel = Math.pow(2,lowestX)
-        // else
-        //   this.xyLevel = Math.pow(2,lowestY)
-
-        // this.zLevel = Math.pow(2,this.getLowestLevel(this.serverCubeDimensions[2], 2))
-      }
-      else if(messageData.type == "image")
-      {
-        // set image component
-        this.loadingImage = false
-      }
-      else if(messageData.type == "file")
-      {
-        // file data
-        console.log(messageData.files)
-        this.files = messageData.files
-        this.loadingFile = false
-      }
-    }
-  },
-  // watch: {
-  //   timerCountdown: {
-  //     handler() {
-  //       if(this.timer)
-  //       {
-  //         clearTimeout(this.timer)
-  //       }
-  //       if(this.timerCountdown>0)
-  //       {
-  //         this.timer = setTimeout(() => {
-  //           console.log(this.timerCountdown)
-  //           this.timerCountdown--
-  //         }, 1000)
-  //       }
-  //       else // sends request when timer runs out
-  //       {
-  //         console.log("interaction countdown finished")
-  //         // console.log("loading image")
-  //         // request image
-  //         // this.connection.send(this.cameraState)
-  //       }
-  //     },
-  //     immediate: true
-  //   }
-  // },
-  methods: {
-    // decompressData(data) {
-    //   /* Base64 String to Uint8Array convertor -- TO TEST*/
-    //     var binary_string = window.atob(data);
-    //     var len = binary_string.length;
-    //     var bytes = new Uint8Array(len);
-    //     for (var i = 0;i < len; i++) {
-    //       bytes[i] = binary_string.charCodeAt(i);
-    //     }
-    //     return this.zfpInstance.zfpDecompressUint8WASM(bytes.buffer, bytes.length, data.dimensions[0], data.dimensions[1], data.dimensions[2], 12);
-    // },
-    fileSelected(event) {
-      
-      // for testing purposes
-      this.loadingImage = false
-      this.loadingVolume = false
-      this.source = this.constructCube()
-      
-      // request initial data
-      const request = {
-        type: 'file',
-        file: event
-      }
-      const messageJSON = JSON.stringify(request)
-      this.connection.send(messageJSON)
-      console.log("Requested file: " + event)
     },
     setCropPoints(event) {
       this.cropPoints = event
@@ -941,10 +944,17 @@ export default {
 
       this.tiles = this.tiles.splice(0,4)
 
+      // conver points to xyz
+      let serverPoints = []
+      for (let p = 0; p < points.length; p++) {
+        let tempString = points[p][0] +""+ points[p][0] +""+ points[p][0]
+        serverPoints.push(parseInt(tempString))
+      }
+
       // request next set of tiles
       const request = {
         type: "volume",
-        cropPoints: points,
+        cropPoints: serverPoints,
         XY: this.xyLevel,
         Z: this.zLevel,
         tiles: []
@@ -954,10 +964,11 @@ export default {
         request.tiles.push(this.tiles[i])
       }
 
+      console.log("Request tiles")
       console.log(request)
 
-      // const myJSON = JSON.stringify(request)
-      // this.connection.send(myJSON)
+      const myJSON = JSON.stringify(request)
+      this.connection.send(myJSON)
     },
     stepBack() {
       console.log("step back")
@@ -1009,56 +1020,17 @@ export default {
       this.connection.send(messageJSON)
     },
     constructCube() {
-      // const cubes = []
-      // const cube1 = []
-      // const cube2 = []
-      // const cube3 = []
-      // const cube4 = []
-      // var size = this.clientCubeDimensions[0]*this.clientCubeDimensions[1]*this.clientCubeDimensions[2]
-      // for (var a = 0; a < size; a++) {
-      //   cube1.push(a)
-      //   cube2.push(a)
-      //   cube3.push(a)
-      //   cube4.push(a)
-      // }
-      // cubes.push(cube1)
-      // cubes.push(cube2)
-      // cubes.push(cube3)
-      // cubes.push(cube4)
 
       let reconstructedCube = []
 
       if(this.tileBuffer.length > 1)
       {
         // combine tiles
-        
-          // for (let h = 0; h < this.clientCubeDimensions[2]; h++) // z rows
-          // {
-          //   for (let j = 0; j < this.clientCubeDimensions[1]; j++) // y rows
-          //   {
-          //     for (let i = 0; i < this.tiles.length; i++) // x tile offset
-          //     {
-          //       for (let k = 0; k < this.clientCubeDimensions[0]; k++) // x rows
-          //       {
-                  
-          //         let x = k
-          //         let y = x*this.clientCubeDimensions[0]
-          //         let z = h*(this.clientCubeDimensions[1]*this.clientCubeDimensions[0])
-          //         let coord = x+y+z
-          //         reconstructedCube.push(this.tileBuffer[tile][coord])
-          //         // reconstructedCube.push(cubes[i+1][k+(j*dimensions[0])+(h*Math.pow(dimensions[2],2))])
-          //       }
-          //     }
-          //   }
-          // }
-
         let xOffset = 0, yOffset = 0, zOffset = 0
         let XYChunk = 64, ZChunk = 64
         let xChunksDim = this.tileChunkDimensions[0][0]
         let yChunksDim = this.tileChunkDimensions[0][1]
         // let zChunksDim = this.tileChunkDimensions[0][2]
-
-        console.log(this.tileDimensions)
 
         for (let i = 0; i < this.clientCubeDimensions[2]; i++) // z
         {
@@ -1118,7 +1090,7 @@ export default {
             }
           }
         } 
-        console.log(reconstructedCube)
+        // console.log(reconstructedCube)
         return reconstructedCube
       }
       else
@@ -1174,14 +1146,4 @@ export default {
   background-color: black;
   height: 100vh;
 }
-
-/* #volume { */
-  /* position: absolute;
-  z-index: 1;
-} */
-
-/* #image { */
-  /* position: absolute;
-  z-index: 1; */
-/* } */
 </style>

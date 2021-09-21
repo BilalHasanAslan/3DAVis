@@ -43,7 +43,9 @@ namespace NDAVis
         vtkNew<vtkVolume> volume;
         vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
         vtkCamera *camera;
-        int* imageArr;
+/*         int* imageArr;
+        int imageArrSize; */
+        vtkUnsignedCharArray *vtkWriterArray;
     };
 }
 

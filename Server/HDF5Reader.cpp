@@ -4,8 +4,8 @@
 #include <iostream>
 #include <H5Cpp.h>
 #include "LogKeeper.h"
-#include <boost/multi_array.hpp>
 #include <cassert>
+#include <sstream>
 #include <iterator>
 
 namespace NDAVis

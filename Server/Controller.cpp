@@ -29,6 +29,10 @@ namespace NDAVis
 
         readerClient.setStarterClientCube();
         int totalDim = readerClient.getXdimension() * readerClient.getYdimension() * readerClient.getZdimension();
+
+        smallXYFile = readerClient.XY;
+        smallZFile = readerClient.Z;
+
         clientNX = readerClient.getXdimension();
         clientNY = readerClient.getYdimension();
         clientNZ = readerClient.getZdimension();
@@ -93,6 +97,8 @@ namespace NDAVis
             tempZ = readerClient.Z;
         }
         readerServer.Z = readerClient.Z / tempZ;
+
+
 
         std::ostringstream name;
         name << "0/MipMaps/DATA/DATA_XY_" << readerServer.XY << "_Z_" << readerServer.Z;
@@ -169,6 +175,7 @@ namespace NDAVis
                 }
             }
         }
+
         serverTiles = Tiles();
         serverTiles.readTiles(tileNum, c, readerServer, xChunks, yChunks, zChunks);
         serverTiles.combineArray(serverArr, renderDimX, renderDimY, renderDimZ, xOffset, yOffset, zOffset);
@@ -176,6 +183,8 @@ namespace NDAVis
         visul.InsertArray(serverArr, totalDim);
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
         visul.render(renderDimX, renderDimY, renderDimZ, 2, 2, 2, 0, 0, 0);
+        //visul.getImage();
+        
         log.endLog(false);
     }
 
@@ -393,6 +402,10 @@ namespace NDAVis
 
         clientTiles.readTiles(tileNum, c, readerClient, xChunks, yChunks, zChunks);
         log.endLog(false);
+    }
+
+    void Controller::getImage(){
+        visul.getImage();
     }
 
 }

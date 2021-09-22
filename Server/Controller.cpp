@@ -231,39 +231,39 @@ namespace NDAVis
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Render Server", true);
         readyImage = false;
 
-        int idx = x1y1z1;
+        int idx = x1y1z1-1;
         int tempZ = idx / (bigNX * bigNY);
         idx -= (tempZ * bigNX * bigNY);
         int tempY = idx / bigNX;
         int tempX = idx % bigNX;
 
-        int idxX2 = x2y1z1;
+        int idxX2 = x2y1z1-1;
         int tempZX2 = idxX2 / (bigNX * bigNY);
         idxX2 -= (tempZX2 * bigNX * bigNY);
         int tempYX2 = idxX2 / bigNX;
         int tempXX2 = idxX2 % bigNX;
 
-        int idxY2 = x1y2z1;
+        int idxY2 = x1y2z1-1;
         int tempZY2 = idxY2 / (bigNX * bigNY);
         idxY2 -= (tempZY2 * bigNX * bigNY);
         int tempYY2 = idxY2 / bigNX;
         int tempXY2 = idxY2 % bigNX;
 
-        int idxZ2 = x1y1z2;
+        int idxZ2 = x1y1z2-1;
         int tempZZ2 = idxZ2 / (bigNX * bigNY);
         idxZ2 -= (tempZZ2 * bigNX * bigNY);
         int tempYZ2 = idxZ2 / bigNX;
         int tempXZ2 = idxZ2 % bigNX;
 
-        int idxCorner = x2y2z2;
+        int idxCorner = x2y2z2-1;
         int tempZCorner = idxCorner / (bigNX * bigNY);
         idxCorner -= (tempZCorner * bigNX * bigNY);
         int tempYCorner = idxCorner / bigNX;
         int tempXCorner = idxCorner % bigNX;
 
-        int tempDiffX = tempX - tempXX2;
-        int tempDiffY = tempY - tempYY2;
-        int tempDiffZ = tempZ - tempZZ2;
+        int tempDiffX = tempXX2 - tempX;
+        int tempDiffY = tempYY2 - tempY;
+        int tempDiffZ = tempZZ2 - tempZ;
 
         int factorX = (tempDiffX - 1) / std::pow(serverMemory, 1.0 / 3) + 1;
         int factorY = (tempDiffY - 1) / std::pow(serverMemory, 1.0 / 3) + 1;
@@ -364,7 +364,7 @@ namespace NDAVis
     }
 
     void Controller::clientRequestCube(int *cubes, int cubesSize, int XY, int Z)
-    {
+    {   
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Client Tiles", true);
         if (XY != readerClient.XY || Z != readerClient.Z)
         {
@@ -375,6 +375,7 @@ namespace NDAVis
 
             std::ostringstream name;
             name << "0/MipMaps/DATA/DATA_XY_" << readerClient.XY << "_Z_" << readerClient.Z;
+            std::cout<<name.str()<<std::endl;
             readerClient.openDataset(name.str());
             readerClient.setDimensions();
         }

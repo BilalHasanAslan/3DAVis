@@ -113,10 +113,8 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
         {
             tiles[i] = t[i];
         }
-
         controller.setNewCordinates(j["cropPoints"][0], j["cropPoints"][1], j["cropPoints"][2], j["cropPoints"][3], j["cropPoints"][4], j["cropPoints"][5], j["cropPoints"][6], j["cropPoints"][7]);
         controller.clientRequestCube(tiles, t.size(), j["XY"], j["Z"]);
-
         for (auto &tile : controller.clientTiles.allTiles)
         {
             for (int i = 0; i < j["tiles"].size(); i++)

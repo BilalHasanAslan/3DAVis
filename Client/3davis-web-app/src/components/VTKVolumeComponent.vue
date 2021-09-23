@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
+import { ref, onBeforeMount, onMounted, onBeforeUnmount, watch, watchEffect } from 'vue';
 // import { ref, unref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 
 // import FileSelectorComponent from './fileSelectorComponent.vue'
@@ -61,9 +61,9 @@ export default {
       type: Number,
       default: 1
     },
-    resetPlanes: {
-      type: Boolean,
-      default: false
+    cropPlanes: {
+      type: [],
+      default: () => []
     }
   },
   setup(props,{emit}) {
@@ -77,17 +77,25 @@ export default {
 
     // get crop points
     function getCropPoints() {
-      var cubePoints = []
-      cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[4]])
-      cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[5]])
-      cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[4]])
-      cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[5]])
-      cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[4]])
-      cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[5]])
-      cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[4]])
-      cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[5]])
-      emit("points", cubePoints) // x1 x2 y1 y2 z1 z2
+      // var cubePoints = []
+      // cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[4]])
+      // cubePoints.push([cropPlanes[0], cropPlanes[2], cropPlanes[5]])
+      // cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[4]])
+      // cubePoints.push([cropPlanes[0], cropPlanes[3], cropPlanes[5]])
+      // cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[4]])
+      // cubePoints.push([cropPlanes[1], cropPlanes[2], cropPlanes[5]])
+      // cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[4]])
+      // cubePoints.push([cropPlanes[1], cropPlanes[3], cropPlanes[5]])
+      emit("points", cropPlanes) // x1 x2 y1 y2 z1 z2
     }
+
+    watch(() => props.dimensions, (first, second) => {
+      console.log(
+        "Watch props.selected function called with args:",
+        first,
+        second
+      );
+    });
 
     watchEffect(() => {
       if (context.value) {
@@ -109,12 +117,8 @@ export default {
         });
 
         // reset cropping planes
-        if(props.resetPlanes == true)
-        {
-          console.log("Reset cropping planes")
-          console.log(props.resetPlanes)
-          cropFilter.setCroppingPlanes(props.dimensions);
-        }
+        // console.log("Reset cropping planes")
+        // cropFilter.setCroppingPlanes(cropPlanes);
 
         // when camera changes
         camera.onModified(() => {

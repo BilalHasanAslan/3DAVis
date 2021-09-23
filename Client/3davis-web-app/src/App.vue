@@ -25,7 +25,7 @@
       :sourceData="source"
       :dimensions="clientCubeDimensions"
       :spacing="1"
-      :resetPlanes="reset"
+      @mouseup="interactionEnd"
     />
   </div>
 </template>
@@ -58,6 +58,7 @@ export default {
       zLevel: 0,
       xyMax: 0,
       zMax: 0,
+      cropPlanes: [],
       cropPoints: [],
       cropDimensions: [],
       tiles: [1,2], // keeps track which tiles it needs
@@ -68,6 +69,7 @@ export default {
       cameraState: null,
       timerCountdown: -1,
       timer: null,
+      interaction: false,
       clientCubeDimensions: [0, 0, 0],
       serverCubeDimensions: []
     }
@@ -142,19 +144,8 @@ export default {
         this.serverCubeDimensions = messageData.dimensions
         this.cropDimensions = messageData.dimensions
 
-        this.cropPoints[0] = [0,0,0]
-        this.cropPoints[1] = [0,0,this.serverCubeDimensions[2]]
-        this.cropPoints[2] = [0,this.serverCubeDimensions[1],0]
-        this.cropPoints[3] = [0,this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
-        this.cropPoints[4] = [this.serverCubeDimensions[0],0,0]
-        this.cropPoints[5] = [this.serverCubeDimensions[0],0,this.serverCubeDimensions[2]]
-        this.cropPoints[6] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],0]
-        this.cropPoints[7] = [this.serverCubeDimensions[0],this.serverCubeDimensions[1],this.serverCubeDimensions[2]]
-      
         this.xyMax = messageData.smallXYFile
         this.zMax = messageData.smallZFile
-        this.xyLevel = messageData.smallXYFile
-        this.zLevel = messageData.smallZFile
 
         // get lowest level of server cube
         // var lowestX = this.getLowestLevel(this.serverCubeDimensions[0], 0)
@@ -184,31 +175,26 @@ export default {
       }
     }
   },
-  // watch: {
-  //   timerCountdown: {
-  //     handler() {
-  //       if(this.timer)
-  //       {
-  //         clearTimeout(this.timer)
-  //       }
-  //       if(this.timerCountdown>0)
-  //       {
-  //         this.timer = setTimeout(() => {
-  //           console.log(this.timerCountdown)
-  //           this.timerCountdown--
-  //         }, 1000)
-  //       }
-  //       else // sends request when timer runs out
-  //       {
-  //         console.log("interaction countdown finished")
-  //         // console.log("loading image")
-  //         // request image
-  //         // this.connection.send(this.cameraState)
-  //       }
-  //     },
-  //     immediate: true
-  //   }
-  // },
+  watch: {
+    timerCountdown: {
+      handler() {
+        if(this.timerCountdown>0)
+        {
+          this.timer = setTimeout(() => {
+            console.log(this.timerCountdown)
+            this.timerCountdown--
+          }, 1000)
+        }
+        else if(this.timerCountdown == 0) // sends request when timer runs out
+        {
+          console.log("interaction countdown finished")
+          this.loadingImage = true
+          this.getImage()
+        }
+      },
+      immediate: true
+    }
+  },
   methods: {
     // decompressData(data) {
     //   /* Base64 String to Uint8Array convertor -- TO TEST*/
@@ -830,7 +816,7 @@ export default {
       this.connection.send(messageJSON)
     },
     setCropPoints(event) {
-      this.cropPoints = event
+      this.cropPlanes = event
     },
     getLowestLevel(num, pos) {
       var level = 0
@@ -841,100 +827,123 @@ export default {
       return level-1
     },
     nearestPowTwo(num) {
-      return Math.pow( 2, Math.floor( Math.log( num ) / Math.log( 2 )));
+      return Math.pow( 2, Math.ceil( Math.log( num ) / Math.log( 2 )));
     },
     cropCube() {
       console.log("crop cube")
 
-      // this.xyLevel = 0
-      // this.zLevel = 0
-
-      // console.log(this.cropPoints)
+      let xy = 0
+      let z = 0
 
       let points = []
+      let serverPoints = []
+      let singleX, singleY, singleZ
 
       // convert points to world coordianates
       const factorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
       const factorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
       const factorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
 
-      for (let k = 0; k < this.cropPoints.length; k++) {
-        points[k] = []
-        points[k].push(Math.ceil(this.cropPoints[k][0]*factorX))
-        points[k].push(Math.ceil(this.cropPoints[k][1]*factorY))
-        points[k].push(Math.ceil(this.cropPoints[k][2]*factorZ))
+      points.push([this.cropPlanes[0]*factorX,this.cropPlanes[2]*factorY,this.cropPlanes[4]*factorZ]) // x1y1z1
+      points.push([this.cropPlanes[1]*factorX,this.cropPlanes[2]*factorY,this.cropPlanes[4]*factorZ]) // x2y1z1
+      points.push([this.cropPlanes[0]*factorX,this.cropPlanes[3]*factorY,this.cropPlanes[4]*factorZ]) // x1y2z1
+      points.push([this.cropPlanes[1]*factorX,this.cropPlanes[3]*factorY,this.cropPlanes[4]*factorZ]) // x2y2z1
+      points.push([this.cropPlanes[0]*factorX,this.cropPlanes[2]*factorY,this.cropPlanes[5]*factorZ]) // x1y1z2
+      points.push([this.cropPlanes[1]*factorX,this.cropPlanes[2]*factorY,this.cropPlanes[5]*factorZ]) // x2y1z2
+      points.push([this.cropPlanes[0]*factorX,this.cropPlanes[3]*factorY,this.cropPlanes[5]*factorZ]) // x1y2z2
+      points.push([this.cropPlanes[1]*factorX,this.cropPlanes[3]*factorY,this.cropPlanes[5]*factorZ]) // x2y2z2
+
+      // convert points to xyz
+      for (let p = 0; p < points.length; p++) {
+        serverPoints.push(Math.round(points[p][0]) + (Math.round(points[p][1])*this.serverCubeDimensions[0]) + (Math.round(points[p][2])*this.serverCubeDimensions[0]*this.serverCubeDimensions[1]))
       }
 
-      // save crop dimensions
-      this.cropDimensions = []
-      this.cropDimensions.push(points[7][0]-points[0][0])
-      this.cropDimensions.push(points[7][1]-points[0][1])
-      this.cropDimensions.push(points[7][2]-points[0][2])
+      // convert crop planes to server space
+      this.cropPoints.push(this.cropPlanes[0]*factorX) //x1
+      this.cropPoints.push(this.cropPlanes[1]*factorX) //x2
+      this.cropPoints.push(this.cropPlanes[2]*factorY) //y1
+      this.cropPoints.push(this.cropPlanes[3]*factorY) //y2
+      this.cropPoints.push(this.cropPlanes[4]*factorZ) //z1
+      this.cropPoints.push(this.cropPlanes[5]*factorZ) //z2
+
+      let rangeX = this.cropPoints[1] - this.cropPoints[0]
+      let rangeY = this.cropPoints[3] - this.cropPoints[2]
+      let rangeZ = this.cropPoints[5] - this.cropPoints[4]
+
+      do {
+        // increment level
+        xy++
+        // get dimensions of a single cube at current level in world space
+        singleX = this.cropDimensions[0] / Math.pow(2, xy)
+        singleY = this.cropDimensions[1] / Math.pow(2, xy)
+      }
+      while(rangeX<singleX && rangeY<singleY)
+      xy--
+      singleX = this.cropDimensions[0] / Math.pow(2, xy)
+      singleY = this.cropDimensions[1] / Math.pow(2, xy)
+      
+      // singleZ = this.serverCubeDimensions[2] / Math.pow(2, this.zLevel)
+      do {
+        // increment level
+        z++
+        // get dimensions of a single cube at current level in world space
+        singleZ = this.cropDimensions[2] / Math.pow(2, z)
+      }
+      while(rangeZ<singleZ)
+      z--
+      singleZ = this.cropDimensions[2] / Math.pow(2, z)
 
       // get the nearest factor
-      var X = this.nearestPowTwo(this.serverCubeDimensions[0]/this.cropDimensions[0])
-      var Y = this.nearestPowTwo(this.serverCubeDimensions[1]/this.cropDimensions[1])
-      this.zLevel = this.nearestPowTwo(this.serverCubeDimensions[2]/this.cropDimensions[2])
+      // var X = Math.ceil(this.nearestPowTwo(this.cropDimensions[0]/this.clientCubeDimensions[0]))
+      // var Y = Math.ceil(this.nearestPowTwo(this.cropDimensions[1]/this.clientCubeDimensions[1]))
+      // this.zLevel = Math.ceil(this.nearestPowTwo(this.cropDimensions[2]/this.clientCubeDimensions[2]))
 
       // update level
-      if(X<Y)
-        this.xyLevel = X
-      else
-        this.xyLevel = Y
+      // if(X<Y)
+      //   this.xyLevel = X
+      // else
+      //   this.xyLevel = Y
 
       // determine which cubes to request for
-      const mipmap = "DATA_XY_"+this.xyLevel+"_Z_"+this.zLevel;
-      console.log(mipmap)
+      // convert XY and Z level
+      this.xyLevel = this.xyMax/Math.pow(2, xy)
+      this.zLevel = this.zMax/Math.pow(2, z)
 
       // determine tiles
-      // get size of single tile in world space
-      let singleCube = []
-      singleCube.push(this.serverCubeDimensions[0]/this.xyLevel)
-      singleCube.push(this.serverCubeDimensions[1]/this.xyLevel)
-      singleCube.push(this.serverCubeDimensions[2]/this.zLevel)
-      // cublet coord
+      // which tiles the points fall in
       let cubelet = []
-      // cubelet[0] = (Math.ceil(points[0]/singleX) == 0) ? 1 : Math.ceil(points[0]/singleX)
-      // cubelet[1] = (Math.ceil(points[1]/singleX) == 0) ? 1 : Math.ceil(points[1]/singleX)
-      // cubelet[2] = (Math.ceil(points[2]/singleY) == 0) ? 1 : Math.ceil(points[2]/singleY)
-      // cubelet[3] = (Math.ceil(points[3]/singleY) == 0) ? 1 : Math.ceil(points[3]/singleY)
-      // cubelet[4] = (Math.ceil(points[4]/singleZ) == 0) ? 1 : Math.ceil(points[4]/singleZ)
-      // cubelet[5] = (Math.ceil(points[5]/singleZ) == 0) ? 1 : Math.ceil(points[5]/singleZ)
+      cubelet[0] = Math.ceil(this.cropPoints[0]/singleX)// or /64
+      cubelet[1] = Math.ceil(this.cropPoints[1]/singleX)
+      cubelet[2] = Math.ceil(this.cropPoints[2]/singleY)
+      cubelet[3] = Math.ceil(this.cropPoints[3]/singleY)
+      cubelet[4] = Math.ceil(this.cropPoints[4]/singleZ)
+      cubelet[5] = Math.ceil(this.cropPoints[5]/singleZ)
 
-      for (let j = 0; j < points.length; j++) {
-        var tempPoint = []
-        for (let k = 0; k < points[j].length; k++) {
-          if(Math.ceil(points[j][k]/singleCube[k]) == 0)
-            tempPoint.push(1)
-          else
-            tempPoint.push(Math.ceil(points[j][k]/singleCube[k]))
-        }
-        cubelet.push(tempPoint)
-      }
 
-      // let temp = []
-      // temp[0] = [cubelet[0],cubelet[2],cubelet[4]]
-      // temp[1] = [cubelet[1],cubelet[2],cubelet[4]]
-      // temp[2] = [cubelet[0],cubelet[3],cubelet[4]]
-      // temp[3] = [cubelet[1],cubelet[3],cubelet[4]]
-      // temp[4] = [cubelet[0],cubelet[2],cubelet[5]]
-      // temp[5] = [cubelet[1],cubelet[2],cubelet[5]]
-      // temp[6] = [cubelet[0],cubelet[3],cubelet[5]]
-      // temp[7] = [cubelet[1],cubelet[3],cubelet[5]]
+      let temp = []
+      temp[0] = [cubelet[0],cubelet[2],cubelet[4]]
+      temp[1] = [cubelet[1],cubelet[2],cubelet[4]]
+      temp[2] = [cubelet[0],cubelet[3],cubelet[4]]
+      temp[3] = [cubelet[1],cubelet[3],cubelet[4]]
+      temp[4] = [cubelet[0],cubelet[2],cubelet[5]]
+      temp[5] = [cubelet[1],cubelet[2],cubelet[5]]
+      temp[6] = [cubelet[0],cubelet[3],cubelet[5]]
+      temp[7] = [cubelet[1],cubelet[3],cubelet[5]]
+
+      console.log(temp)
 
       this.tiles = []
 
-      for (let i = 0; i < cubelet.length; i++) {
-        let tempVal = cubelet[i][0] // x
-        
-        if(cubelet[i][1]>1) // y
+      for (let i = 0; i < temp.length; i++) {
+        let tempVal = temp[i][0] // x
+        if(temp[i][1]>1) // y
         {
-          tempVal += this.xyLevel
+          tempVal += Math.pow(2,xy)
         }
         
-        if(cubelet[i][2]>1) // z
+        if(temp[i][2]>1) // z
         {
-          tempVal += Math.pow(this.zLevel, 2)
+          tempVal += (Math.pow(2,xy) * Math.pow(2,xy))
         }
         this.tiles.push(tempVal)
       }
@@ -943,13 +952,6 @@ export default {
       this.tiles = this.tiles.filter((value, index) => this.tiles.indexOf(value) === index)
 
       this.tiles = this.tiles.splice(0,4)
-
-      // conver points to xyz
-      let serverPoints = []
-      for (let p = 0; p < points.length; p++) {
-        let tempString = points[p][0] +""+ points[p][0] +""+ points[p][0]
-        serverPoints.push(parseInt(tempString))
-      }
 
       // request next set of tiles
       const request = {
@@ -969,21 +971,15 @@ export default {
 
       const myJSON = JSON.stringify(request)
       this.connection.send(myJSON)
-    },
-    stepBack() {
-      console.log("step back")
-      if(this.cropLevel > 1)
-        this.cropLevel--
 
-      // request cube from previous points
-      const request = {
-        cropPoints: this.cropPoints,
-        // level: this.cropLevel,
-        tiles: null
+      // save crop dimensions
+      this.cropDimensions = this.cropPlanes
+
+      if(this.timer)
+      {
+        clearTimeout(this.timer)
       }
 
-      const messageJSON = JSON.stringify(request)
-      this.connection.send(messageJSON)
     },
     resetCube() {
       console.log("reset cube")
@@ -1098,42 +1094,22 @@ export default {
         return this.tileBuffer[0]
       }
     },
-    // interactionStart() {
-    //   if(this.timer)
-    //   {
-    //     clearTimeout(this.timer)
-    //   }
-    // },
-    // interactionEnd() {
-    //   //start timer
-    //   if(this.timer)
-    //   {
-    //     clearTimeout(this.timer)
-    //   }
-    //   this.timerCountdown = 5
-    //   console.log("no interaction")
-    // }
-    // combining promises and websockets 
-    // connect() {
-    //   return new Promise(function(resolve, reject) {
-    //     var server = new WebSocket('ws://echo.websocket.org')
-    //     server.onopen = function() {
-    //       resolve(server)
-    //     }
-    //     server.onerror = function(err) {
-    //       reject(err)
-    //     }
-    //   })
-    // },
-    // async promiseMethod() {
-    //   try{
-    //     // let server = await connect()
-    //     // use server
-    //   }
-    //   catch (error) {
-    //     console.log('oops ', error)
-    //   }
-    // }
+    interactionStart() {
+      console.log("interaction start")
+      if(this.timer)
+      {
+        clearTimeout(this.timer)
+      }
+    },
+    interactionEnd() {
+      console.log("interaction end")
+      //start timer
+      if(this.timer)
+      {
+        clearTimeout(this.timer)
+      }
+      this.timerCountdown = 10
+    }
   }
 }
 </script>

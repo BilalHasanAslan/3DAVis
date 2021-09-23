@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, onMounted, onBeforeUnmount, watch, watchEffect } from 'vue';
+import { ref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 // import { ref, unref, onBeforeMount, onMounted, onBeforeUnmount, watchEffect } from 'vue';
 
 // import FileSelectorComponent from './fileSelectorComponent.vue'
@@ -89,13 +89,13 @@ export default {
       emit("points", cropPlanes) // x1 x2 y1 y2 z1 z2
     }
 
-    watch(() => props.dimensions, (first, second) => {
-      console.log(
-        "Watch props.selected function called with args:",
-        first,
-        second
-      );
-    });
+    // watch(() => props.dimensions, (first, second) => {
+    //   console.log(
+    //     "Watch props.selected function called with args:",
+    //     first,
+    //     second
+    //   );
+    // });
 
     watchEffect(() => {
       if (context.value) {

@@ -35,7 +35,7 @@
                 Reset
             </button>
         </div>
-        <!-- <div
+        <div
             class="mt-5"
         >
             <button 
@@ -45,7 +45,7 @@
             >
                 High Resolution Image
             </button>
-        </div> -->
+        </div>
     </div>
 </template>
 <script>

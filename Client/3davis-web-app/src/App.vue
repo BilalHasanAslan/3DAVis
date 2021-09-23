@@ -112,28 +112,35 @@ export default {
       if(messageData.type == "volume") // receive data tile
       {
         // const dataVar = this.decompressData(messageData.render_data)
-        
+        this.loadingVolume = true
+
         console.log(messageData)
         // add to tile buffer
         this.tileBuffer.push(messageData.floatArr)
         this.tileDimensions.push([messageData.dimensions[0],messageData.dimensions[1],messageData.dimensions[2]])
         this.tileChunkDimensions.push(messageData.chunk_dimension)
 
+        console.log(messageData.dimensions)
+
         // combine client cube dimensions
         if(this.tileBuffer.length == 1)
         {
-          this.clientCubeDimensions = messageData.dimensions
+          this.clientCubeDimensions[0] = messageData.dimensions[0]
+          this.clientCubeDimensions[1] = messageData.dimensions[1]
+          this.clientCubeDimensions[2] = messageData.dimensions[2]
         }
         else {
-          this.clientCubeDimensions[0] = this.clientCubeDimensions[0] +  messageData.dimensions[0]
+          this.clientCubeDimensions[0] +=  messageData.dimensions[0]
         }
+
+        console.log(this.clientCubeDimensions)
 
         if(this.tileBuffer.length === this.tiles.length)
         {
           console.log("reconstruct data")
-          this.source = this.constructCube()
-          // this.source = this.tileBuffer[0]
+          this.source = await this.constructCube()
           this.loadingVolume = false
+          // this.source = this.tileBuffer[0]
           // this.reset = true
         }
           
@@ -827,17 +834,16 @@ export default {
       return level-1
     },
     nearestPowTwo(num) {
-      return Math.pow( 2, Math.ceil( Math.log( num ) / Math.log( 2 )));
+      return Math.pow( 2, Math.floor( Math.log( num ) / Math.log( 2 )));
     },
     cropCube() {
       console.log("crop cube")
 
-      let xy = 0
-      let z = 0
-
       let points = []
       let serverPoints = []
-      let singleX, singleY, singleZ
+      // let singleX, singleY, singleZ
+
+      let cubeFactor = 64
 
       // convert points to world coordianates
       const factorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
@@ -870,55 +876,68 @@ export default {
       let rangeY = this.cropPoints[3] - this.cropPoints[2]
       let rangeZ = this.cropPoints[5] - this.cropPoints[4]
 
-      do {
-        // increment level
-        xy++
-        // get dimensions of a single cube at current level in world space
-        singleX = this.cropDimensions[0] / Math.pow(2, xy)
-        singleY = this.cropDimensions[1] / Math.pow(2, xy)
-      }
-      while(rangeX<singleX && rangeY<singleY)
-      xy--
-      singleX = this.cropDimensions[0] / Math.pow(2, xy)
-      singleY = this.cropDimensions[1] / Math.pow(2, xy)
-      
-      // singleZ = this.serverCubeDimensions[2] / Math.pow(2, this.zLevel)
-      do {
-        // increment level
-        z++
-        // get dimensions of a single cube at current level in world space
-        singleZ = this.cropDimensions[2] / Math.pow(2, z)
-      }
-      while(rangeZ<singleZ)
-      z--
-      singleZ = this.cropDimensions[2] / Math.pow(2, z)
-
       // get the nearest factor
-      // var X = Math.ceil(this.nearestPowTwo(this.cropDimensions[0]/this.clientCubeDimensions[0]))
-      // var Y = Math.ceil(this.nearestPowTwo(this.cropDimensions[1]/this.clientCubeDimensions[1]))
-      // this.zLevel = Math.ceil(this.nearestPowTwo(this.cropDimensions[2]/this.clientCubeDimensions[2]))
+      let x = Math.ceil(this.nearestPowTwo(this.cropDimensions[0]/rangeX))
+      let y = Math.ceil(this.nearestPowTwo(this.cropDimensions[1]/rangeY))
+      let z = Math.ceil(this.nearestPowTwo(this.cropDimensions[2]/rangeZ))
 
       // update level
-      // if(X<Y)
-      //   this.xyLevel = X
-      // else
-      //   this.xyLevel = Y
+      if(x>y)
+        this.xyLevel = x
+      else
+        this.xyLevel = y
 
-      // determine which cubes to request for
+      this.zLevel = z
+
+      // determine which tiles to request for
       // convert XY and Z level
-      this.xyLevel = this.xyMax/Math.pow(2, xy)
-      this.zLevel = this.zMax/Math.pow(2, z)
+      this.xyLevel = this.xyMax/this.xyLevel
+      this.zLevel = this.zMax/this.zLevel
+
+      // divide server cube by level
+      // divide by 64 to get number of cubes 
+      let xNumTiles = Math.ceil(Math.ceil(this.cropDimensions[0]/this.xyLevel)/64)
+      let yNumTiles = Math.ceil(Math.ceil(this.cropDimensions[1]/this.xyLevel)/64)
+      let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/64)
+
+      // do {
+      //   // increment level
+      //   xy++
+      //   // get dimensions of a single cube at current level in world space
+      //   singleX = this.cropDimensions[0] / Math.pow(2, xy)
+      //   singleY = this.cropDimensions[1] / Math.pow(2, xy)
+      // }
+      // while(rangeX<singleX && rangeY<singleY)
+      // xy--
+      // singleX = this.cropDimensions[0] / Math.pow(2, xy)
+      // singleY = this.cropDimensions[1] / Math.pow(2, xy)
+      
+      // // singleZ = this.serverCubeDimensions[2] / Math.pow(2, this.zLevel)
+      // do {
+      //   // increment level
+      //   z++
+      //   // get dimensions of a single cube at current level in world space
+      //   singleZ = this.cropDimensions[2] / Math.pow(2, z)
+      // }
+      // while(rangeZ<singleZ)
+      // z--
+      // singleZ = this.cropDimensions[2] / Math.pow(2, z)
 
       // determine tiles
       // which tiles the points fall in
       let cubelet = []
-      cubelet[0] = Math.ceil(this.cropPoints[0]/singleX)// or /64
-      cubelet[1] = Math.ceil(this.cropPoints[1]/singleX)
-      cubelet[2] = Math.ceil(this.cropPoints[2]/singleY)
-      cubelet[3] = Math.ceil(this.cropPoints[3]/singleY)
-      cubelet[4] = Math.ceil(this.cropPoints[4]/singleZ)
-      cubelet[5] = Math.ceil(this.cropPoints[5]/singleZ)
+      
+      cubelet[0] = Math.ceil((this.cropPoints[0]/this.xyLevel)/cubeFactor)
+      cubelet[1] = Math.ceil((this.cropPoints[1]/this.xyLevel)/cubeFactor)
+      cubelet[2] = Math.ceil((this.cropPoints[2]/this.xyLevel)/cubeFactor)
+      cubelet[3] = Math.ceil((this.cropPoints[3]/this.xyLevel)/cubeFactor)
+      cubelet[4] = Math.ceil((this.cropPoints[4]/this.zLevel)/cubeFactor)
+      cubelet[5] = Math.ceil((this.cropPoints[5]/this.zLevel)/cubeFactor)
 
+      // for (let cubeletPoint = 0; cubeletPoint < cubelet.length; cubeletPoint++) {
+      //   if(cubelet[cubeletPoint]==0)
+      //     cubelet[cubeletPoint] = 1
+      // }
 
       let temp = []
       temp[0] = [cubelet[0],cubelet[2],cubelet[4]]
@@ -932,18 +951,21 @@ export default {
 
       console.log(temp)
 
+      console.log(xNumTiles)
+      console.log(yNumTiles)
+      console.log(zNumTiles)
+
       this.tiles = []
 
       for (let i = 0; i < temp.length; i++) {
         let tempVal = temp[i][0] // x
         if(temp[i][1]>1) // y
         {
-          tempVal += Math.pow(2,xy)
+          tempVal += (xNumTiles * temp[i][1])
         }
-        
         if(temp[i][2]>1) // z
         {
-          tempVal += (Math.pow(2,xy) * Math.pow(2,xy))
+          tempVal += (temp[i][2] * (xNumTiles * yNumTiles))
         }
         this.tiles.push(tempVal)
       }
@@ -951,7 +973,7 @@ export default {
       // remove duplicates
       this.tiles = this.tiles.filter((value, index) => this.tiles.indexOf(value) === index)
 
-      this.tiles = this.tiles.splice(0,4)
+      this.tiles = this.tiles.splice(0,2)
 
       // request next set of tiles
       const request = {
@@ -966,19 +988,23 @@ export default {
         request.tiles.push(this.tiles[i])
       }
 
+      // clear tile buffer
+      this.tileBuffer = []
+
       console.log("Request tiles")
       console.log(request)
 
-      const myJSON = JSON.stringify(request)
-      this.connection.send(myJSON)
+      // const myJSON = JSON.stringify(request)
+      // this.connection.send(myJSON)
 
-      // save crop dimensions
-      this.cropDimensions = this.cropPlanes
+      // // save crop dimensions
+      // this.cropDimensions = this.cropPlanes
 
       if(this.timer)
       {
         clearTimeout(this.timer)
       }
+
 
     },
     resetCube() {

@@ -280,9 +280,10 @@ namespace NDAVis
             readerServer.Z = factorZ;
             change = true;
         }
-        serverOffsetNX = tempX * factorX;
-        serverOffsetNY = tempY * factorY;
-        serverOffsetNZ = tempZ * factorZ;
+        
+        serverOffsetNX = tempX / readerServer.XY;
+        serverOffsetNY = tempY / readerServer.XY;
+        serverOffsetNZ = tempZ / readerServer.Z;
 
         if (change)
         {

@@ -280,10 +280,13 @@ namespace NDAVis
             readerServer.Z = factorZ;
             change = true;
         }
-        
-        serverOffsetNX = tempX / readerServer.XY;
-        serverOffsetNY = tempY / readerServer.XY;
-        serverOffsetNZ = tempZ / readerServer.Z;
+
+            tempDiffX = tempDiffX / readerServer.XY;
+            tempDiffY = tempDiffY / readerServer.XY;
+            tempDiffZ = tempDiffZ / readerServer.Z;
+            serverOffsetNX = serverOffsetNX / readerServer.XY;
+            serverOffsetNY = serverOffsetNY / readerServer.XY;
+            serverOffsetNZ = serverOffsetNZ / readerServer.Z;
 
         if (change)
         {
@@ -292,12 +295,7 @@ namespace NDAVis
             readerServer.openDataset(name.str());
             readerServer.setDimensions();
             serverTiles.allTiles.clear();
-            tempDiffX = tempDiffX / readerServer.XY;
-            tempDiffY = tempDiffY / readerServer.XY;
-            tempDiffZ = tempDiffZ / readerServer.Z;
-            serverOffsetNX = serverOffsetNX / readerServer.XY;
-            serverOffsetNY = serverOffsetNY / readerServer.XY;
-            serverOffsetNZ = serverOffsetNZ / readerServer.Z;
+
         }
 
         int xChunks = 1 + ((readerServer.NX - 1) / XYChunk);

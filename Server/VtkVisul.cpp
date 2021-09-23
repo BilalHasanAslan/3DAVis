@@ -55,33 +55,33 @@ namespace NDAVis
         std::array<unsigned char, 4> bkg{{0, 0, 0, 255}};
         colors->SetColor("BkgColor", bkg.data());
 
-        /*         colorTransferFunction->AddRGBPoint(0, 0, 0, 0);
+        colorTransferFunction->AddRGBPoint(0, 0, 0, 0);
         colorTransferFunction->AddRGBPoint(0.01, 0.5, 0.5, 0.5);
         colorTransferFunction->AddRGBPoint(0.05, 0.6, 0.6, 0.6);
         colorTransferFunction->AddRGBPoint(0.015, 0.25, 0.25, 0.25);
         colorTransferFunction->AddRGBPoint(0.02, 0.40, 0.40, 0.1);
-        colorTransferFunction->AddRGBPoint(1, 0.70, 0.70, 0.70); */
+        colorTransferFunction->AddRGBPoint(1, 0.70, 0.70, 0.70); 
 
-        int max = 1;
+/*         int max = 1;
         int min = 0;
         int range = max - min;
         for (int i = 0; i < colorSize; i += 4)
         {
             colorTransferFunction->AddRGBPoint(min + (range * color[i]), color[i + 1], color[i + 2], color[i + 3]);
             
-        }
+        } */
 
         volumeProperty->SetColor(colorTransferFunction);
         //opacity
-
+/* 
         for (int i = 0; i < opacitySize; i+=2)
         {
             volumeScalarOpacity->AddPoint(opacity[i], opacity[i+1]);
-        }
+        } */
 
-        /*         volumeScalarOpacity->AddPoint(0.0, 0.0001);
+        volumeScalarOpacity->AddPoint(0.0, 0.0001);
         volumeScalarOpacity->AddPoint(0.000000000000000001, 0.1);
-        volumeScalarOpacity->AddPoint(1.0, 1.0); */
+        volumeScalarOpacity->AddPoint(1.0, 1.0); 
 
         volumeProperty->SetScalarOpacity(volumeScalarOpacity);
 
@@ -112,13 +112,14 @@ namespace NDAVis
     void VtkVisul::setCamera(int view1, int view2, int view3, int position1, int position2, int position3)
     {
         camera = renderer->GetActiveCamera();
-        /*camera->SetViewUp(view1, view2, view3);
-        camera->SetPosition(position1, position2, position3); */
-        //camera->SetFocalPoint(c[0], c[1], c[2]);
         double *c = volume->GetCenter();
-        camera->SetViewUp(0, 0, -1);
-        camera->SetPosition(c[0], c[1] - 400, c[2]);
+        camera->SetViewUp(view1, view2, view3);
+        camera->SetPosition(position1, position2, position3); 
         camera->SetFocalPoint(c[0], c[1], c[2]);
+        
+/*      camera->SetViewUp(0, 0, -1);
+        camera->SetPosition(c[0], c[1] - 400, c[2]);
+        camera->SetFocalPoint(c[0], c[1], c[2]); */
     }
 
     void VtkVisul::getImage()
@@ -140,10 +141,11 @@ namespace NDAVis
         window_to_image_filter->SetInput(renWin);
         window_to_image_filter->SetScale(1);
         window_to_image_filter->SetInputBufferTypeToRGB();
-        //window_to_image_filter->ReadFrontBufferOff();
+        window_to_image_filter->ReadFrontBufferOff();
         window_to_image_filter->Update();
         writer->SetWriteToMemory(1);
         writer->SetInputConnection(window_to_image_filter->GetOutputPort());
+        //writer->SetFileName("awe.jpg");
         writer->Write();
         vtkWriterArray = writer->GetResult();
 

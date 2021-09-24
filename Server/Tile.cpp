@@ -96,7 +96,7 @@ namespace NDAVis
                     Xoffset = ((temp % xChunksDim) - 1) * XYChunk;
                 }
 
-                if (zChunksDim == 1 + ((temp - 1) / xChunksDim * yChunksDim))
+                if (zChunksDim == 1 + ((temp - 1) / (xChunksDim * yChunksDim)))
                 {
                     tempTileNZ = (reader.getZdimension()) - ZChunk * (zChunksDim - 1);
                     Zoffset = ((temp - 1) / (xChunksDim * yChunksDim)) * ZChunk;

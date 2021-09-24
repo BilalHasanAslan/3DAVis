@@ -272,21 +272,31 @@ namespace NDAVis
         bool change = false;
         if (std::max(factorX, factorY) != readerServer.XY)
         {
-            readerServer.XY = std::max(factorX, factorY);
+            int count = 2;
+            while (count < std::max(factorX, factorY))
+            {
+                count *= 2;
+            }
+            readerServer.XY = count / 2;
             change = true;
         }
         if (factorZ != readerServer.Z)
         {
-            readerServer.Z = factorZ;
+            int count = 2;
+            while (count < std::max(factorX, factorY))
+            {
+                count *= 2;
+            }
+            readerServer.XY = count / 2;
             change = true;
         }
 
-            tempDiffX = tempDiffX / readerServer.XY;
-            tempDiffY = tempDiffY / readerServer.XY;
-            tempDiffZ = tempDiffZ / readerServer.Z;
-            serverOffsetNX = serverOffsetNX / readerServer.XY;
-            serverOffsetNY = serverOffsetNY / readerServer.XY;
-            serverOffsetNZ = serverOffsetNZ / readerServer.Z;
+        tempDiffX = tempDiffX / readerServer.XY;
+        tempDiffY = tempDiffY / readerServer.XY;
+        tempDiffZ = tempDiffZ / readerServer.Z;
+        serverOffsetNX = tempX / readerServer.XY;
+        serverOffsetNY = tempY / readerServer.XY;
+        serverOffsetNZ = tempZ / readerServer.Z;
 
         if (change)
         {

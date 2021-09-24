@@ -133,7 +133,7 @@ namespace NDAVis
 
     void Tiles::combineArray(float *arr, int xDim, int yDim, int zDim, int xOffset, int yOffset, int zOffset)
     {
-        NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Tiles", true);
+        NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Reconstruct Tiles", true);
         #pragma omp parallel for
         for (int i = 0; i < zDim; i++)
         {

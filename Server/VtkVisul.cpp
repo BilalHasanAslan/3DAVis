@@ -87,11 +87,14 @@ namespace NDAVis
 
     }
 
-    void VtkVisul::InsertArray(float *arr, int arrSize)
+    void VtkVisul::InsertArray(float *arr, int arrSize, int DimX, int DimY, int DimZ)
     {
         vtkArr->SetNumberOfComponents(1);
         vtkArr->SetNumberOfTuples(arrSize);
         vtkArr->SetVoidArray(arr, arrSize, 1);
+        this->DimX = DimX;
+        this->DimY = DimY;
+        this->DimZ = DimZ;
     }
 
     void VtkVisul::render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz)
@@ -112,14 +115,16 @@ namespace NDAVis
     void VtkVisul::setCamera(int view1, int view2, int view3, int position1, int position2, int position3)
     {
         camera = renderer->GetActiveCamera();
-        double *c = volume->GetCenter();
+        //double *c = volume->GetCenter();
         camera->SetViewUp(view1, view2, view3);
         camera->SetPosition(position1, position2, position3); 
-        camera->SetFocalPoint(c[0], c[1], c[2]);
+        camera->SetFocalPoint(-(DimX/2), -(DimY/2), -(DimZ/2));
         
 /*      camera->SetViewUp(0, 0, -1);
         camera->SetPosition(c[0], c[1] - 400, c[2]);
-        camera->SetFocalPoint(c[0], c[1], c[2]); */
+        camera->SetFocalPoint(c[0], c[1], c[2]);
+         [-(xDimension/2),-(yDimension/2),-(zDimension/2)]
+         */
     }
 
     void VtkVisul::getImage()

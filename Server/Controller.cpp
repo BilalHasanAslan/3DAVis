@@ -180,7 +180,7 @@ namespace NDAVis
         serverTiles.readTiles(tileNum, c, readerServer, xChunks, yChunks, zChunks);
         serverTiles.combineArray(serverArr, renderDimX, renderDimY, renderDimZ, xOffset, yOffset, zOffset);
         visul.setColor(color, colorSize, opacity, opacitySize);
-        visul.InsertArray(serverArr, totalDim);
+        visul.InsertArray(serverArr, totalDim,renderDimX,renderDimY,renderDimZ);
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
         visul.render(renderDimX, renderDimY, renderDimZ, 2, 2, 2, 0, 0, 0);
         //visul.getImage();
@@ -367,7 +367,7 @@ namespace NDAVis
 
         serverTiles.readTiles(tileNum, c, readerServer, xChunks, yChunks, zChunks);
         serverTiles.combineArray(serverArr, tempDiffX, tempDiffY, tempDiffZ, serverOffsetNX, serverOffsetNY, serverOffsetNZ);
-        visul.InsertArray(serverArr, totalDim);
+        visul.InsertArray(serverArr, totalDim,tempDiffX,tempDiffY,tempDiffZ);
         visul.render(tempDiffX, tempDiffY, tempDiffZ, 2, 2, 2, 0, 0, 0);
         log.endLog(false);
     }

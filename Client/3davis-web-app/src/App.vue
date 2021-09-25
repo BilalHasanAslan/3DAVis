@@ -916,7 +916,7 @@ export default {
         // divide by 64 to get number of cubes 
         let xNumTiles = Math.ceil(Math.ceil(this.cropDimensions[0]/this.xyLevel)/cubeFactor)
         let yNumTiles = Math.ceil(Math.ceil(this.cropDimensions[1]/this.xyLevel)/cubeFactor)
-        let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
+        // let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
 
         // do {
         //   // increment level
@@ -969,11 +969,11 @@ export default {
 
         // console.log(this.cropPoints)
         // console.log(cubelet)
-        console.log(temp)
+        // console.log(temp)
 
-        console.log(xNumTiles)
-        console.log(yNumTiles)
-        console.log(zNumTiles)
+        // console.log(xNumTiles)
+        // console.log(yNumTiles)
+        // console.log(zNumTiles)
 
         this.tiles = []
 
@@ -995,7 +995,7 @@ export default {
         
         // console.log(this.xyLevel)
         // console.log(this.zLevel)
-        console.log(this.tiles)
+        // console.log(this.tiles)
       }
       while(this.tiles.length > 2 || (this.xyLevel != this.xyMax && this.zLevel != this.zMax))
 
@@ -1020,11 +1020,11 @@ export default {
       console.log("Request tiles")
       console.log(request)
 
-      // const myJSON = JSON.stringify(request)
-      // this.connection.send(myJSON)
+      const myJSON = JSON.stringify(request)
+      this.connection.send(myJSON)
 
-      // // save crop dimensions
-      // this.cropDimensions = this.cropPlanes
+      // save crop dimensions
+      this.cropDimensions = this.cropPlanes
 
       if(this.timer)
       {
@@ -1065,12 +1065,12 @@ export default {
       console.log("Request image")
       this.cameraState.type = "image"
       // scale up camera pos
-      // const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
-      // const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
-      // const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
-      // this.cameraState.camera_pos[0] *= camfactorX
-      // this.cameraState.camera_pos[1] *= camfactorY
-      // this.cameraState.camera_pos[2] *= camfactorZ
+      const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+      const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+      const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
+      this.cameraState.camera_pos[0] *= camfactorX
+      this.cameraState.camera_pos[1] *= camfactorY
+      this.cameraState.camera_pos[2] *= camfactorZ
 
       console.log(this.cameraState)
       const messageJSON = JSON.stringify(this.cameraState)

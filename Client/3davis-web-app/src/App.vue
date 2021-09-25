@@ -117,9 +117,9 @@ export default {
 
         console.log(messageData)
         // add to tile buffer
-        this.tileBuffer.push(messageData.floatArr)
-        this.tileDimensions.push([messageData.dimensions[0],messageData.dimensions[1],messageData.dimensions[2]])
-        this.tileChunkDimensions.push(messageData.chunk_dimension)
+        await this.tileBuffer.push(messageData.floatArr)
+        await this.tileDimensions.push([messageData.dimensions[0],messageData.dimensions[1],messageData.dimensions[2]])
+        await this.tileChunkDimensions.push(messageData.chunk_dimension)
 
         // combine client cube dimensions
         if(this.tileBuffer.length == 1)
@@ -129,9 +129,9 @@ export default {
           this.clientCubeDimensions[2] = messageData.dimensions[2]
         }
         else {
-          if(this.adjacent === 'x')
+          if(this.adjacent == 'x')
             this.clientCubeDimensions[0] +=  messageData.dimensions[0]
-          else if(this.adjacent === 'y')
+          else if(this.adjacent == 'y')
             this.clientCubeDimensions[1] +=  messageData.dimensions[1]
           else if(this.adjacent === 'z')
             this.clientCubeDimensions[2] +=  messageData.dimensions[2]
@@ -164,14 +164,14 @@ export default {
         // this.zLevel = Math.pow(2,this.getLowestLevel(this.serverCubeDimensions[2], 2))
       
         // scale up camera pos
-        const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
-        const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+        // const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+        // const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
         const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
 
         // request initial image
         this.cameraState = {
           "type": "image",
-          "camera_pos": [0 * camfactorX,0 * camfactorY,200 * camfactorZ],
+          "camera_pos": [0,0,200 * camfactorZ],
           "camera_view_up": [0,1,0],
           "ctfun": {
             "nodes": [
@@ -923,9 +923,9 @@ export default {
         
         // divide server cube by level
         // divide by 64 to get number of cubes 
-        xNumTiles = Math.truc(Math.trunc(this.cropDimensions[0]/this.xyLevel)/cubeFactor)
-        yNumTiles = Math.truc(Math.trunc(this.cropDimensions[1]/this.xyLevel)/cubeFactor)
-        // let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
+        xNumTiles = Math.ceil((this.cropDimensions[0]/this.xyLevel)/cubeFactor)
+        yNumTiles = Math.ceil((this.cropDimensions[1]/this.zLevel)/cubeFactor)
+        let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
 
         // do {
         //   // increment level
@@ -978,11 +978,11 @@ export default {
 
         // console.log(this.cropPoints)
         // console.log(cubelet)
-        // console.log(temp)
+        console.log(temp)
 
-        // console.log(xNumTiles)
-        // console.log(yNumTiles)
-        // console.log(zNumTiles)
+        console.log(xNumTiles)
+        console.log(yNumTiles)
+        console.log(zNumTiles)
 
         this.tiles = []
 
@@ -1004,7 +1004,7 @@ export default {
         
         // console.log(this.xyLevel)
         // console.log(this.zLevel)
-        // console.log(this.tiles)
+        console.log(this.tiles)
       }
       while(this.tiles.length > 2 || (this.xyLevel != this.xyMax && this.zLevel != this.zMax))
 
@@ -1016,6 +1016,8 @@ export default {
         this.adjacent = 'y'
       else if(this.tiles[0]+(xNumTiles*yNumTiles) == this.tiles[1])
         this.adjacent = 'z'
+
+      console.log(this.adjacent)
 
       // request next set of tiles
       const request = {
@@ -1030,8 +1032,10 @@ export default {
         request.tiles.push(this.tiles[i])
       }
 
-      // clear tile buffer
+      // clear tile buffer and dimensions
       this.tileBuffer = []
+      this.tileDimensions = []
+      this.tileChunkDimensions = []
 
       console.log("Request tiles")
       console.log(request)
@@ -1081,11 +1085,11 @@ export default {
       console.log("Request image")
       this.cameraState.type = "image"
       // scale up camera pos
-      const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
-      const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+      // const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+      // const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
       const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
-      this.cameraState.camera_pos[0] *= camfactorX
-      this.cameraState.camera_pos[1] *= camfactorY
+      // this.cameraState.camera_pos[0] *= camfactorX
+      // this.cameraState.camera_pos[1] *= camfactorY
       this.cameraState.camera_pos[2] *= camfactorZ
 
       console.log(this.cameraState)
@@ -1096,10 +1100,35 @@ export default {
 
       let reconstructedCube = []
 
+      console.log(this.clientCubeDimensions)
+
       if(this.tileBuffer.length > 1)
       {
+        // const factorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+        // const factorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+        // const factorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
+        
+        let xOffset, yOffset, zOffset
+
         // combine tiles
-        let xOffset = 0, yOffset = 0, zOffset = 0
+        console.log(this.cropPoints)
+        if(this.cropPoints.length == 0)
+        {
+          xOffset = 0
+          yOffset = 0
+          zOffset = 0
+        }
+        else
+        {
+          xOffset = Math.floor(Math.floor(this.cropPoints[0]/this.xyLevel)/64)*64
+          yOffset = Math.floor(Math.floor(this.cropPoints[2]/this.xyLevel)/64)*64
+          zOffset = Math.floor(Math.floor(this.cropPoints[4]/this.zLevel)/64)*64
+        }
+        
+        console.log(xOffset)
+        console.log(yOffset)
+        console.log(zOffset)
+        
         let XYChunk = 64, ZChunk = 64
         let xChunksDim = this.tileChunkDimensions[0][0]
         let yChunksDim = this.tileChunkDimensions[0][1]
@@ -1115,11 +1144,13 @@ export default {
               tileNum += (Math.floor((j + yOffset) / XYChunk)) * xChunksDim
               tileNum += Math.floor((k + xOffset) / XYChunk)
               tileNum = Math.floor(tileNum)
+              console.log(tileNum)
               
               let tileOffsetX, tileOffsetY, tileOffsetZ;
               if (k == 0)
               {
-                tileOffsetX = (xOffset % XYChunk);
+                // tileOffsetX = (xOffset % XYChunk);
+                tileOffsetX = 0;
               }
               else
               {
@@ -1128,7 +1159,8 @@ export default {
 
               if (j == 0)
               {
-                tileOffsetY = yOffset % XYChunk;
+                // tileOffsetY = yOffset % XYChunk;
+                tileOffsetY = 0;
               }
               else
               {
@@ -1137,7 +1169,8 @@ export default {
 
               if (i == 0)
               {
-                tileOffsetZ = zOffset % ZChunk;
+                // tileOffsetZ = zOffset % ZChunk;
+                tileOffsetZ = 0;
               }
               else
               {
@@ -1163,7 +1196,6 @@ export default {
             }
           }
         } 
-        // console.log(reconstructedCube)
         return reconstructedCube
       }
       else

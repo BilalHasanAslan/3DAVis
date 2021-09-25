@@ -120,8 +120,6 @@ export default {
         this.tileDimensions.push([messageData.dimensions[0],messageData.dimensions[1],messageData.dimensions[2]])
         this.tileChunkDimensions.push(messageData.chunk_dimension)
 
-        console.log(messageData.dimensions)
-
         // combine client cube dimensions
         if(this.tileBuffer.length == 1)
         {
@@ -133,14 +131,11 @@ export default {
           this.clientCubeDimensions[0] +=  messageData.dimensions[0]
         }
 
-        console.log(this.clientCubeDimensions)
-
         console.log("reconstruct data")
         this.source = await this.constructCube()
         this.loadingVolume = false
         // this.source = this.tileBuffer[0]
         // this.reset = true
-          
       }
       else if(messageData.type == "BigD")
       {
@@ -161,76 +156,16 @@ export default {
         //   this.xyLevel = Math.pow(2,lowestY)
 
         // this.zLevel = Math.pow(2,this.getLowestLevel(this.serverCubeDimensions[2], 2))
-      }
-      else if(messageData.type == "image")
-      {
-        // set image component
-        console.log(messageData)
-        this.imageSource = messageData.image_data
-        
-        this.loadingImage = false
-      }
-      else if(messageData.type == "file")
-      {
-        // file data
-        console.log(messageData.files)
-        this.files = messageData.files
-        this.loadingFile = false
-      }
-    }
-  },
-  watch: {
-    timerCountdown: {
-      handler() {
-        if(this.timerCountdown>0)
-        {
-          this.timer = setTimeout(() => {
-            console.log(this.timerCountdown)
-            this.timerCountdown--
-          }, 1000)
-        }
-        else if(this.timerCountdown == 0) // sends request when timer runs out
-        {
-          console.log("interaction countdown finished")
-          this.loadingImage = true
-          this.getImage()
-        }
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    // decompressData(data) {
-    //   /* Base64 String to Uint8Array convertor -- TO TEST*/
-    //     var binary_string = window.atob(data);
-    //     var len = binary_string.length;
-    //     var bytes = new Uint8Array(len);
-    //     for (var i = 0;i < len; i++) {
-    //       bytes[i] = binary_string.charCodeAt(i);
-    //     }
-    //     return this.zfpInstance.zfpDecompressUint8WASM(bytes.buffer, bytes.length, data.dimensions[0], data.dimensions[1], data.dimensions[2], 12);
-    // },
-    fileSelected(event) {
       
-      // for testing purposes
-      // this.loadingImage = false
-      // this.loadingVolume = false
-      // this.source = this.constructCube()
-      
-      // request initial data
-      const request = {
-        type: 'file',
-        file: event
-      }
-      let messageJSON = JSON.stringify(request)
-      this.connection.send(messageJSON)
-      console.log("Requested file: " + event)
+        // scale up camera pos
+        const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+        const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+        const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
 
-      // request initial image
-      console.log("Request image")
-      this.cameraState = {
+        // request initial image
+        this.cameraState = {
           "type": "image",
-          "camera_pos": [-0.5,-0.5,210],
+          "camera_pos": [-0.5 * camfactorX,-0.5 * camfactorY,200 * camfactorZ],
           "camera_view_up": [0,1,0],
           "ctfun": {
             "nodes": [
@@ -814,10 +749,79 @@ export default {
               0.262699
             ]
           }
+        }
+        console.log(this.cameraState)
+        
+        // this.cameraState.camera_pos[0] = -0.5 * camfactorX
+        // this.cameraState.camera_pos[1] = -0.5 * camfactorY
+        // this.cameraState.camera_pos[2] = 200 * camfactorZ
+
+        let messageJSON = JSON.stringify(this.cameraState)
+        this.connection.send(messageJSON)
       }
-      // console.log(this.cameraState)
-      messageJSON = JSON.stringify(this.cameraState)
+      else if(messageData.type == "image")
+      {
+        // set image component
+        console.log(messageData)
+        this.imageSource = messageData.image_data
+        
+        this.loadingImage = false
+      }
+      else if(messageData.type == "file")
+      {
+        // file data
+        console.log(messageData.files)
+        this.files = messageData.files
+        this.loadingFile = false
+      }
+    }
+  },
+  watch: {
+    timerCountdown: {
+      handler() {
+        if(this.timerCountdown>0)
+        {
+          this.timer = setTimeout(() => {
+            console.log(this.timerCountdown)
+            this.timerCountdown--
+          }, 1000)
+        }
+        else if(this.timerCountdown == 0) // sends request when timer runs out
+        {
+          console.log("interaction countdown finished")
+          this.loadingImage = true
+          this.getImage()
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    // decompressData(data) {
+    //   /* Base64 String to Uint8Array convertor -- TO TEST*/
+    //     var binary_string = window.atob(data);
+    //     var len = binary_string.length;
+    //     var bytes = new Uint8Array(len);
+    //     for (var i = 0;i < len; i++) {
+    //       bytes[i] = binary_string.charCodeAt(i);
+    //     }
+    //     return this.zfpInstance.zfpDecompressUint8WASM(bytes.buffer, bytes.length, data.dimensions[0], data.dimensions[1], data.dimensions[2], 12);
+    // },
+    fileSelected(event) {
+      
+      // for testing purposes
+      // this.loadingImage = false
+      // this.loadingVolume = false
+      // this.source = this.constructCube()
+      
+      // request initial data
+      const request = {
+        type: 'file',
+        file: event
+      }
+      let messageJSON = JSON.stringify(request)
       this.connection.send(messageJSON)
+      console.log("Requested file: " + event)
     },
     setCropPoints(event) {
       this.cropPlanes = event
@@ -1058,8 +1062,17 @@ export default {
     },
     getImage() {
       // request image
-      console.log("request image")
+      console.log("Request image")
       this.cameraState.type = "image"
+      // scale up camera pos
+      // const camfactorX = this.cropDimensions[0] / this.clientCubeDimensions[0]
+      // const camfactorY = this.cropDimensions[1] / this.clientCubeDimensions[1]
+      // const camfactorZ = this.cropDimensions[2] / this.clientCubeDimensions[2]
+      // this.cameraState.camera_pos[0] *= camfactorX
+      // this.cameraState.camera_pos[1] *= camfactorY
+      // this.cameraState.camera_pos[2] *= camfactorZ
+
+      console.log(this.cameraState)
       const messageJSON = JSON.stringify(this.cameraState)
       this.connection.send(messageJSON)
     },

@@ -375,6 +375,7 @@ namespace NDAVis
     void Controller::clientRequestCube(int *cubes, int cubesSize, int XY, int Z)
     {   
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Client Tiles", true);
+        
         if (XY != readerClient.XY || Z != readerClient.Z)
         {
             clientTiles.allTiles.clear();
@@ -384,13 +385,14 @@ namespace NDAVis
 
             std::ostringstream name;
             name << "0/MipMaps/DATA/DATA_XY_" << readerClient.XY << "_Z_" << readerClient.Z;
-            std::cout<<name.str()<<std::endl;
+            //std::cout<<name.str()<<std::endl;
             readerClient.openDataset(name.str());
             readerClient.setDimensions();
         }
-        int xChunks = 1 + ((readerServer.NX - 1) / XYChunk);
-        int yChunks = 1 + ((readerServer.NY - 1) / XYChunk);
-        int zChunks = 1 + ((readerServer.NZ - 1) / ZChunk);
+        int xChunks = 1 + ((readerClient.NX - 1) / XYChunk);
+        int yChunks = 1 + ((readerClient.NY - 1) / XYChunk);
+        int zChunks = 1 + ((readerClient.NZ - 1) / ZChunk);
+
         int *tileNum = new int[cubesSize];
         int c = 0;
         for (int i = 0; i < cubesSize; i++)

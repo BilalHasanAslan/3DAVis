@@ -916,7 +916,7 @@ export default {
         // divide by 64 to get number of cubes 
         let xNumTiles = Math.ceil(Math.ceil(this.cropDimensions[0]/this.xyLevel)/cubeFactor)
         let yNumTiles = Math.ceil(Math.ceil(this.cropDimensions[1]/this.xyLevel)/cubeFactor)
-        // let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
+        let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
 
         // do {
         //   // increment level
@@ -945,17 +945,17 @@ export default {
         // which tiles the points fall in
         let cubelet = []
         
-        cubelet[0] = Math.ceil((this.cropPoints[0]/this.xyLevel)/cubeFactor)
-        cubelet[1] = Math.ceil((this.cropPoints[1]/this.xyLevel)/cubeFactor)
-        cubelet[2] = Math.ceil((this.cropPoints[2]/this.xyLevel)/cubeFactor)
-        cubelet[3] = Math.ceil((this.cropPoints[3]/this.xyLevel)/cubeFactor)
-        cubelet[4] = Math.ceil((this.cropPoints[4]/this.zLevel)/cubeFactor)
-        cubelet[5] = Math.ceil((this.cropPoints[5]/this.zLevel)/cubeFactor)
+        cubelet[0] = Math.trunc((this.cropPoints[0]/this.xyLevel)/cubeFactor)
+        cubelet[1] = Math.trunc((this.cropPoints[1]/this.xyLevel)/cubeFactor)
+        cubelet[2] = Math.trunc((this.cropPoints[2]/this.xyLevel)/cubeFactor)
+        cubelet[3] = Math.trunc((this.cropPoints[3]/this.xyLevel)/cubeFactor)
+        cubelet[4] = Math.trunc((this.cropPoints[4]/this.zLevel)/cubeFactor)
+        cubelet[5] = Math.trunc((this.cropPoints[5]/this.zLevel)/cubeFactor)
 
-        for (let cubeletPoint = 0; cubeletPoint < cubelet.length; cubeletPoint++) {
-          if(cubelet[cubeletPoint]==0)
-            cubelet[cubeletPoint] = 1
-        }
+        // for (let cubeletPoint = 0; cubeletPoint < cubelet.length; cubeletPoint++) {
+        //   if(cubelet[cubeletPoint]==0)
+        //     cubelet[cubeletPoint] = 1
+        // }
 
         let temp = []
         temp[0] = [cubelet[0],cubelet[2],cubelet[4]]
@@ -969,23 +969,23 @@ export default {
 
         // console.log(this.cropPoints)
         // console.log(cubelet)
-        // console.log(temp)
+        console.log(temp)
 
-        // console.log(xNumTiles)
-        // console.log(yNumTiles)
-        // console.log(zNumTiles)
+        console.log(xNumTiles)
+        console.log(yNumTiles)
+        console.log(zNumTiles)
 
         this.tiles = []
 
         for (let i = 0; i < temp.length; i++) {
-          let tempVal = temp[i][0] // x
-          if(temp[i][1]>1) // y
+          let tempVal = temp[i][0]+1 // x
+          if(temp[i][1]>0) // y
           {
-            tempVal += (xNumTiles * (temp[i][1]-1))
+            tempVal += (xNumTiles * (temp[i][1]))
           }
-          if(temp[i][2]>1) // z
+          if(temp[i][2]>0) // z
           {
-            tempVal += ((temp[i][2]-1) * (xNumTiles * yNumTiles))
+            tempVal += ((temp[i][2]) * (xNumTiles * yNumTiles))
           }
           this.tiles.push(tempVal)
         } 
@@ -1020,11 +1020,11 @@ export default {
       console.log("Request tiles")
       console.log(request)
 
-      const myJSON = JSON.stringify(request)
-      this.connection.send(myJSON)
+      // const myJSON = JSON.stringify(request)
+      // this.connection.send(myJSON)
 
       // // save crop dimensions
-      this.cropDimensions = this.cropPlanes
+      // this.cropDimensions = this.cropPlanes
 
       if(this.timer)
       {

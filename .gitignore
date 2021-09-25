@@ -320,3 +320,5 @@ Client/3davis-web-app/package.json
 Client/3davis-web-app/zfp_wrapper/build_zfp_wrapper.sh
 Client/3davis-web-app/zfp_wrapper/build_zfp.sh
 Client/3davis-web-app/zfp_wrapper/emsdk
+Client/3davis-web-app/package-lock.json
+.gitignore

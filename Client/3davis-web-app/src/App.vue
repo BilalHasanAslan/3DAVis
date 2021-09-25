@@ -62,6 +62,7 @@ export default {
       cropPoints: [],
       cropDimensions: [],
       tiles: [1,2], // keeps track which tiles it needs
+      adjacent: 'x',
       tileBuffer:[], // holds data tiles
       tileDimensions: [],
       tileChunkDimensions: [],
@@ -70,7 +71,7 @@ export default {
       timerCountdown: -1,
       timer: null,
       interaction: false,
-      clientCubeDimensions: [0, 0, 0],
+      clientCubeDimensions: [64, 64, 64],
       serverCubeDimensions: []
     }
   },
@@ -128,7 +129,12 @@ export default {
           this.clientCubeDimensions[2] = messageData.dimensions[2]
         }
         else {
-          this.clientCubeDimensions[0] +=  messageData.dimensions[0]
+          if(this.adjacent === 'x')
+            this.clientCubeDimensions[0] +=  messageData.dimensions[0]
+          else if(this.adjacent === 'y')
+            this.clientCubeDimensions[1] +=  messageData.dimensions[1]
+          else if(this.adjacent === 'z')
+            this.clientCubeDimensions[2] +=  messageData.dimensions[2]
         }
 
         console.log("reconstruct data")
@@ -140,7 +146,7 @@ export default {
       else if(messageData.type == "BigD")
       {
         console.log(messageData)
-        this.serverCubeDimensions = messageData.dimensions
+        this.serverCubeDimensions = await messageData.dimensions
         this.cropDimensions = messageData.dimensions
 
         this.xyMax = messageData.smallXYFile
@@ -165,7 +171,7 @@ export default {
         // request initial image
         this.cameraState = {
           "type": "image",
-          "camera_pos": [-0.5 * camfactorX,-0.5 * camfactorY,200 * camfactorZ],
+          "camera_pos": [0 * camfactorX,0 * camfactorY,200 * camfactorZ],
           "camera_view_up": [0,1,0],
           "ctfun": {
             "nodes": [
@@ -898,6 +904,9 @@ export default {
       let xy = this.xyMax
       let z = this.zMax
 
+      let xNumTiles = 0
+      let yNumTiles = 0
+
       do {
         
         if(z == 1)
@@ -914,8 +923,8 @@ export default {
         
         // divide server cube by level
         // divide by 64 to get number of cubes 
-        let xNumTiles = Math.ceil(Math.ceil(this.cropDimensions[0]/this.xyLevel)/cubeFactor)
-        let yNumTiles = Math.ceil(Math.ceil(this.cropDimensions[1]/this.xyLevel)/cubeFactor)
+        xNumTiles = Math.truc(Math.trunc(this.cropDimensions[0]/this.xyLevel)/cubeFactor)
+        yNumTiles = Math.truc(Math.trunc(this.cropDimensions[1]/this.xyLevel)/cubeFactor)
         // let zNumTiles = Math.ceil(Math.ceil(this.cropDimensions[2]/this.zLevel)/cubeFactor)
 
         // do {
@@ -1000,6 +1009,13 @@ export default {
       while(this.tiles.length > 2 || (this.xyLevel != this.xyMax && this.zLevel != this.zMax))
 
       // this.tiles = this.tiles.splice(0,2)
+
+      if(this.tiles[0]+1 == this.tiles[1])
+        this.adjacent = 'x'
+      else if(this.tiles[0]+xNumTiles == this.tiles[1])
+        this.adjacent = 'y'
+      else if(this.tiles[0]+(xNumTiles*yNumTiles) == this.tiles[1])
+        this.adjacent = 'z'
 
       // request next set of tiles
       const request = {

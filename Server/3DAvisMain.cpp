@@ -142,7 +142,7 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
                     vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};
                     vol["chunk_dimension"] = {controller.clientTiles.xChunksDim,controller.clientTiles.yChunksDim,controller.clientTiles.zChunksDim};
                     vol["render_data"] = base64String;
-                    std::cout<<"Tile number "+tile.ID+" been sent to client." <<std::endl;
+                    // std::cout<<"Tile number "+tile.ID+" been sent to client." <<std::endl;
                     ws->send(vol.dump(), uWS::OpCode::TEXT, false);
                 }
             }

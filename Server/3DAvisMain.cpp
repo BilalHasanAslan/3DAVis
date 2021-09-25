@@ -140,6 +140,7 @@ void onMessage(uWS::WebSocket<false, true, NDAVis::Server::PerSocketData> *ws, s
                     vol["type"] = "volume";
                     vol["id"] = tile.ID;
                     vol["dimensions"] = {tile.NX, tile.NY, tile.NZ};
+                    vol["chunk_dimension"] = {controller.clientTiles.xChunksDim,controller.clientTiles.yChunksDim,controller.clientTiles.zChunksDim};
                     vol["render_data"] = base64String;
                     ws->send(vol.dump(), uWS::OpCode::TEXT, false);
                 }

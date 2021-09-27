@@ -14,10 +14,11 @@ namespace NDAVis
         {
             this->ID = ID;
         };
-        //~Tile();
+
         float *cubeArr;
         int NX, NY, NZ;
         int ID;
+
         void setDimensions(int NX, int NY, int NZ)
         {
             this->NX = NX;
@@ -29,11 +30,14 @@ namespace NDAVis
 
     struct Tiles
     {
+        Tiles() {}
+
         int XYChunk = 64;
         int ZChunk = 64;
-        Tiles() {}
+
         std::vector<Tile> allTiles;
         int xChunksDim, yChunksDim, zChunksDim;
+        
         void readTiles(int *tileNum, int size, HDF5Reader &reader, int xChunksDim, int yChunksDim, int zChunksDim);        
         void combineArray(float *arr, int xDim, int yDim, int zDim, int xOffset, int yOffset, int zOffset);
 

@@ -13,7 +13,8 @@ namespace NDAVis
         bool useChunks(const std::vector<hsize_t> &dims);
         void createHdf5Dataset(H5::DataSet& dataset, H5::Group group, std::string path, H5::DataType dataType, std::vector<hsize_t> dims, const std::vector<hsize_t>& chunkDims = std::vector<hsize_t>());
         void readFitsData(fitsfile *filePtr, hsize_t channel, unsigned int stokes, hsize_t size, float *destination);
-        int tileSize = 64;
+        int tileSizeXY = 64;
+        int tileSizeZ = 64;
     };
 }
 

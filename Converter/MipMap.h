@@ -21,21 +21,20 @@ namespace NDAVis
         std::vector<hsize_t> datasetDims;
         int mip;
         int zmip;
-
-        void createDataset(H5::Group group, const std::vector<hsize_t> &chunkDims);
-
         H5::DataSet dataset;
-
         std::vector<hsize_t> bufferDims;
         hsize_t bufferSize;
-
         hsize_t width;
         hsize_t height;
         hsize_t depth;
         hsize_t stokes;
-
         float *vals;
         int *count;
+
+
+        void createDataset(H5::Group group, const std::vector<hsize_t> &chunkDims);
+
+
 
         void accumulate(float val, hsize_t x, hsize_t y, hsize_t z)
         {

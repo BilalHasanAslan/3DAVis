@@ -1,4 +1,3 @@
-./build
-.build
+/Server/build
 .fits
 .hdf5

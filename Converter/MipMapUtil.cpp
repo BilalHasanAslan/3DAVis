@@ -30,10 +30,15 @@ namespace NDAVis
 
         for (auto i = 1; i < 3; i++)
         {
-            if (dims[i] < tileSize)
+            if (dims[i] < tileSizeXY)
             {
                 return false;
             }
+        }
+
+        if (dims[0] < tileSizeZ)
+        {
+            return false;
         }
 
         return true;

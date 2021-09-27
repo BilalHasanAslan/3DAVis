@@ -10,6 +10,7 @@ namespace NDAVis
     {
     public:
         std::string _filename;
+        
         void getFileNames(std::vector<std::string> *fileNames);
         int getNumberOfFiles();
     };

@@ -40,13 +40,11 @@ endif ()
 
 set(SOURCE_FILES
     ${SOURCE_FILES}
+    FileManager.cpp
     Maintest.cpp
     HDF5Reader.cpp
     LogKeeper.cpp
     VtkVisul.cpp
-    Converter.cpp
-    MipMap.cpp
-    MipMapUtil.cpp
     Controller.cpp
     Tile.cpp
     )

@@ -18,7 +18,7 @@ if (OPENMP_FOUND)
     set(LINK_LIBS ${LINK_LIBS} ${OpenMP_CXX_LIBRARIES})
 endif ()
 
-set(VTK_DIR "~/Downloads/vtk-v9.0.3/build")
+set(VTK_DIR "~/Desktop/vtk-master/build")
 find_package(VTK REQUIRED)
 if (VTK_FOUND)
     include_directories(${VTK_INCLUDE_DIR})

@@ -1,12 +1,16 @@
 #include "Tile.h"
 #include "LogKeeper.h"
+#include <chrono>
+#include <iostream>
 
 namespace NDAVis
 {
 
     void Tiles::readTiles(int *tileNum, int size, HDF5Reader &reader, int xChunksDim, int yChunksDim, int zChunksDim)
     {
-        NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Tiles", true);
+        std::chrono::high_resolution_clock::time_point t_end, t_start;
+        double elapsed_time_ms;
+        t_start = std::chrono::high_resolution_clock::now();
         this->xChunksDim = xChunksDim;
         this->yChunksDim = yChunksDim;
         this->zChunksDim = zChunksDim;
@@ -96,8 +100,9 @@ namespace NDAVis
                     Xoffset = ((temp % xChunksDim) - 1) * XYChunk;
                 }
 
-                if (zChunksDim == 1 + ((temp - 1) / xChunksDim * yChunksDim))
+                if (zChunksDim == 1 + ((temp - 1) / (xChunksDim * yChunksDim)))
                 {
+                    
                     tempTileNZ = (reader.getZdimension()) - ZChunk * (zChunksDim - 1);
                     Zoffset = ((temp - 1) / (xChunksDim * yChunksDim)) * ZChunk;
                 }
@@ -124,16 +129,22 @@ namespace NDAVis
                 }
             }
             tempTile.setDimensions(tempTileNX, tempTileNY, tempTileNZ);
+
             reader.readTileDataset(tempTile.cubeArr, temp, tempTileNX, tempTileNY, tempTileNZ, Xoffset, Yoffset, Zoffset);
+
             allTiles.push_back(tempTile);
             temp++;
         }
-        log.endLog(false);
+        t_end = std::chrono::high_resolution_clock::now();
+        elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+        std::cout << "Time Taken To Read all Tiles : " + std::to_string(elapsed_time_ms) + " ms" + " & " + std::to_string(elapsed_time_ms / 1000) + " s" << std::endl;
     }
 
     void Tiles::combineArray(float *arr, int xDim, int yDim, int zDim, int xOffset, int yOffset, int zOffset)
     {
-        NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Tiles", true);
+        std::chrono::high_resolution_clock::time_point t_end, t_start;
+        double elapsed_time_ms;
+        t_start = std::chrono::high_resolution_clock::now();
         #pragma omp parallel for
         for (int i = 0; i < zDim; i++)
         {
@@ -190,7 +201,9 @@ namespace NDAVis
                 }
             }
         }
-        log.endLog(false);
+        t_end = std::chrono::high_resolution_clock::now();
+        elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+        std::cout << "Time Taken To Reconstruct all Tiles : " + std::to_string(elapsed_time_ms) + " ms" + " & " + std::to_string(elapsed_time_ms / 1000) + " s" << std::endl;
     }
 
 }

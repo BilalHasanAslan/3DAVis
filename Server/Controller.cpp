@@ -98,8 +98,6 @@ namespace NDAVis
         }
         readerServer.Z = readerClient.Z / tempZ;
 
-
-
         std::ostringstream name;
         name << "0/MipMaps/DATA/DATA_XY_" << readerServer.XY << "_Z_" << readerServer.Z;
         //name << "0/MipMaps/DATA/DATA_XY_" << 1 << "_Z_" << 1;
@@ -184,7 +182,7 @@ namespace NDAVis
         visul.setCamera(cameraView1, cameraView2, cameraView3, cameraPos1, cameraPos2, cameraPos3);
         visul.render(renderDimX, renderDimY, renderDimZ, 2, 2, 2, 0, 0, 0);
         //visul.getImage();
-        
+
         log.endLog(false);
     }
 
@@ -231,40 +229,39 @@ namespace NDAVis
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Render Server", true);
         readyImage = false;
 
-        int idx = x1y1z1;
+        int idx = x1y1z1 - 1;
         int tempZ = idx / (bigNX * bigNY);
         idx -= (tempZ * bigNX * bigNY);
         int tempY = idx / bigNX;
         int tempX = idx % bigNX;
 
-        int idxX2 = x2y1z1;
+        int idxX2 = x2y1z1 - 1;
         int tempZX2 = idxX2 / (bigNX * bigNY);
         idxX2 -= (tempZX2 * bigNX * bigNY);
         int tempYX2 = idxX2 / bigNX;
         int tempXX2 = idxX2 % bigNX;
 
-        int idxY2 = x1y2z1;
+        int idxY2 = x1y2z1 - 1;
         int tempZY2 = idxY2 / (bigNX * bigNY);
         idxY2 -= (tempZY2 * bigNX * bigNY);
         int tempYY2 = idxY2 / bigNX;
         int tempXY2 = idxY2 % bigNX;
 
-        int idxZ2 = x1y1z2;
+        int idxZ2 = x1y1z2 - 1;
         int tempZZ2 = idxZ2 / (bigNX * bigNY);
         idxZ2 -= (tempZZ2 * bigNX * bigNY);
         int tempYZ2 = idxZ2 / bigNX;
         int tempXZ2 = idxZ2 % bigNX;
 
-        int idxCorner = x2y2z2;
+        int idxCorner = x2y2z2 - 1;
         int tempZCorner = idxCorner / (bigNX * bigNY);
         idxCorner -= (tempZCorner * bigNX * bigNY);
         int tempYCorner = idxCorner / bigNX;
         int tempXCorner = idxCorner % bigNX;
 
-        int tempDiffX = tempX - tempXX2;
-        int tempDiffY = tempY - tempYY2;
-        int tempDiffZ = tempZ - tempZZ2;
-
+        int tempDiffX = tempXX2 - tempX;
+        int tempDiffY = tempYY2 - tempY;
+        int tempDiffZ = tempZZ2 - tempZ;
         int factorX = (tempDiffX - 1) / std::pow(serverMemory, 1.0 / 3) + 1;
         int factorY = (tempDiffY - 1) / std::pow(serverMemory, 1.0 / 3) + 1;
         int factorZ = (tempDiffZ - 1) / std::pow(serverMemory, 1.0 / 3) + 1;
@@ -272,17 +269,33 @@ namespace NDAVis
         bool change = false;
         if (std::max(factorX, factorY) != readerServer.XY)
         {
-            readerServer.XY = std::max(factorX, factorY);
+            int count = 2;
+            while (count < std::max(factorX, factorY))
+            {
+                count *= 2;
+            }
+            readerServer.XY = count / 2;
             change = true;
         }
         if (factorZ != readerServer.Z)
         {
-            readerServer.Z = factorZ;
+            int count = 2;
+            while (count < std::max(factorX, factorY))
+            {
+                count *= 2;
+            }
+            readerServer.XY = count / 2;
             change = true;
         }
-        serverOffsetNX = tempX * factorX;
-        serverOffsetNY = tempY * factorY;
-        serverOffsetNZ = tempZ * factorZ;
+
+        tempDiffX = tempDiffX / readerServer.XY;
+        tempDiffY = tempDiffY / readerServer.XY;
+        tempDiffZ = tempDiffZ / readerServer.Z;
+        serverOffsetNX = tempX / readerServer.XY;
+        serverOffsetNY = tempY / readerServer.XY;
+        serverOffsetNZ = tempZ / readerServer.Z;
+
+
 
         if (change)
         {
@@ -291,12 +304,6 @@ namespace NDAVis
             readerServer.openDataset(name.str());
             readerServer.setDimensions();
             serverTiles.allTiles.clear();
-            tempDiffX = tempDiffX / readerServer.XY;
-            tempDiffY = tempDiffY / readerServer.XY;
-            tempDiffZ = tempDiffZ / readerServer.Z;
-            serverOffsetNX = serverOffsetNX / readerServer.XY;
-            serverOffsetNY = serverOffsetNY / readerServer.XY;
-            serverOffsetNZ = serverOffsetNZ / readerServer.Z;
         }
 
         int xChunks = 1 + ((readerServer.NX - 1) / XYChunk);
@@ -404,8 +411,9 @@ namespace NDAVis
         log.endLog(false);
     }
 
-    void Controller::getImage(){
-        visul.getImage();
+    void Controller::getImage()
+    {
+        visul.getImage(1);
     }
 
 }

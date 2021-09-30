@@ -10,16 +10,43 @@
 
 namespace NDAVis
 {
+    /*
+    The constructor for the HDF5Reader class does nothing.
+    
+    Args:
+      self: The object that is being created.
+      file_name: The name of the file to be read.
+    Returns:
+      Nothing
+    */
     HDF5Reader::HDF5Reader()
     {
     }
+
     //Opening File
+    /*
+    The constructor opens the file with the given name.
+    
+    Args:
+      fileName: The name of the file to open.
+    Returns:
+      Nothing.
+    */
     HDF5Reader::HDF5Reader(std::string fileName)
     {
         this->fileName = fileName;
         file = H5Fopen(fileName.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
     }
 
+
+    /*
+    Open the HDF5 file and open the dataset.
+    
+    Args:
+      datasetName: the name of the dataset to open
+    Returns:
+      
+    */
     bool HDF5Reader::openDataset(std::string datasetName)
     {   
         dataset = file.openDataSet(datasetName.c_str());
@@ -28,6 +55,14 @@ namespace NDAVis
         return true;
     }
 
+    /*
+    Find the smallest XY and Z dimensions of the file.
+    
+    Args:
+
+    Returns:
+      The starter client cube.
+    */
     void HDF5Reader::setStarterClientCube()
     {   
         bool tempFound = false;
@@ -73,6 +108,14 @@ namespace NDAVis
         setDimensions();
     }
 
+    /*
+    Read the HDF5 file and set the dimensions from the data.
+    
+    Args:
+      None
+    Returns:
+      Nothing.
+    */
     void HDF5Reader::setDimensions()
     {
 
@@ -96,6 +139,20 @@ namespace NDAVis
         return NZ;
     }
 
+    /*
+    Read a 3D dataset into a 3D array.
+    
+    Args:
+      arr: the array to be filled with data
+      X: the number of columns in the dataset
+      Y: The number of rows in the dataset.
+      Z: The number of slices in the z-dimension.
+      Xoffset: The offset in the X direction.
+      Yoffset: The offset in the Y dimension.
+      Zoffset: The offset in the Z direction.
+    Returns:
+      Nothing.
+    */
     void HDF5Reader::readDataset(float *arr, int X, int Y, int Z, int Xoffset, int Yoffset, int Zoffset)
     {
         hsize_t offset[3];
@@ -111,6 +168,13 @@ namespace NDAVis
         dataset.read(arr, H5::PredType::NATIVE_FLOAT, memspace, dspace);
     }
 
+    /*
+    Closes the file that has been opened and clears memory
+    
+    Args:
+    Returns:
+      Nothing.
+    */
     void HDF5Reader::Closefile()
     {
         dataset.close();
@@ -119,6 +183,21 @@ namespace NDAVis
         H5Fclose(file.getId());
     }
 
+    /*
+    Read a tile of data from the HDF5 file into a float array.
+    
+    Args:
+      arr: the array to be filled with data
+      tileNum: the tile number
+      TileNX: the number of pixels in the X direction for the tile
+      TileNY: The number of rows in the tile.
+      TileNZ: The number of Z slices in the tile
+      Xoffset: The starting x-coordinate of the tile.
+      Yoffset: The offset in the Y direction.
+      Zoffset: The starting Z index of the tile
+    Returns:
+      Nothing.
+    */
     void HDF5Reader::readTileDataset(float *arr, int tileNum, int TileNX, int TileNY, int TileNZ, int Xoffset, int Yoffset, int Zoffset)
     {
         hsize_t offset[3];

@@ -30,16 +30,7 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2); */
 
 namespace NDAVis
 {
-    vtkNew<vtkNamedColors> colors;
-    vtkNew<vtkRenderer> renderer;
-    vtkNew<vtkFloatArray> vtkArr;
-    vtkNew<vtkVolumeProperty> volumeProperty;
-    vtkNew<vtkColorTransferFunction> colorTransferFunction;
-    vtkNew<vtkSmartVolumeMapper> mapper;
-    //vtkNew<vtkGPUVolumeRayCastMapper> mapper;
-    vtkNew<vtkImageData> imageData;
-    vtkNew<vtkVolume> volume;
-    vtkNew<vtkPiecewiseFunction> volumeScalarOpacity;
+
 
     VtkVisul::VtkVisul()
     {

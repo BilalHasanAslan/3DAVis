@@ -7,11 +7,19 @@
 
 namespace NDAVis
 {
-    std::chrono::high_resolution_clock::time_point t_end, t_start;
-    std::string msg;
-    double elapsed_time_ms;
-    bool Error;
 
+
+    /*
+    The constructor of the LogKeeper class takes two parameters: a string and a boolean.
+    The string is the message that will be printed to the console.
+    The boolean is a flag that indicates whether or not the time should be printed.
+    
+    Args:
+      msg: The message to be displayed.
+      showTime: If true, the time will be shown in the log.
+    Returns:
+      Nothing
+    */
     LogKeeper::LogKeeper(std::string msg, bool showTime)
     {
 
@@ -20,6 +28,15 @@ namespace NDAVis
         t_start = std::chrono::high_resolution_clock::now();
     }
 
+    /*
+    Updates the log msg
+    
+    Args:
+      msg: The message to be logged.
+      showTime: If true, the time will be shown in the log.
+    Returns:
+      Nothing
+    */
     void LogKeeper::UpdateLog(std::string msg, bool showTime)
     {
 
@@ -28,6 +45,14 @@ namespace NDAVis
         t_start = std::chrono::high_resolution_clock::now();
     }
 
+    /*
+    End the log writes the log to console and to file
+    
+    Args:
+      None
+    Returns:
+      Nothing
+    */
     void LogKeeper::endLog(bool Error)
     {
 
@@ -53,6 +78,14 @@ namespace NDAVis
         writeToLogFile();
     }
 
+    /*
+    Writes Log to file
+    
+    Args:
+      None
+    Returns:
+      Nothing
+    */
     void LogKeeper::writeToLogFile()
     {
         std::ofstream outfile;

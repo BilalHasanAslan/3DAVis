@@ -4,6 +4,19 @@
 namespace NDAVis
 {
 
+    /*
+    The above code is a function that reads the tiles from the HDF5 file.
+    
+    Args:
+      tileNum: The number of the tile that is being read.
+      size: The number of tiles to read.
+      reader: the HDF5Reader object that is used to read the data from the HDF5 file
+      xChunksDim: The number of tiles in the x direction.
+      yChunksDim: The number of tiles in the y direction.
+      zChunksDim: The number of tiles in the z direction.
+    Returns:
+      A vector of tiles.
+    */
     void Tiles::readTiles(int *tileNum, int size, HDF5Reader &reader, int xChunksDim, int yChunksDim, int zChunksDim)
     {
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Tiles", true);
@@ -131,6 +144,20 @@ namespace NDAVis
         log.endLog(false);
     }
 
+
+    /*
+    Reconstructing one big cube from small tiles
+    Args:
+      arr: the array that you want to fill with the data from the tiles
+      xDim: The number of elements in the x dimension of the array
+      yDim: The number of rows in the original array
+      zDim: The number of chunks in the z direction
+      xOffset: The offset in the x dimension
+      yOffset: The offset in the y dimension.
+      zOffset: The offset in the z direction.
+    Returns:
+      The array of values that are being returned is the array of values that are being passed in.
+    */
     void Tiles::combineArray(float *arr, int xDim, int yDim, int zDim, int xOffset, int yOffset, int zOffset)
     {
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Reconstruct Tiles", true);
@@ -192,5 +219,4 @@ namespace NDAVis
         }
         log.endLog(false);
     }
-
 }

@@ -12,12 +12,30 @@
 namespace NDAVis
 {
     //HDF5Reader readerClient, readerServer;
+    /*
+    The Controller class is a singleton class that is used to manage the game.
+    It is responsible for loading the game's resources, and for sending and receiving
+    messages from the server.
+    
+    Args:
+      None
+    Returns:
+      Nothing
+    */
     Controller::Controller()
     {
         readyImage = false;
         readyClientTiles = false;
     }
 
+    /*
+    The Controller class is the main class that controls the flow of the program. It is responsible for setting up the client and server, and for sending and receiving messages.
+    
+    Args:
+      fileName: the name of the file to be opened
+    Returns:
+      The clientTiles object.
+    */
     void Controller::setFile(std::string fileName)
     {
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Starting Client", true);
@@ -60,6 +78,28 @@ namespace NDAVis
         log.endLog(false);
     }
 
+    /*
+    The server starts by reading the client's data and creating a server reader object.
+    It then creates a server array factoring up size of the client's array.
+    It then creates a server tiles object that will hold the tiles that will be rendered.
+    It then creates a server visual object that will render volume and encode the image that will be sent to the client.
+    It then creates a log keeper object that will log the time taken to render the image.
+    
+    Args:
+      self: the object that called this function
+      cameraView1: The view of the camera.
+      cameraView2: the camera view for the second camera
+      cameraView3: the camera view for the 3rd camera
+      cameraPos1: The x-coordinate of the camera position
+      cameraPos2: the z position of the camera
+      cameraPos3: the z position of the camera
+      color: the color of the data
+      colorSize: The number of colors in the color array.
+      opacity: the opacity of the image
+      opacitySize: The number of opacity values in the opacity array.
+    Returns:
+      Nothing.
+    */
     void Controller::startServerRender(int cameraView1, int cameraView2, int cameraView3, int cameraPos1, int cameraPos2, int cameraPos3, float *color, int colorSize, float *opacity, int opacitySize)
     {
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Render Server", true);
@@ -188,11 +228,35 @@ namespace NDAVis
         log.endLog(false);
     }
 
+    /*
+    Setting Color of the render
+    
+    Args:
+      color: a pointer to an array of floats that contains the color values for the vertices.
+      colorSize: the number of elements in the color array.
+      opacity: a pointer to an array of floats. The array should have the same size as the number of vertices in the mesh.
+      opacitySize: The number of elements in the opacity array.
+    Returns:
+      Nothing.
+    */
     void Controller::setColor(float *color, int colorSize, float *opacity, int opacitySize)
     {
         visul.setColor(color, colorSize, opacity, opacitySize);
     }
 
+    /*
+    Setting camera of the render
+    
+    Args:
+      cameraView1: The camera view of the first camera.
+      cameraView2: the camera view of the second camera.
+      cameraView3: the camera view of the 3rd camera.
+      cameraPos1: The position of the camera in the first view.
+      cameraPos2: the camera position in the y-axis
+      cameraPos3: the position of the camera in the 3rd dimension.
+    Returns:
+      Nothing.
+    */
     void Controller::setCameraView(int cameraView1, int cameraView2, int cameraView3, int cameraPos1, int cameraPos2, int cameraPos3)
     {
         readyImage = false;
@@ -226,6 +290,20 @@ namespace NDAVis
         return readerClient.NZ;
     }
 
+    /*
+    Sets new coordinates to render
+    
+    Args:
+      self: the object that called this function
+      x1y1z1: Cordinate
+      x2y1z1: Cordinate
+      x1y2z1: Cordinate
+      x2y2z1: Cordinate
+      x1y1z2: Cordinate
+      x2y1z2: Cordinate
+    Returns:
+      Nothing.
+    */
     void Controller::setNewCordinates(int x1y1z1, int x2y1z1, int x1y2z1, int x2y2z1, int x1y1z2, int x2y1z2, int x1y2z2, int x2y2z2)
     {
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Render Server", true);
@@ -372,6 +450,19 @@ namespace NDAVis
         log.endLog(false);
     }
 
+    /*
+    The client requests a cube of data from the server.
+    The server reads the data from the file and sends it back to the client.
+    The client receives the data and stores it in a list of tiles.
+    
+    Args:
+      cubes: An array of integers that represent the tiles that the client wants to read.
+      cubesSize: The number of tiles to read
+      XY: The XY dimension of the tile
+      Z: The Z dimension of the tile
+    Returns:
+      The clientTiles object.
+    */
     void Controller::clientRequestCube(int *cubes, int cubesSize, int XY, int Z)
     {   
         NDAVis::LogKeeper log = NDAVis::LogKeeper("Time Taken To Read Client Tiles", true);

@@ -31,11 +31,29 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2); */
 namespace NDAVis
 {
 
-
+    /*
+    The empty constructor for the VtkVisul
+    
+    Args:
+      self: the object itself
+    Returns:
+      Nothing
+    */
     VtkVisul::VtkVisul()
     {
     }
 
+    /*
+    The code is used to set the color and opacity of the volume.
+    
+    Args:
+      color: a float array of size 4*N, where N is the number of points. The first set of 4 values are the RGBA values for the first point, the second set are the values for the second point, etc.
+      colorSize: the number of elements in the color array.
+      opacity: a 1D array of opacity values.
+      opacitySize: the number of opacity values in the opacity array
+    Returns:
+      Nothing
+    */
     void VtkVisul::setColor(float *color, int colorSize, float *opacity, int opacitySize)
     {
 
@@ -78,6 +96,18 @@ namespace NDAVis
 
     }
 
+    /*
+    The InsertArray function takes a pointer to an array, the size of the array, and the dimensions of the volume.
+    
+    Args:
+      arr: the array to be inserted
+      arrSize: the size of the array
+      DimX: the number of points along the x-axis
+      DimY: The number of rows in the array.
+      DimZ: the number of slices in the z direction
+    Returns:
+      Nothing.
+    */
     void VtkVisul::InsertArray(float *arr, int arrSize, int DimX, int DimY, int DimZ)
     {
         vtkArr->SetNumberOfComponents(1);
@@ -88,6 +118,23 @@ namespace NDAVis
         this->DimZ = DimZ;
     }
 
+    /*
+    ```
+    Renders the 3D volume
+    
+    Args:
+      x: The number of pixels in the x-direction.
+      y: The number of pixels in the y-direction.
+      z: The number of slices in the z direction.
+      spacingx: The spacing between adjacent pixels in the x direction.
+      spacingy: The spacing between adjacent pixels in the y direction.
+      spacingz: The spacing between slices in the z direction.
+      originx: the x coordinate of the origin of the image.
+      originy: The y-coordinate of the origin of the image.
+      originz: The z-coordinate of the origin of the image.
+    Returns:
+      Nothing.
+    */
     void VtkVisul::render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz)
     {
         imageData->NewInstance();
@@ -103,6 +150,18 @@ namespace NDAVis
 
     }
 
+    /*
+    Sets camera of the render
+    Args:
+      view1: camera view.
+      view2: camera view.
+      view3: camera view.
+      position1: camera position.
+      position2: camera position.
+      position3: camera position.
+    Returns:
+      Nothing.
+    */
     void VtkVisul::setCamera(int view1, int view2, int view3, int position1, int position2, int position3)
     {
         camera = renderer->GetActiveCamera();
@@ -119,6 +178,14 @@ namespace NDAVis
          */
     }
 
+    /*
+    The below code is used to get the image from the 3D volume.
+    
+    Args:
+      None
+    Returns:
+      The image array
+    */
     void VtkVisul::getImage()
     {   
         

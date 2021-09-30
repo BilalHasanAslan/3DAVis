@@ -26,11 +26,7 @@ namespace NDAVis
     {
     public:
         VtkVisul();
-        void InsertArray(float *arr, int arrSize, int DimX, int DimY, int DimZ);
-        void render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz);
-        void setColor(float *color, int colorSize,float* opacity,int opacitySize);
-        void setCamera(int view1,int view2,int view3,int position1,int position2,int position3);
-        void getImage();
+
         vtkNew<vtkJPEGWriter> writer;
         vtkNew<vtkNamedColors> colors;
         vtkNew<vtkRenderer> renderer;
@@ -47,6 +43,13 @@ namespace NDAVis
         int imageArrSize; */
         vtkUnsignedCharArray *vtkWriterArray;
         int DimX,DimY,DimZ;
+
+        void InsertArray(float *arr, int arrSize, int DimX, int DimY, int DimZ);
+        void render(int x, int y, int z, int spacingx, int spacingy, int spacingz, int originx, int originy, int originz);
+        void setColor(float *color, int colorSize,float* opacity,int opacitySize);
+        void setCamera(int view1,int view2,int view3,int position1,int position2,int position3);
+        void getImage();
+
     };
 }
 
